@@ -1,0 +1,67 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    min-height: 90vh;
+    margin: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgray;
+}
+
+
+.container-principal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    border: 3px solid black;
+    border-radius: 10px;
+    width: 400px;
+    height: 490px;
+
+    background-color: whitesmoke;
+    gap: 20px;
+}
+
+.input-tela-login {
+    padding: 20px;
+}
+
+
+.input-tela-login input {
+    padding: 5px;
+    width: 240px;
+    height: 20px;
+}
+
+.input-tela-login button {
+    padding: 10px;
+    width: 100px;
+    height: 40px;
+}
+
+#id-senha {
+    margin-top: -25px;
+    margin-bottom: -28px;
+}
+
+.requerimento-senha li {
+    margin-top: 1px;
+    list-style-type: none;
+    margin-left: 13px;
+    color: rgb(39, 39, 39);
+}
+
+#titulo {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: flex-start;
+    align-items: center;
+}
