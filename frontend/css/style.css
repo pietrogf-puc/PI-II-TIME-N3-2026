@@ -1,0 +1,274 @@
+/*
+  Arquivo: style.css
+  Autor: Gustavo Manera Marialva (RA 26029581)
+  Projeto: Sistema de Acompanhamento de Demandas - PI II - Time N3
+  Descrição: padrão visual comum a todas as telas do sistema
+             (cores, tipografia, layout com menu lateral, botões,
+             cards, tabelas, formulários e etiquetas de status/prioridade).
+*/
+
+/* ===== 1. Variáveis de cor e tamanho (padrão visual do grupo) ===== */
+:root {
+  --cor-primaria: #3b5bdb;        /* azul principal: botões e destaques */
+  --cor-primaria-escura: #2f4ac0; /* azul ao passar o mouse */
+  --cor-fundo: #f4f6fb;           /* fundo geral da página */
+  --cor-superficie: #ffffff;      /* fundo de cards e tabelas */
+  --cor-borda: #dde2ec;           /* bordas suaves */
+  --cor-texto: #1f2433;           /* texto principal */
+  --cor-texto-suave: #6b7285;     /* texto secundário */
+
+  /* cores usadas nos status das demandas */
+  --status-aberta: #3b5bdb;
+  --status-andamento: #f08c00;
+  --status-revisao: #7048e8;
+  --status-concluida: #2f9e44;
+  --status-cancelada: #868e96;
+
+  /* cores usadas nas prioridades */
+  --prio-critica: #e03131;
+  --prio-alta: #f76707;
+  --prio-media: #f5b700;
+  --prio-baixa: #74b816;
+
+  --raio: 8px;                    /* arredondamento padrão */
+  --espaco: 16px;                 /* espaçamento base */
+  --largura-menu: 220px;          /* largura do menu lateral */
+}
+
+/* ===== 2. Base e tipografia ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 15px;
+  color: var(--cor-texto);
+  background: var(--cor-fundo);
+  line-height: 1.5;
+}
+
+a {
+  color: var(--cor-primaria);
+  text-decoration: none;
+}
+
+h1 { font-size: 26px; margin-bottom: var(--espaco); }
+h2 { font-size: 17px; margin-bottom: 12px; }
+
+/* ===== 3. Cabeçalho (topo de todas as telas internas) ===== */
+.cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  padding: 0 24px;
+  background: var(--cor-superficie);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cor-texto);
+}
+
+.logo span { color: var(--cor-primaria); }
+
+/* caixa de usuário/perfil no canto direito */
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  font-size: 14px;
+}
+
+.usuario .avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--cor-primaria);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.usuario small {
+  display: block;
+  color: var(--cor-texto-suave);
+  font-size: 12px;
+}
+
+/* ===== 4. Layout: menu lateral + conteúdo ===== */
+.layout {
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+
+.menu-lateral {
+  width: var(--largura-menu);
+  flex-shrink: 0;
+  background: var(--cor-superficie);
+  border-right: 1px solid var(--cor-borda);
+  padding: var(--espaco) 0;
+}
+
+.menu-lateral a {
+  display: block;
+  padding: 12px 24px;
+  color: var(--cor-texto);
+  border-left: 3px solid transparent;
+}
+
+.menu-lateral a:hover { background: var(--cor-fundo); }
+
+/* item do menu da página atual */
+.menu-lateral a.ativo {
+  background: #edf1ff;
+  border-left-color: var(--cor-primaria);
+  color: var(--cor-primaria);
+  font-weight: 600;
+}
+
+.conteudo {
+  flex: 1;
+  padding: 24px;
+  min-width: 0; /* evita que tabelas estourem a largura */
+}
+
+/* ===== 5. Cards e painéis ===== */
+.painel {
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* ===== 6. Botões ===== */
+.btn {
+  display: inline-block;
+  padding: 10px 18px;
+  border: none;
+  border-radius: var(--raio);
+  background: var(--cor-primaria);
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.btn:hover { background: var(--cor-primaria-escura); }
+
+.btn-secundario {
+  background: transparent;
+  color: var(--cor-primaria);
+  border: 1px solid var(--cor-primaria);
+}
+
+.btn-secundario:hover { background: #edf1ff; }
+
+/* ===== 7. Tabelas ===== */
+.tabela-container { overflow-x: auto; } /* rolagem no celular */
+
+table {
+  width: 100%;
+  min-width: 560px; /* no celular a tabela rola para o lado em vez de espremer */
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+th {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+  font-weight: 600;
+}
+
+tbody tr:hover { background: var(--cor-fundo); }
+
+/* ===== 8. Formulários ===== */
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  font: inherit;
+  margin-bottom: var(--espaco);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid #c5d0fa;
+  border-color: var(--cor-primaria);
+}
+
+/* ===== 9. Etiquetas de status, prioridade e tipo ===== */
+.etiqueta {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap; /* etiqueta nunca quebra em duas linhas */
+}
+
+.status-aberta { background: var(--status-aberta); }
+.status-andamento { background: var(--status-andamento); }
+.status-revisao { background: var(--status-revisao); }
+.status-concluida { background: var(--status-concluida); }
+.status-cancelada { background: var(--status-cancelada); }
+
+.prio-critica { background: var(--prio-critica); }
+.prio-alta { background: var(--prio-alta); }
+.prio-media { background: var(--prio-media); color: var(--cor-texto); }
+.prio-baixa { background: var(--prio-baixa); }
+
+.tipo {
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  border: 1px solid var(--cor-borda);
+}
+
+/* ===== 10. Responsividade ===== */
+@media (max-width: 800px) {
+  /* no celular o menu lateral vira uma barra horizontal no topo */
+  .layout { flex-direction: column; }
+
+  .menu-lateral {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    padding: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--cor-borda);
+  }
+
+  .menu-lateral a {
+    white-space: nowrap;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+  }
+
+  .menu-lateral a.ativo { border-bottom-color: var(--cor-primaria); }
+
+  .conteudo { padding: 16px; }
+
+  .usuario div { display: none; } /* mostra só o avatar */
+}
