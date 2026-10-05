@@ -1,0 +1,118 @@
+<!--
+  Arquivo: detalhes.html
+  Autor: Rafael Carvalho Soares (RA 26029352)
+  Projeto: Sistema de Acompanhamento de Demandas - PI II - Time N3
+  Descrição: tela "Detalhes da Demanda" (informações gerais, descrição,
+             anexos e histórico/comentários). Os dados são fictícios nesta etapa
+             (Reunião 3 - somente HTML/CSS).
+-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <!-- viewport: faz a página se adaptar à tela do celular -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes da Demanda | Sistema de Demandas</title>
+  <!-- estilo comum a todas as telas -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- estilo exclusivo desta tela -->
+  <link rel="stylesheet" href="css/detalhes.css">
+</head>
+<body>
+
+  <!-- ===== Cabeçalho: logo e usuário logado (igual ao do dashboard) ===== -->
+  <header class="cabecalho">
+    <a href="dashboard.html" class="logo">Demandas<span>N3</span></a>
+
+    <div class="usuario">
+      <span class="avatar">RS</span>
+      <div>
+        Rafael Soares
+        <small>Integrante</small>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- ===== Menu lateral: navegação entre as telas ===== -->
+    <nav class="menu-lateral">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="cadastro.html">Adicionar demanda</a>
+      <a href="listagem.html" class="ativo">Demandas</a>
+      <a href="login.html">Sair</a>
+    </nav>
+
+    <!-- ===== Conteúdo principal ===== -->
+    <main class="conteudo">
+
+      <!-- Título e botões de ação -->
+      <div class="cabecalho-pagina">
+        <h1>Detalhes da Demanda</h1>
+        <div class="acoes">
+          <a href="listagem.html" class="btn btn-secundario">Voltar</a>
+          <a href="cadastro.html" class="btn btn-secundario">Editar</a>
+          <button type="button" class="btn btn-perigo">Excluir</button>
+        </div>
+      </div>
+
+      <!-- Card 1: informações gerais -->
+      <section class="painel">
+        <h2>Informações gerais</h2>
+        <dl class="grade-info">
+          <div class="titulo-demanda"><dt>Título</dt><dd>Erro ao salvar demanda sem prazo</dd></div>
+          <div><dt>Tipo</dt><dd><span class="etiqueta tipo">Defeito</span></dd></div>
+          <div><dt>Prioridade</dt><dd><span class="etiqueta prio-critica">Crítica</span></dd></div>
+          <div><dt>Status</dt><dd><span class="etiqueta status-andamento">Em andamento</span></dd></div>
+          <div><dt>Responsável</dt><dd>Rafael Soares</dd></div>
+          <div><dt>Data de criação</dt><dd>25/09/2026</dd></div>
+          <div><dt>Prazo</dt><dd>02/10/2026</dd></div>
+        </dl>
+      </section>
+
+      <!-- Card 2: descrição -->
+      <section class="painel">
+        <h2>Descrição</h2>
+        <p class="descricao">Ao cadastrar uma demanda deixando o campo de prazo vazio, o sistema apresenta erro e não salva a demanda. O prazo deve ser tratado conforme a regra definida pelo grupo.</p>
+      </section>
+
+      <!-- Card 3: anexos -->
+      <section class="painel">
+        <h2>Anexos</h2>
+        <div class="tabela-container">
+          <table>
+            <thead>
+              <tr><th>Arquivo</th><th>Enviado por</th><th>Data</th><th>Ações</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>captura-de-tela-erro.png</td>
+                <td>Pietro Giati</td>
+                <td>26/09/2026</td>
+                <td><a href="#">Baixar</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Card 4: histórico e comentários -->
+      <section class="painel">
+        <h2>Histórico / Comentários</h2>
+        <ul class="historico">
+          <li><small>Rafael Soares · 28/09/2026</small>Alterou o status para "Em andamento"</li>
+          <li><small>Pietro Giati · 29/09/2026</small>Consegui reproduzir o erro deixando o campo de prazo vazio.</li>
+        </ul>
+
+        <form class="comentar">
+          <label for="comentario" class="so-leitor">Novo comentário</label>
+          <textarea id="comentario" name="comentario" placeholder="Escreva um comentário"></textarea>
+          <button type="button" class="btn">Comentar</button>
+        </form>
+      </section>
+
+    </main>
+  </div>
+
+</body>
+</html>

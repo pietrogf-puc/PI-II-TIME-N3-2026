@@ -1,0 +1,90 @@
+/*
+  Arquivo: detalhes.css
+  Autor: Rafael Carvalho Soares (RA 26029352)
+  Projeto: Sistema de Acompanhamento de Demandas - PI II - Time N3
+  Descrição: estilos que existem só na tela Detalhes da Demanda.
+             O padrão visual geral (cores, menu, botões, cards) vem do style.css.
+             Este arquivo usa as variáveis do style.css (ex.: var(--cor-borda)).
+*/
+
+/* Título da página + botões Voltar / Editar / Excluir */
+.cabecalho-pagina {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--espaco);
+  margin-bottom: 20px;
+}
+
+.cabecalho-pagina h1 { margin-bottom: 0; }
+
+.acoes { display: flex; gap: 8px; }
+
+/* Botão vermelho para ações perigosas (Excluir) */
+.btn-perigo { background: var(--prio-critica); }
+.btn-perigo:hover { background: #c52a2a; }
+
+/* Informações gerais: grade de 3 colunas */
+.grade-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px 24px;
+}
+
+.grade-info .titulo-demanda { grid-column: 1 / -1; } /* título ocupa a linha toda */
+
+.grade-info dt {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+.grade-info dd { margin: 0; }
+
+/* Caixa da descrição */
+.descricao {
+  padding: 14px;
+  color: var(--cor-texto-suave);
+  border: 1px dashed var(--cor-borda);
+  border-radius: var(--raio);
+}
+
+/* Histórico em linha do tempo */
+.historico { list-style: none; margin-bottom: var(--espaco); }
+
+.historico li {
+  padding: 0 0 12px 14px;
+  border-left: 2px solid var(--cor-borda);
+}
+
+.historico small {
+  display: block;
+  color: var(--cor-texto-suave);
+  font-size: 13px;
+}
+
+/* Campo de novo comentário + botão */
+.comentar {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.comentar textarea {
+  flex: 1;
+  min-height: 80px;
+  margin-bottom: 0; /* o style.css põe margem em todo campo; aqui não precisa */
+}
+
+/* Esconde o rótulo na tela, mas leitores de tela ainda o leem */
+.so-leitor {
+  position: absolute;
+  left: -9999px;
+}
+
+/* Telas pequenas */
+@media (max-width: 800px) {
+  .grade-info { grid-template-columns: 1fr; }
+  .comentar { flex-direction: column; }
+  .comentar textarea { width: 100%; }
+}
