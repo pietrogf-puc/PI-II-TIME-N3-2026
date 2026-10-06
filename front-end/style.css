@@ -1,0 +1,176 @@
+/* geral*/
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #222;
+  background: #fff;
+}
+
+/*menu*/
+.menu {
+  width: 190px;
+  background: #f1f1ef;
+  border-right: 1px solid #ddd;
+}
+
+.menu h1 {
+  font-size: 16px;
+  padding: 10px 20px;
+  height: 63px;
+  border-bottom: 1px solid #ddd;
+}
+
+.menu nav {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+}
+
+.menu a {
+  padding: 10px 20px;
+  color: #444;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+}
+
+.menu a:hover {
+  background: #e6e6e3;
+}
+
+.menu a.ativo {
+  background: #e3e3e0;
+  color: #000;
+  font-weight: bold;
+  border-left-color: #222;
+}
+
+.menu a.sair {
+  margin-top: 30px;
+}
+
+/*conteud*/
+.conteudo {
+  flex: 1;
+}
+
+.topo {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 63px;
+  padding: 0 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.botaoPerfil {
+  padding: 8px 18px;
+  background: #0e44cc;
+  border: 1px solid #888;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+main {
+  padding: 20px 25px;
+}
+
+.rotulo {
+  color: #888;
+  font-size: 13px;
+}
+
+main h2 {
+  font-size: 22px;
+  margin: 6px 0 20px;
+}
+
+/* Busca e filtros */
+.filtros {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 10px;
+}
+
+.filtros input {
+  width: 275px;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 3px;  
+}
+
+.filtros select {
+  padding: 9px 8px;
+  background: #fff;
+  border: 1px solid #aaa; 
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.botao-nova {
+  margin-left: auto;
+  padding: 9px 16px;
+  background: #0e44cc;
+  border: 1px solid #999;
+  border-radius: 3px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.botao-nova:hover {
+  background: #bbb;
+}
+
+/*Tabela*/
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid #888;
+}
+
+td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+  background: #f7f7f7;
+}
+
+.acoes a {
+  text-decoration: none;
+  color: #444;
+  margin-right: 6px;
+}
+
+/*paginação*/
+.paginacao {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.paginacao button {
+  padding: 7px 14px;
+  background: #ddd;
+  border: 1px solid #aaa;
+  cursor: pointer;
+}
+
+.paginacao button:hover {
+  background: #eee;
+}
