@@ -1,16 +1,6 @@
-/*
-  Arquivo: dashboard.css
-  Autor: Gustavo Manera Marialva (RA 26029581)
-  Projeto: Sistema de Acompanhamento de Demandas - PI II - Time N3
-  Descrição: estilos exclusivos da tela de Dashboard
-             (cards contadores, gráficos de barras e tabelas-resumo).
-             Usa as variáveis definidas em style.css.
-*/
-
-/* ===== Cards contadores por status ===== */
 .contadores {
   display: grid;
-  grid-template-columns: repeat(6, 1fr); /* 6 cards lado a lado */
+  grid-template-columns: repeat(6, 1fr);
   gap: 14px;
   margin-bottom: 20px;
 }
@@ -26,7 +16,6 @@
   transition: transform 0.15s, box-shadow 0.15s;
 }
 
-/* efeito ao passar o mouse, indicando que o card é clicável */
 .card-contador:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -43,7 +32,6 @@
   line-height: 1.2;
 }
 
-/* cor da borda superior de cada card segue a cor do status */
 .card-contador.total { border-top-color: var(--cor-texto); }
 .card-contador.aberta { border-top-color: var(--status-aberta); }
 .card-contador.andamento { border-top-color: var(--status-andamento); }
@@ -51,20 +39,18 @@
 .card-contador.concluida { border-top-color: var(--status-concluida); }
 .card-contador.cancelada { border-top-color: var(--status-cancelada); }
 
-/* ===== Gráficos (feitos só com HTML e CSS) ===== */
 .graficos {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* dois painéis lado a lado */
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
   margin-bottom: 20px;
 }
 
-/* o espaçamento entre os gráficos já vem do gap acima */
 .graficos .painel { margin-bottom: 0; }
 
 .barra-linha {
   display: grid;
-  grid-template-columns: 110px 1fr 32px; /* rótulo | barra | número */
+  grid-template-columns: 110px 1fr 32px;
   align-items: center;
   gap: 10px;
   margin-bottom: 12px;
@@ -78,7 +64,6 @@
   overflow: hidden;
 }
 
-/* a largura da barra é definida no HTML (style="width: X%") */
 .barra {
   height: 100%;
   border-radius: 999px;
@@ -92,7 +77,6 @@
 
 .barra-linha b { text-align: right; }
 
-/* ===== Linhas clicáveis das tabelas ===== */
 .linha-link { cursor: pointer; }
 
 .linha-link td a { color: var(--cor-texto); font-weight: 600; }
@@ -102,13 +86,12 @@
   font-weight: 600;
 }
 
-/* ===== Responsividade ===== */
 @media (max-width: 1100px) {
   .contadores { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 800px) {
-  .graficos { grid-template-columns: 1fr; } /* gráficos um embaixo do outro */
+  .graficos { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {

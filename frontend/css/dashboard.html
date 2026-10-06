@@ -1,27 +1,14 @@
-<!--
-  Arquivo: dashboard.html
-  Autor: Gustavo Manera Marialva (RA 26029581)
-  Projeto: Sistema de Acompanhamento de Demandas - PI II - Time N3
-  Descrição: tela inicial (Dashboard) com o resumo das demandas:
-             contadores por status, gráficos por prioridade e por tipo,
-             demandas críticas em aberto e demandas próximas do prazo.
-             Os dados são fictícios nesta etapa (Reunião 3 - somente HTML/CSS).
--->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <!-- viewport: faz a página se adaptar à tela do celular -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | Sistema de Demandas</title>
-  <!-- estilo comum a todas as telas -->
-  <link rel="stylesheet" href="css/style.css">
-  <!-- estilo exclusivo do dashboard -->
-  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
 
-  <!-- ===== Cabeçalho: logo e usuário logado ===== -->
   <header class="cabecalho">
     <a href="dashboard.html" class="logo">Demandas<span>N3</span></a>
 
@@ -36,7 +23,6 @@
 
   <div class="layout">
 
-    <!-- ===== Menu lateral: navegação entre as telas ===== -->
     <nav class="menu-lateral">
       <a href="dashboard.html" class="ativo">Dashboard</a>
       <a href="cadastro.html">Adicionar demanda</a>
@@ -44,11 +30,9 @@
       <a href="login.html">Sair</a>
     </nav>
 
-    <!-- ===== Conteúdo principal ===== -->
     <main class="conteudo">
       <h1>Dashboard</h1>
 
-      <!-- Cards contadores: cada um leva à listagem (filtro por status virá com JavaScript) -->
       <section class="contadores">
         <a href="listagem.html" class="card-contador total">
           <span>Total de demandas</span>
@@ -76,7 +60,6 @@
         </a>
       </section>
 
-      <!-- Gráficos de barras feitos com CSS (largura = proporção em relação ao maior valor) -->
       <section class="graficos">
         <div class="painel">
           <h2>Demandas por prioridade</h2>
@@ -127,7 +110,6 @@
         </div>
       </section>
 
-      <!-- Tabela: demandas críticas que ainda não foram concluídas/canceladas -->
       <section class="painel">
         <h2>Demandas críticas em aberto</h2>
         <div class="tabela-container">
@@ -141,7 +123,6 @@
               </tr>
             </thead>
             <tbody>
-              <!-- cada linha leva à tela de detalhes da demanda -->
               <tr class="linha-link">
                 <td><a href="detalhes.html">Erro ao salvar demanda sem prazo</a></td>
                 <td><span class="etiqueta status-andamento">Em andamento</span></td>
@@ -165,7 +146,6 @@
         </div>
       </section>
 
-      <!-- Tabela: demandas com prazo de finalização nos próximos dias -->
       <section class="painel">
         <h2>Demandas próximas do prazo de finalização</h2>
         <div class="tabela-container">

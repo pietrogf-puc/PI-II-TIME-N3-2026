@@ -1,41 +1,28 @@
-/*
-  Arquivo: style.css
-  Autor: Gustavo Manera Marialva (RA 26029581)
-  Projeto: Sistema de Acompanhamento de Demandas - PI II - Time N3
-  Descrição: padrão visual comum a todas as telas do sistema
-             (cores, tipografia, layout com menu lateral, botões,
-             cards, tabelas, formulários e etiquetas de status/prioridade).
-*/
-
-/* ===== 1. Variáveis de cor e tamanho (padrão visual do grupo) ===== */
 :root {
-  --cor-primaria: #3b5bdb;        /* azul principal: botões e destaques */
-  --cor-primaria-escura: #2f4ac0; /* azul ao passar o mouse */
-  --cor-fundo: #f4f6fb;           /* fundo geral da página */
-  --cor-superficie: #ffffff;      /* fundo de cards e tabelas */
-  --cor-borda: #dde2ec;           /* bordas suaves */
-  --cor-texto: #1f2433;           /* texto principal */
-  --cor-texto-suave: #6b7285;     /* texto secundário */
+  --cor-primaria: #3b5bdb;
+  --cor-primaria-escura: #2f4ac0;
+  --cor-fundo: #f4f6fb;
+  --cor-superficie: #ffffff;
+  --cor-borda: #dde2ec;
+  --cor-texto: #1f2433;
+  --cor-texto-suave: #6b7285;
 
-  /* cores usadas nos status das demandas */
   --status-aberta: #3b5bdb;
   --status-andamento: #f08c00;
   --status-revisao: #7048e8;
   --status-concluida: #2f9e44;
   --status-cancelada: #868e96;
 
-  /* cores usadas nas prioridades */
   --prio-critica: #e03131;
   --prio-alta: #f76707;
   --prio-media: #f5b700;
   --prio-baixa: #74b816;
 
-  --raio: 8px;                    /* arredondamento padrão */
-  --espaco: 16px;                 /* espaçamento base */
-  --largura-menu: 220px;          /* largura do menu lateral */
+  --raio: 8px;
+  --espaco: 16px;
+  --largura-menu: 220px;
 }
 
-/* ===== 2. Base e tipografia ===== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -58,7 +45,6 @@ a {
 h1 { font-size: 26px; margin-bottom: var(--espaco); }
 h2 { font-size: 17px; margin-bottom: 12px; }
 
-/* ===== 3. Cabeçalho (topo de todas as telas internas) ===== */
 .cabecalho {
   display: flex;
   justify-content: space-between;
@@ -77,7 +63,6 @@ h2 { font-size: 17px; margin-bottom: 12px; }
 
 .logo span { color: var(--cor-primaria); }
 
-/* caixa de usuário/perfil no canto direito */
 .usuario {
   display: flex;
   align-items: center;
@@ -106,7 +91,6 @@ h2 { font-size: 17px; margin-bottom: 12px; }
   font-size: 12px;
 }
 
-/* ===== 4. Layout: menu lateral + conteúdo ===== */
 .layout {
   display: flex;
   min-height: calc(100vh - 64px);
@@ -129,7 +113,6 @@ h2 { font-size: 17px; margin-bottom: 12px; }
 
 .menu-lateral a:hover { background: var(--cor-fundo); }
 
-/* item do menu da página atual */
 .menu-lateral a.ativo {
   background: #edf1ff;
   border-left-color: var(--cor-primaria);
@@ -140,10 +123,9 @@ h2 { font-size: 17px; margin-bottom: 12px; }
 .conteudo {
   flex: 1;
   padding: 24px;
-  min-width: 0; /* evita que tabelas estourem a largura */
+  min-width: 0;
 }
 
-/* ===== 5. Cards e painéis ===== */
 .painel {
   background: var(--cor-superficie);
   border: 1px solid var(--cor-borda);
@@ -152,7 +134,6 @@ h2 { font-size: 17px; margin-bottom: 12px; }
   margin-bottom: 20px;
 }
 
-/* ===== 6. Botões ===== */
 .btn {
   display: inline-block;
   padding: 10px 18px;
@@ -174,12 +155,12 @@ h2 { font-size: 17px; margin-bottom: 12px; }
 
 .btn-secundario:hover { background: #edf1ff; }
 
-/* ===== 7. Tabelas ===== */
-.tabela-container { overflow-x: auto; } /* rolagem no celular */
+
+.tabela-container { overflow-x: auto; }
 
 table {
   width: 100%;
-  min-width: 560px; /* no celular a tabela rola para o lado em vez de espremer */
+  min-width: 560px;
   border-collapse: collapse;
 }
 
@@ -197,7 +178,6 @@ th {
 
 tbody tr:hover { background: var(--cor-fundo); }
 
-/* ===== 8. Formulários ===== */
 label {
   display: block;
   font-weight: 600;
@@ -218,7 +198,6 @@ input:focus, select:focus, textarea:focus {
   border-color: var(--cor-primaria);
 }
 
-/* ===== 9. Etiquetas de status, prioridade e tipo ===== */
 .etiqueta {
   display: inline-block;
   padding: 2px 10px;
@@ -226,7 +205,7 @@ input:focus, select:focus, textarea:focus {
   font-size: 12px;
   font-weight: 600;
   color: #fff;
-  white-space: nowrap; /* etiqueta nunca quebra em duas linhas */
+  white-space: nowrap;
 }
 
 .status-aberta { background: var(--status-aberta); }
@@ -246,9 +225,7 @@ input:focus, select:focus, textarea:focus {
   border: 1px solid var(--cor-borda);
 }
 
-/* ===== 10. Responsividade ===== */
 @media (max-width: 800px) {
-  /* no celular o menu lateral vira uma barra horizontal no topo */
   .layout { flex-direction: column; }
 
   .menu-lateral {
@@ -270,5 +247,5 @@ input:focus, select:focus, textarea:focus {
 
   .conteudo { padding: 16px; }
 
-  .usuario div { display: none; } /* mostra só o avatar */
+  .usuario div { display: none; }
 }
