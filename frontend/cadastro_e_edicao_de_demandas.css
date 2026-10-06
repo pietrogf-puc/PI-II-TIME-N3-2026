@@ -1,0 +1,188 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+}
+
+.pagina {
+    display: flex;
+    min-height: 100vh;
+}
+
+.menu {
+    width: 250px;
+    background-color:#f3f3f3;
+}
+
+.menu a {
+    display: block;
+    padding: 24px;
+    font-size: 20px;
+    text-decoration: none;
+    font-weight:600;
+    color: #000;
+}
+
+.LOGO {
+    font-weight: 600;
+    font-size: 24px;
+    padding: 24px;
+
+}
+
+hr {
+    margin: 0;
+    margin-top:8px;
+}
+
+.conteudop {
+    flex: 1;
+    padding:0 32px 32px 32px;
+}
+
+.direitona nav {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.direitona nav a {
+    border: 1px solid #000000;
+    padding: 13px 40px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-weight:bold;
+    text-align: center;
+}
+
+.tituloformulario {
+    font-size:20px;
+
+}
+
+.titulo {
+    font-size: 48px;
+}
+
+.formularios {
+    width: 100%;
+}
+
+
+.campot {
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.campot input {
+    width: 100%;
+    padding: 24px;
+    font-size: 14px;
+    border: 1px solid #000;
+    margin-bottom: 30px;
+    font-size: 18px;
+    border-radius: 4px;
+}
+
+.labelform {
+    font-size: 20px;
+}
+
+.campod {
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.campod input {
+    width: 100%;
+    padding: 50px;
+    font-size: 14px;
+    border: 1px solid #000;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.linha {
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.campo {
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.campo select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #000;
+}
+
+.meialinha {
+    display:grid;
+    grid-template-columns: 1fr;
+    justify-items:center;
+}
+
+.meialinha .campo {
+    width:100%;
+    max-width:290px;
+    align-items:center;
+}
+
+.campo input.inputdate {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #000;
+}
+
+.botoes {
+    display:flex;
+    justify-content:flex-end;
+    padding:20px;
+    gap:16px;
+}
+
+.botaovoltar {
+    background-color:rgb(231, 228, 228);
+    padding:20px 20px;
+    border: 1px solid #000;
+    border-radius:4px;
+}
+
+.botaosubmit {
+    background-color:rgb(148, 245, 148);
+    padding: 20px 20px;
+    border: 1px solid rgb(32, 85, 32);
+    border-radius:4px;
+}
+
+.botaovoltar p {
+    font-size: 20px;
+    font-weight:bold;
+}
+
+.botaosubmit p {
+    font-size: 20px;
+    font-weight:bold;
+}
+
+@media (min-width: 768px) {
+  .linha {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+}
