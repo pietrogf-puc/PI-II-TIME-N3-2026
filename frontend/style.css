@@ -9,7 +9,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: lightgray;
+    background-color: #e3f1ff;
 }
 
 
@@ -21,7 +21,7 @@ body {
     flex-wrap: wrap;
 
     border: 3px solid black;
-    border-radius: 10px;
+    border-radius: 20px;
     width: 400px;
     height: 490px;
 
@@ -31,6 +31,12 @@ body {
 
 .input-tela-login {
     padding: 20px;
+}
+
+.input-tela-login label {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: bold;
+
 }
 
 
@@ -55,7 +61,7 @@ body {
     margin-top: 1px;
     list-style-type: none;
     margin-left: 13px;
-    color: rgb(39, 39, 39);
+    color: #49525f;
 }
 
 #titulo {
@@ -64,4 +70,10 @@ body {
 
     justify-content: flex-start;
     align-items: center;
+}
+
+#loginBtn {
+    background-color: #72afff;
+    border-radius: 10px;
+    width: 100px;
 }
