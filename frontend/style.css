@@ -23,7 +23,7 @@ body {
     border: 3px solid black;
     border-radius: 20px;
     width: 400px;
-    height: 490px;
+    height: 540px;
 
     background-color: whitesmoke;
     gap: 20px;
@@ -52,15 +52,24 @@ body {
     height: 40px;
 }
 
+#mensagem_erro_email {
+    margin-top: 2px;
+    display: none;
+}
+
 #id-senha {
     margin-top: -25px;
-    margin-bottom: -28px;
+    margin-bottom: -30px;
+}
+
+.requerimento-senha {
+    display: none;
 }
 
 .requerimento-senha li {
     margin-top: 1px;
     list-style-type: none;
-    margin-left: 13px;
+    margin-left: 20px;
     color: #49525f;
 }
 

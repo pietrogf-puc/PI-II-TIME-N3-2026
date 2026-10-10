@@ -9,55 +9,49 @@
     <title>Página de Login</title>
 
     <link rel="stylesheet" href="style.css">
-    <script src="" defer></script>
 </head>
 
 <body>
-    <div class="container-principal">
+    <form id="formulario">
 
-        <div id="titulo">
-            <h1>Sistema de Demandas</h1>
-            <p>Acompanhamento de Projetos</p>
-        </div>
+        <div class="container-principal">
 
+            <div id="titulo">
+                <h1>Sistema de Demandas</h1>
+                <p>Acompanhamento de Projetos</p>
+            </div>
 
-        <!--Campo de Email-->
-
-        <div class="input-tela-login">
-            <form>
+            <!--Campo de Email-->
+            <div class="input-tela-login">
                 <label for="email">E-mail</label>
                 <br>
                 <input type="email" id="email" placeholder="sistemadedemanda@gmail.com">
-            </form>
+                <p id="mensagem_erro_email">Mensagem de Erro</p>
+            </div>
+
+            <!--Campo de Senha-->
+            <div class="input-tela-login" id="id-senha">
+                <label for="senha">Senha</label>
+                <br>
+                <input type="password" id="senha" placeholder="xxxxxxxxxx">
+            </div>
+
+            <div class="requerimento-senha" id="requerimentos">
+                <ul>
+                    <li id="maiuscula">Ao menos 1 letra maiuscula</li>
+                    <li id="minuscula">Ao Menos 1 letra minúscula</li>
+                    <li id="numero">Ao menos um número</li>
+                    <li id="c_especial">Ao menos 1 caractére especial: ! @ # _ * -</li>
+                </ul>
+            </div>
+
+            <!--Botao de Login-->
+            <div class="input-tela-login">
+                <button type="submit" id="loginBtn" value="submit">Entrar</button>
+            </div>
         </div>
 
-
-        <!--Campo de Senha-->
-
-        <div class="input-tela-login" id="id-senha">
-            <label for="senha">Senha</label>
-            <br>
-            <input type="password" id="senha" placeholder="xxxxxxxxxx">
-        </div>
-
-        <div class="requerimento-senha">
-            <ul>
-                <li id="maiuscula">Ao menos 1 letra maiuscula</li>
-                <li id="minuscula">Ao Menos 1 letra minúscula</li>
-                <li id="numero">Ao menos um número</li>
-                <li id="c_especial">Ao menos 1 caractére especial: ! @ # _ * -</li>
-            </ul>
-        </div>
-
-
-        <!--Botao de Login-->
-
-        <div class="input-tela-login">
-            <form>
-                <button type="submit" id="loginBtn">Entrar</button>
-            </form>
-        </div>
-    </div>
+    </form>
 
     <script src="index.js"></script>
 </body>
