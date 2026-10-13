@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro e Edição de Demandas.</title>
+    <link rel="stylesheet" href="cadastro_e_edicao_de_demandas.css">
+</head>
+<body>
+
+<div class="pagina">
+    <div class="menu">
+        <br>
+        <div class="LOGO">LOGO / Nome do <br>Sistema</p>
+            <hr>        
+            <a href="#">Dashboard</a>
+            <a href="#">Cadastro de Demandas</a>
+            <a href="#">Listagem de Demandas</a>
+            <a href="#">Detalhes das Demandas</a>
+            <a href="#">Projetos</a>
+            <a href="#">Sair</a>
+        </div>
+    </div>
+
+
+    <div class="conteudop">
+        <br>
+         <div class="direitona">
+            <nav><a>Usuário / <br>Perfil</a></nav>
+        </div>
+
+        <br>
+        <hr>
+        <br>
+        <br>
+
+    <h1 class="titulo">Cadastro de Demandas</h1>
+
+    <br>
+
+    <form class="formularios">
+        <div class="campot">
+            <label for="titulod" class="labelform">Título da Demanda:</label>
+            <input type="text" id="titulod" name="titulodademanda" class="inputform" 
+                placeholder="Digite o título da demanda">
+        </div>
+
+        <div class="campod">
+            <label for="descricaod" class="labelform">Descrição:</label>
+            <input type="text" id="descricaod" class="inputform"
+                placeholder="Digite a descrição da demanda">
+        </div>
+    
+
+        <div class="linha">
+            <div class="campo">
+                <label for="projeto" class="labelform">Projeto:</label>
+                <select id="projeto">
+
+
+                </select>
+            </div>
+        
+            <div class="campo">
+                <label for="tipo" class="labelform">Tipo:</label>
+                <select id="tipo">
+                    <option></option>
+                    <option value="tarefa">Tarefa</option>
+                    <option value="defeito">Defeito</option>
+                    <option value="melhoria">Melhoria</option>
+                    <option value="documentacao">Documentação</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="linha">
+            <div class="campo">
+                <label for="prioridade" class="labelform">Prioridade:</label>
+                <select id="prioridade">
+                    <option></option>
+                    <option>Baixa</option>
+                    <option>Média</option>
+                    <option>Alta</option>
+                    <option>Crítica</option>
+                </select>
+            </div>
+        
+            <div class="campo">
+                <label for="responsavel" class="labelform">Responsável</label>
+                <select id="tipo">
+
+                    
+                </select>
+            </div>
+        </div>
+
+        <div class="meialinha">
+            <div class="campo">
+                <label for="prazo" class="labelform">Prazo:</label>
+                <input type="date" id="prazo" class="inputdate"></input>
+            </div>
+        </div>
+
+        <br>
+        <hr>
+        <br>
+        <br>
+
+        <div class="botoes">
+            <div class=botaovoltar>
+                <p>Cancelar</p>
+            </div>
+            <div class=botaosubmit>
+                <p>Cadastrar Demanda</p>
+            </div>
+        </div>
+    </div>   
+</form>   
+ 
+</body>
+</html>
