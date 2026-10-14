@@ -1,4 +1,7 @@
-<!--Pietro Giati de Favari-->
+<!-- 
+Arquivo TelaDeLogin.html feito por Pietro Giati de Favari
+Ra: 26028869
+-->
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -8,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Login</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="tela_login.css">
 </head>
 
 <body>
@@ -38,6 +41,7 @@
 
             <div class="requerimento-senha" id="requerimentos">
                 <ul>
+                    <li id="req_espacos">Nao pode conter espaços ou estar vazia</li>
                     <li id="maiuscula">Ao menos 1 letra maiuscula</li>
                     <li id="minuscula">Ao Menos 1 letra minúscula</li>
                     <li id="numero">Ao menos um número</li>
@@ -49,11 +53,12 @@
             <div class="input-tela-login">
                 <button type="submit" id="loginBtn" value="submit">Entrar</button>
             </div>
+            <p id="forms_invalido">Mensagem de erro</p>
         </div>
 
     </form>
 
-    <script src="index.js"></script>
+    <script src="tela_login.js"></script>
 </body>
 
 </html>
