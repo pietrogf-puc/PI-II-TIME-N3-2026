@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Listagem de Demandas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <aside class="menu">
+    <h1>Sistema de Demandas</h1>
+    <nav>
+      <a href="#">Dashboard</a>
+      <a href="#">Adicionar Demanda</a>
+      <a href="#" class="ativo">Listagem de Demandas</a>
+      <a href="#">Projetos</a>
+      <a href="#" class="sair">Sair</a>
+    </nav>
+  </aside>
+
+  <div class="conteudo">
+    <header class="topo">
+      <button class="botaoPerfil">Usuário / Perfil</button>
+    </header>
+
+    <main>
+      <h2>Listagem de Demandas</h2>
+
+      <div class="filtros">
+        <input type="text" placeholder="Buscar por título ou descrição">
+        <select class="tipos">
+          <option>Status</option>
+          <option>Aberta</option>
+          <option>Em andamento</option>
+          <option>Em revisão</option>
+          <option>Concluída</option>
+          <option>Cancelada</option>
+        </select>
+        <select class="tipos">
+          <option>Prioridade</option>
+          <option>Alta</option>
+          <option>Média</option>
+          <option>Baixa</option>
+        </select>
+        <select class="tipos">
+          <option>Tipo</option>
+          <option>Tarefa</option>
+          <option>Defeito</option>
+          <option>Melhoria</option>
+          <option>Documentação</option>
+        </select>
+        <select class="tipos">
+          <option>Ordenar por</option>
+          <option>Data de criação</option>
+          <option>Prazo</option>
+          <option>Prioridade</option>
+        </select>
+        <button class="botao-nova">+ Nova demanda</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Tipo</th>
+            <th>Prioridade</th>
+            <th>Status</th>
+            <th>Projeto</th>
+            <th>Responsável</th>
+            <th>Data de criação</th>
+            <th>Prazo</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Demanda exemplo 1</td>
+            <td>Tarefa</td>
+            <td>Alta</td>
+            <td>Aberta</td>
+            <td>Sistema X</td>
+            <td>Fulano</td>
+            <td>01/09/2026</td>
+            <td>30/10/2026</td>
+            <td class="acoes"><a href="#">Ver</a> <a href="#">Editar</a></td>
+          </tr>
+          <tr>
+            <td>Modificar GitHub</td>
+            <td>Defeito</td>
+            <td>Média</td>
+            <td>Em andamento</td>
+            <td>Sistema X</td>
+            <td>José Picolo</td>
+            <td>02/09/2026</td>
+            <td>12/01/2027</td>
+            <td class="acoes"><a href="#">Ver</a> <a href="#">Editar</a></td>
+          </tr>
+          <tr>
+            <td>Criar MER</td>
+            <td>Melhoria</td>
+            <td>Baixa</td>
+            <td>Em revisão</td>
+            <td>Sistema Y</td>
+            <td>Pietro Favari</td>
+            <td>03/09/2026</td>
+            <td>30/11/2026</td>
+            <td class="acoes"><a href="#">Ver</a> <a href="#">Editar</a></td>
+          </tr>
+          <tr>
+            <td>Add Banco de Dados</td>
+            <td>Tarefa</td>
+            <td>Alta</td>
+            <td>Concluída</td>
+            <td>Sistema Y</td>
+            <td>Vittor Maia</td>
+            <td>04/09/2026</td>
+            <td>12/10/2026</td>
+            <td class="acoes"><a href="#">Ver</a> <a href="#">Editar</a></td>
+          </tr>
+          <tr>
+            <td>Corrigir tela login</td>
+            <td>Documentação</td>
+            <td>Média</td>
+            <td>Cancelada</td>
+            <td>Sistema X</td>
+            <td>Luggi Braga</td>
+            <td>05/09/2026</td>
+            <td>30/12/2026</td>
+            <td class="acoes"><a href="#">Ver</a> <a href="#">Editar</a></td>
+          </tr>
+           <tr>
+            <td>Adicionar javascript</td>
+            <td>Tarefa</td>
+            <td>Alta</td>
+            <td>Aberta</td>
+            <td>Sistema W</td>
+            <td>Gabriel Jesus</td>
+            <td>01/09/2026</td>
+            <td>24/10/2026</td>
+            <td class="acoes"><a href="#">Ver</a> <a href="#">Editar</a></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="paginacao">
+        <span>Mostrando 1 - 5 de 12</span>
+        <div>
+          <button>&lt;</button>
+          <button>&gt;</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>
