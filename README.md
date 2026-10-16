@@ -30,3 +30,8 @@ Projeto desenvolvido para a disciplina **Projeto Integrador II– Engenharia de 
 
 
 ---
+
+## 📋 Sobre o projeto
+
+O sistema tem como finalidade simular uma plataforma de gerenciamento utilizada por equipes de tecnologia para organizar e monitorar solicitações de desenvolvimento, como tarefas, correções de erros (bugs), aprimoramentos e atividades relacionadas à documentação, durante o ciclo de vida de um ou mais projetos de software.
+Cada solicitação registrada no sistema contém informações como título, descrição, categoria, nível de prioridade, situação atual, projeto relacionado, responsável, datas de cadastro e última atualização, além do prazo previsto para conclusão. Essas solicitações podem ser registradas, consultadas, filtradas, modificadas e canceladas, seguindo um fluxo de trabalho (workflow) que abrange desde a criação até a finalização ou o cancelamento.
