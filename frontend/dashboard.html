@@ -33,12 +33,14 @@
 
   <div class="layout">
 
-    <!-- ===== Menu lateral de navegação entre as telas ===== -->
+    <!-- ===== Menu lateral de navegação entre as telas =====
+         Os links usam os nomes finais dos arquivos das telas do grupo. -->
     <nav class="menu-lateral">
       <a href="dashboard.html" class="ativo">Dashboard</a>
-      <a href="cadastro.html">Adicionar demanda</a>
-      <a href="listagem.html">Demandas</a>
-      <a href="login.html">Sair</a>
+      <a href="cadastro_e_edicao_de_demandas.html">Adicionar demanda</a>
+      <a href="ListagemDemandas.html">Demandas</a>
+      <!-- "Sair" volta para a tela de login -->
+      <a href="tela_login.html">Sair</a>
     </nav>
 
     <!-- ===== Conteúdo principal do dashboard ===== -->
@@ -48,27 +50,27 @@
       <!-- Cards com o total geral e a quantidade de cada status.
            Cada card leva para a listagem de demandas. -->
       <section class="contadores">
-        <a href="listagem.html" class="card-contador total">
+        <a href="ListagemDemandas.html" class="card-contador total">
           <span>Total de demandas</span>
           <strong>24</strong>
         </a>
-        <a href="listagem.html" class="card-contador aberta">
+        <a href="ListagemDemandas.html" class="card-contador aberta">
           <span>Abertas</span>
           <strong>6</strong>
         </a>
-        <a href="listagem.html" class="card-contador andamento">
+        <a href="ListagemDemandas.html" class="card-contador andamento">
           <span>Em andamento</span>
           <strong>7</strong>
         </a>
-        <a href="listagem.html" class="card-contador revisao">
+        <a href="ListagemDemandas.html" class="card-contador revisao">
           <span>Em revisão</span>
           <strong>4</strong>
         </a>
-        <a href="listagem.html" class="card-contador concluida">
+        <a href="ListagemDemandas.html" class="card-contador concluida">
           <span>Concluídas</span>
           <strong>5</strong>
         </a>
-        <a href="listagem.html" class="card-contador cancelada">
+        <a href="ListagemDemandas.html" class="card-contador cancelada">
           <span>Canceladas</span>
           <strong>2</strong>
         </a>
