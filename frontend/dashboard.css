@@ -426,3 +426,130 @@ input:focus, select:focus, textarea:focus {
   .contadores { grid-template-columns: repeat(2, 1fr); }
   .barra-linha { grid-template-columns: 90px 1fr 28px; }
 }
+
+
+/* ===================================================================
+   PARTE 3 - ELEMENTOS CRIADOS OU CONTROLADOS PELO dashboard.js
+   =================================================================== */
+
+/* Linha com a data de hoje, abaixo do título */
+.subtitulo {
+  margin-top: -10px;
+  margin-bottom: var(--espaco);
+  color: var(--cor-texto-suave);
+}
+
+/* ----- Filtros (projeto e período) ----- */
+/* Os 4 campos lado a lado no computador */
+.filtros form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 14px;
+  align-items: end; /* alinha o botão com a base dos campos */
+}
+
+/* Dentro dos filtros, o espaço entre os campos vem do "gap" */
+.filtros input,
+.filtros select { margin-bottom: 0; }
+
+/* Campo marcado pelo JS quando o valor é inválido.
+   ".filtros" na frente garante que o vermelho vença o azul do foco. */
+.filtros .campo-invalido,
+.filtros .campo-invalido:focus {
+  border-color: var(--prio-critica);
+  outline: 2px solid #ffc9c9;
+}
+
+/* ----- Mensagens do filtro ----- */
+.mensagem {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: var(--raio);
+  font-size: 14px;
+}
+
+/* Mensagem vazia não ocupa espaço */
+.mensagem:empty { display: none; }
+
+/* Resultado normal: discreto, em azul */
+.mensagem-info {
+  background: #edf1ff;
+  color: var(--cor-primaria-escura);
+}
+
+/* Nenhuma demanda encontrada: amarelo */
+.mensagem-vazio {
+  background: #fff9db;
+  color: #8a6d00;
+  border: 1px solid #ffe066;
+}
+
+/* Erro de validação: vermelho */
+.mensagem-erro {
+  background: #fff5f5;
+  color: #c92a2a;
+  border: 1px solid #ffc9c9;
+  font-weight: 600;
+}
+
+/* Aviso de demandas ignoradas por dados fora do escopo */
+.aviso {
+  margin-bottom: var(--espaco);
+  padding: 10px 14px;
+  border-radius: var(--raio);
+  background: #fff9db;
+  border: 1px solid #ffe066;
+  color: #8a6d00;
+  font-size: 14px;
+}
+
+/* ----- Contagem ao lado do título das tabelas ----- */
+.contagem {
+  display: inline-block;
+  min-width: 26px;
+  margin-left: 6px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--cor-fundo);
+  border: 1px solid var(--cor-borda);
+  font-size: 13px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* ----- Barras: a largura muda com animação quando o filtro muda ----- */
+.barra { transition: width 0.4s ease; }
+
+/* ----- Situação do prazo ----- */
+/* Demanda atrasada: texto vermelho e fundo avermelhado na linha */
+.prazo-atrasado {
+  color: var(--prio-critica);
+  font-weight: 700;
+}
+
+.linha-atrasada { background: #fff5f5; }
+
+/* Vence hoje: laranja */
+.prazo-hoje {
+  color: var(--prio-alta);
+  font-weight: 700;
+}
+
+/* Linha mostrada quando a tabela está vazia */
+.tabela-vazia {
+  text-align: center;
+  color: var(--cor-texto-suave);
+  padding: 20px;
+}
+
+/* ----- Responsividade dos filtros ----- */
+/* Tablet: 2 campos por linha */
+@media (max-width: 800px) {
+  .filtros form { grid-template-columns: 1fr 1fr; }
+}
+
+/* Celular: um campo embaixo do outro e botão na largura toda */
+@media (max-width: 480px) {
+  .filtros form { grid-template-columns: 1fr; }
+  .filtros .btn { width: 100%; }
+}

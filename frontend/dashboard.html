@@ -6,6 +6,10 @@
   dashboard.html: tela de Dashboard. Mostra um resumo das demandas:
   total, quantidade por status, por prioridade e por tipo, demandas
   críticas em aberto e demandas próximas do prazo de finalização.
+
+  Os números, gráficos e tabelas NÃO ficam fixos aqui: o arquivo
+  dashboard.js calcula tudo a partir das demandas e preenche os
+  elementos marcados com "id" ou "data-contador".
 -->
 <html lang="pt-BR">
 <head>
@@ -15,6 +19,9 @@
   <title>Dashboard | Sistema de Demandas</title>
   <!-- Estilos da tela (estrutura geral + componentes do dashboard) -->
   <link rel="stylesheet" href="dashboard.css">
+  <!-- Comportamento da tela. "defer" faz o script rodar só depois
+       que todo o HTML foi carregado. -->
+  <script src="dashboard.js" defer></script>
 </head>
 <body>
 
@@ -46,91 +53,89 @@
     <!-- ===== Conteúdo principal do dashboard ===== -->
     <main class="conteudo">
       <h1>Dashboard</h1>
+      <!-- A data de hoje é escrita pelo JS -->
+      <p class="subtitulo">Resumo das demandas em <span id="data-hoje">-</span></p>
+
+      <!-- Aviso de demandas ignoradas por terem dados fora do escopo.
+           Fica escondido (hidden) até o JS encontrar algum problema. -->
+      <p id="aviso-dados" class="aviso" role="alert" hidden></p>
+
+      <!-- Filtros: ao mudar qualquer campo, o JS recalcula o dashboard -->
+      <section class="painel filtros" aria-label="Filtros do dashboard">
+        <form id="form-filtros" novalidate>
+          <div class="campo">
+            <label for="filtro-projeto">Projeto</label>
+            <!-- As opções de projeto são criadas pelo JS -->
+            <select id="filtro-projeto">
+              <option value="">Todos os projetos</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="filtro-data-inicio">Criadas a partir de</label>
+            <input type="date" id="filtro-data-inicio">
+          </div>
+          <div class="campo">
+            <label for="filtro-data-fim">Criadas até</label>
+            <input type="date" id="filtro-data-fim">
+          </div>
+          <div class="campo acoes">
+            <button type="button" id="btn-limpar" class="btn btn-secundario">Limpar filtros</button>
+          </div>
+        </form>
+        <!-- Mensagem do filtro: resultado, lista vazia ou erro de validação.
+             aria-live faz o leitor de tela anunciar quando ela muda. -->
+        <p id="mensagem-filtro" class="mensagem" role="status" aria-live="polite"></p>
+      </section>
 
       <!-- Cards com o total geral e a quantidade de cada status.
+           O atributo data-contador diz ao JS qual número vai em cada card.
            Cada card leva para a listagem de demandas. -->
       <section class="contadores">
         <a href="ListagemDemandas.html" class="card-contador total">
           <span>Total de demandas</span>
-          <strong>24</strong>
+          <strong data-contador="total">-</strong>
         </a>
         <a href="ListagemDemandas.html" class="card-contador aberta">
           <span>Abertas</span>
-          <strong>6</strong>
+          <strong data-contador="Aberta">-</strong>
         </a>
         <a href="ListagemDemandas.html" class="card-contador andamento">
           <span>Em andamento</span>
-          <strong>7</strong>
+          <strong data-contador="Em andamento">-</strong>
         </a>
         <a href="ListagemDemandas.html" class="card-contador revisao">
           <span>Em revisão</span>
-          <strong>4</strong>
+          <strong data-contador="Em revisão">-</strong>
         </a>
         <a href="ListagemDemandas.html" class="card-contador concluida">
           <span>Concluídas</span>
-          <strong>5</strong>
+          <strong data-contador="Concluída">-</strong>
         </a>
         <a href="ListagemDemandas.html" class="card-contador cancelada">
           <span>Canceladas</span>
-          <strong>2</strong>
+          <strong data-contador="Cancelada">-</strong>
         </a>
       </section>
 
-      <!-- Gráficos de barras: quantidade por prioridade e por tipo -->
+      <!-- Gráficos de barras: as linhas e a largura de cada barra
+           são montadas pelo JS dentro destas divs -->
       <section class="graficos">
         <div class="painel">
           <h2>Demandas por prioridade</h2>
-          <div class="barra-linha">
-            <span>Crítica</span>
-            <div class="barra-fundo"><div class="barra prio-critica" style="width: 50%"></div></div>
-            <b>4</b>
-          </div>
-          <div class="barra-linha">
-            <span>Alta</span>
-            <div class="barra-fundo"><div class="barra prio-alta" style="width: 87%"></div></div>
-            <b>7</b>
-          </div>
-          <div class="barra-linha">
-            <span>Média</span>
-            <div class="barra-fundo"><div class="barra prio-media" style="width: 100%"></div></div>
-            <b>8</b>
-          </div>
-          <div class="barra-linha">
-            <span>Baixa</span>
-            <div class="barra-fundo"><div class="barra prio-baixa" style="width: 62%"></div></div>
-            <b>5</b>
-          </div>
+          <div id="grafico-prioridade"></div>
         </div>
 
         <div class="painel">
           <h2>Demandas por tipo</h2>
-          <div class="barra-linha">
-            <span>Tarefa</span>
-            <div class="barra-fundo"><div class="barra" style="width: 100%"></div></div>
-            <b>9</b>
-          </div>
-          <div class="barra-linha">
-            <span>Defeito</span>
-            <div class="barra-fundo"><div class="barra" style="width: 67%"></div></div>
-            <b>6</b>
-          </div>
-          <div class="barra-linha">
-            <span>Melhoria</span>
-            <div class="barra-fundo"><div class="barra" style="width: 56%"></div></div>
-            <b>5</b>
-          </div>
-          <div class="barra-linha">
-            <span>Documentação</span>
-            <div class="barra-fundo"><div class="barra" style="width: 44%"></div></div>
-            <b>4</b>
-          </div>
+          <div id="grafico-tipo"></div>
         </div>
       </section>
 
       <!-- Tabela: demandas de prioridade Crítica que ainda não foram
-           concluídas nem canceladas. Cada título leva para os detalhes. -->
+           concluídas nem canceladas. As linhas são criadas pelo JS e
+           cada uma leva para a tela de detalhes. -->
       <section class="painel">
-        <h2>Demandas críticas em aberto</h2>
+        <h2>Demandas críticas em aberto <span id="qtd-criticas" class="contagem">0</span></h2>
         <div class="tabela-container">
           <table>
             <thead>
@@ -141,33 +146,15 @@
                 <th>Prazo</th>
               </tr>
             </thead>
-            <tbody>
-              <tr class="linha-link">
-                <td><a href="detalhes.html">Erro ao salvar demanda sem prazo</a></td>
-                <td><span class="etiqueta status-andamento">Em andamento</span></td>
-                <td>Rafael Soares</td>
-                <td class="prazo-alerta">02/10/2026</td>
-              </tr>
-              <tr class="linha-link">
-                <td><a href="detalhes.html">Login não valida senha em branco</a></td>
-                <td><span class="etiqueta status-aberta">Aberta</span></td>
-                <td>Pietro Giati</td>
-                <td>07/10/2026</td>
-              </tr>
-              <tr class="linha-link">
-                <td><a href="detalhes.html">Filtro de status retorna lista vazia</a></td>
-                <td><span class="etiqueta status-revisao">Em revisão</span></td>
-                <td>Gustavo Pietro</td>
-                <td>09/10/2026</td>
-              </tr>
-            </tbody>
+            <tbody id="tabela-criticas"></tbody>
           </table>
         </div>
       </section>
 
-      <!-- Tabela: demandas com prazo de finalização chegando -->
+      <!-- Tabela: demandas não encerradas com prazo nos próximos 7 dias
+           ou já atrasadas, com quantos dias faltam -->
       <section class="painel">
-        <h2>Demandas próximas do prazo de finalização</h2>
+        <h2>Demandas próximas do prazo de finalização <span id="qtd-prazos" class="contagem">0</span></h2>
         <div class="tabela-container">
           <table>
             <thead>
@@ -176,28 +163,10 @@
                 <th>Tipo</th>
                 <th>Prioridade</th>
                 <th>Prazo</th>
+                <th>Situação</th>
               </tr>
             </thead>
-            <tbody>
-              <tr class="linha-link">
-                <td><a href="detalhes.html">Erro ao salvar demanda sem prazo</a></td>
-                <td><span class="etiqueta tipo">Defeito</span></td>
-                <td><span class="etiqueta prio-critica">Crítica</span></td>
-                <td class="prazo-alerta">02/10/2026</td>
-              </tr>
-              <tr class="linha-link">
-                <td><a href="detalhes.html">Documentar rotas do backend</a></td>
-                <td><span class="etiqueta tipo">Documentação</span></td>
-                <td><span class="etiqueta prio-media">Média</span></td>
-                <td>05/10/2026</td>
-              </tr>
-              <tr class="linha-link">
-                <td><a href="detalhes.html">Ajustar layout da listagem no celular</a></td>
-                <td><span class="etiqueta tipo">Melhoria</span></td>
-                <td><span class="etiqueta prio-alta">Alta</span></td>
-                <td>06/10/2026</td>
-              </tr>
-            </tbody>
+            <tbody id="tabela-prazos"></tbody>
           </table>
         </div>
       </section>
