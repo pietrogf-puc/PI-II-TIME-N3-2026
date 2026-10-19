@@ -1,11 +1,12 @@
 /*
-  Arquivo: style.css
-  Autor: Rafael Carvalho Soares RA(26029352)
+  Arquivo: detalhes.css
+  Autor: Rafael Carvalho Soares (RA 26029352)
   Projeto: Sistema de Acompanhamento de Demandas - PI II - Time N3
-  Descrição: padrão visual comum a todas as telas do sistema
-             (cores, tipografia, layout com menu lateral, botões,
-             cards, tabelas, formulários e etiquetas de status/prioridade).
+  Parte 1: estilo padrão do grupo, copiado do style.css do Gustavo Manera Marialva (RA 26029581).
+  Parte 2: estilos da tela de detalhes.
 */
+
+/* ----- Parte 1: estilo padrão do grupo (Gustavo Manera) ----- */
 
 /* ===== 1. Variáveis de cor e tamanho (padrão visual do grupo) ===== */
 :root {
@@ -274,7 +275,9 @@ input:focus, select:focus, textarea:focus {
 }
 
 
-/* Título da página + botões Voltar / Editar / Excluir */
+/* ----- Parte 2: tela de detalhes ----- */
+
+/* título e botões */
 .cabecalho-pagina {
   display: flex;
   justify-content: space-between;
@@ -288,11 +291,15 @@ input:focus, select:focus, textarea:focus {
 
 .acoes { display: flex; gap: 8px; }
 
-/* Botão vermelho para ações perigosas (Excluir) */
+/* botão vermelho (cancelar) */
 .btn-perigo { background: var(--prio-critica); }
 .btn-perigo:hover { background: #c52a2a; }
 
-/* Informações gerais: grade de 3 colunas */
+/* botão desativado */
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-perigo:disabled:hover { background: var(--prio-critica); }
+
+/* informações gerais em 3 colunas */
 .grade-info {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -308,7 +315,7 @@ input:focus, select:focus, textarea:focus {
 
 .grade-info dd { margin: 0; }
 
-/* Caixa da descrição */
+/* descrição */
 .descricao {
   padding: 14px;
   color: var(--cor-texto-suave);
@@ -316,13 +323,32 @@ input:focus, select:focus, textarea:focus {
   border-radius: var(--raio);
 }
 
-/* Histórico em linha do tempo */
+/* histórico em linha do tempo */
 .historico { list-style: none; margin-bottom: var(--espaco); }
 
 .historico li {
-  padding: 0 0 12px 14px;
+  position: relative;
+  margin-left: 6px;
+  padding: 0 0 14px 18px;
   border-left: 2px solid var(--cor-borda);
 }
+
+.historico li:last-child { padding-bottom: 0; }
+
+/* bolinha de cada item */
+.historico li::before {
+  content: "";
+  position: absolute;
+  left: -7px;                  /* centraliza na linha */
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--cor-texto-suave);           /* evento: cinza */
+  border: 2px solid var(--cor-superficie);
+}
+
+.historico li.comentario::before { background: var(--cor-primaria); } /* comentário: azul */
 
 .historico small {
   display: block;
@@ -330,7 +356,7 @@ input:focus, select:focus, textarea:focus {
   font-size: 13px;
 }
 
-/* Campo de novo comentário + botão */
+/* campo de comentário */
 .comentar {
   display: flex;
   gap: 8px;
@@ -340,18 +366,155 @@ input:focus, select:focus, textarea:focus {
 .comentar textarea {
   flex: 1;
   min-height: 80px;
-  margin-bottom: 0; /* o style.css põe margem em todo campo; aqui não precisa */
+  margin-bottom: 0;
 }
 
-/* Esconde o rótulo na tela, mas leitores de tela ainda o leem */
+/* esconde o label da tela */
 .so-leitor {
   position: absolute;
   left: -9999px;
 }
 
-/* Telas pequenas */
+/* celular */
 @media (max-width: 800px) {
   .grade-info { grid-template-columns: 1fr; }
   .comentar { flex-direction: column; }
   .comentar textarea { width: 100%; }
+}
+
+/* validação do comentário */
+.campo-comentario { flex: 1; min-width: 0; }
+
+.linha-aviso {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.mensagem-erro { color: var(--prio-critica); }
+
+.contador { color: var(--cor-texto-suave); white-space: nowrap; }
+.contador.acima { color: var(--prio-critica); font-weight: 600; }
+
+/* borda vermelha quando tem erro */
+textarea.invalido { border-color: var(--prio-critica); }
+
+/* celular: campo na largura toda */
+@media (max-width: 800px) {
+  .campo-comentario { width: 100%; }
+}
+
+/* aviso de dias até o prazo */
+.indicador-prazo {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.indicador-prazo:empty { display: none; }
+
+.indicador-prazo.atrasado { background: var(--prio-critica); color: #fff; }
+.indicador-prazo.proximo { background: var(--prio-media); color: var(--cor-texto); }
+.indicador-prazo.no-prazo {
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  border: 1px solid var(--cor-borda);
+}
+
+/* barra de etapas */
+.etapas {
+  list-style: none;
+  display: flex;
+  counter-reset: etapa;        /* numera as etapas */
+}
+
+.etapas li {
+  --cor-etapa: var(--cor-texto-suave);
+  counter-increment: etapa;
+  position: relative;
+  flex: 1;
+  padding-top: 38px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--cor-texto-suave);
+}
+
+/* cor de cada etapa */
+.etapas li[data-etapa="aberta"] { --cor-etapa: var(--status-aberta); }
+.etapas li[data-etapa="andamento"] { --cor-etapa: var(--status-andamento); }
+.etapas li[data-etapa="revisao"] { --cor-etapa: var(--status-revisao); }
+.etapas li[data-etapa="concluida"] { --cor-etapa: var(--status-concluida); }
+
+/* linha entre as etapas */
+.etapas li + li::before {
+  content: "";
+  position: absolute;
+  top: 13px;
+  left: -50%;
+  width: 100%;
+  height: 2px;
+  background: var(--cor-borda);
+  z-index: 0;
+}
+
+/* bolinha com o número */
+.etapas li::after {
+  content: counter(etapa);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--cor-superficie);
+  color: var(--cor-texto-suave);
+  border: 2px solid var(--cor-borda);
+  z-index: 1;
+}
+
+/* etapas que já passaram */
+.etapas li.feita::before,
+.etapas li.atual::before { background: var(--cor-etapa); }
+
+.etapas li.feita::after {
+  content: "✓";
+  background: var(--cor-etapa);
+  border-color: var(--cor-etapa);
+  color: #fff;
+}
+
+/* etapa atual */
+.etapas li.atual::after {
+  background: var(--cor-etapa);
+  border-color: var(--cor-etapa);
+  color: #fff;
+  box-shadow: 0 0 0 3px var(--cor-superficie), 0 0 0 5px var(--cor-etapa);
+}
+
+.etapas li.atual { color: var(--cor-texto); font-weight: 700; }
+
+/* demanda cancelada */
+.etapas.cancelada li { opacity: 0.5; }
+
+.aviso-etapas {
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--cor-texto-suave);
+}
+
+.aviso-etapas:empty { display: none; }
+
+@media (max-width: 800px) {
+  .etapas li { font-size: 12px; }
 }
