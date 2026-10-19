@@ -1,14 +1,24 @@
 <!DOCTYPE html>
+<!--
+  Feito por Gustavo Manera Marialva - RA 26029581
+  Projeto Integrador II - Grupo N3 - Sistema de Acompanhamento de Demandas
+
+  dashboard.html: tela de Dashboard. Mostra um resumo das demandas:
+  total, quantidade por status, por prioridade e por tipo, demandas
+  críticas em aberto e demandas próximas do prazo de finalização.
+-->
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <!-- Faz a tela se ajustar à largura do celular -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | Sistema de Demandas</title>
-  <link rel="stylesheet" href="style.css">
+  <!-- Estilos da tela (estrutura geral + componentes do dashboard) -->
   <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
 
+  <!-- ===== Cabeçalho: logo e usuário logado ===== -->
   <header class="cabecalho">
     <a href="dashboard.html" class="logo">Demandas<span>N3</span></a>
 
@@ -23,6 +33,7 @@
 
   <div class="layout">
 
+    <!-- ===== Menu lateral de navegação entre as telas ===== -->
     <nav class="menu-lateral">
       <a href="dashboard.html" class="ativo">Dashboard</a>
       <a href="cadastro.html">Adicionar demanda</a>
@@ -30,9 +41,12 @@
       <a href="login.html">Sair</a>
     </nav>
 
+    <!-- ===== Conteúdo principal do dashboard ===== -->
     <main class="conteudo">
       <h1>Dashboard</h1>
 
+      <!-- Cards com o total geral e a quantidade de cada status.
+           Cada card leva para a listagem de demandas. -->
       <section class="contadores">
         <a href="listagem.html" class="card-contador total">
           <span>Total de demandas</span>
@@ -60,6 +74,7 @@
         </a>
       </section>
 
+      <!-- Gráficos de barras: quantidade por prioridade e por tipo -->
       <section class="graficos">
         <div class="painel">
           <h2>Demandas por prioridade</h2>
@@ -110,6 +125,8 @@
         </div>
       </section>
 
+      <!-- Tabela: demandas de prioridade Crítica que ainda não foram
+           concluídas nem canceladas. Cada título leva para os detalhes. -->
       <section class="painel">
         <h2>Demandas críticas em aberto</h2>
         <div class="tabela-container">
@@ -146,6 +163,7 @@
         </div>
       </section>
 
+      <!-- Tabela: demandas com prazo de finalização chegando -->
       <section class="painel">
         <h2>Demandas próximas do prazo de finalização</h2>
         <div class="tabela-container">
