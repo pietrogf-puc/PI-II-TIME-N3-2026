@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<!--
+  Feito por Gustavo Manera Marialva - RA 26029581
+  Projeto Integrador II - Grupo N3 - Sistema de Acompanhamento de Demandas
+
+  dashboard.html: tela de Dashboard. Mostra um resumo das demandas:
+  total, quantidade por status, por prioridade e por tipo, demandas
+  críticas em aberto e demandas próximas do prazo de finalização.
+
+  Os números, gráficos e tabelas NÃO ficam fixos aqui: o arquivo
+  dashboard.js calcula tudo a partir das demandas e preenche os
+  elementos marcados com "id" ou "data-contador".
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <!-- Faz a tela se ajustar à largura do celular -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Sistema de Demandas</title>
+  <!-- Estilos da tela (estrutura geral + componentes do dashboard) -->
+  <link rel="stylesheet" href="dashboard.css">
+  <!-- Comportamento da tela. "defer" faz o script rodar só depois
+       que todo o HTML foi carregado. -->
+  <script src="dashboard.js" defer></script>
+</head>
+<body>
+
+  <!-- ===== Cabeçalho: logo e usuário logado ===== -->
+  <header class="cabecalho">
+    <a href="dashboard.html" class="logo">Demandas<span>N3</span></a>
+
+    <div class="usuario">
+      <span class="avatar">GM</span>
+      <div>
+        Gustavo Manera
+        <small>Líder de Projeto</small>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- ===== Menu lateral de navegação entre as telas =====
+         Os links usam os nomes finais dos arquivos das telas do grupo. -->
+    <nav class="menu-lateral">
+      <a href="dashboard.html" class="ativo">Dashboard</a>
+      <a href="cadastro_e_edicao_de_demandas.html">Adicionar demanda</a>
+      <a href="ListagemDemandas.html">Demandas</a>
+      <!-- "Sair" volta para a tela de login -->
+      <a href="tela_login.html">Sair</a>
+    </nav>
+
+    <!-- ===== Conteúdo principal do dashboard ===== -->
+    <main class="conteudo">
+      <h1>Dashboard</h1>
+      <!-- A data de hoje é escrita pelo JS -->
+      <p class="subtitulo">Resumo das demandas em <span id="data-hoje">-</span></p>
+
+      <!-- Aviso de demandas ignoradas por terem dados fora do escopo.
+           Fica escondido (hidden) até o JS encontrar algum problema. -->
+      <p id="aviso-dados" class="aviso" role="alert" hidden></p>
+
+      <!-- Filtros: ao mudar qualquer campo, o JS recalcula o dashboard -->
+      <section class="painel filtros" aria-label="Filtros do dashboard">
+        <form id="form-filtros" novalidate>
+          <div class="campo">
+            <label for="filtro-projeto">Projeto</label>
+            <!-- As opções de projeto são criadas pelo JS -->
+            <select id="filtro-projeto">
+              <option value="">Todos os projetos</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="filtro-data-inicio">Criadas a partir de</label>
+            <input type="date" id="filtro-data-inicio">
+          </div>
+          <div class="campo">
+            <label for="filtro-data-fim">Criadas até</label>
+            <input type="date" id="filtro-data-fim">
+          </div>
+          <div class="campo acoes">
+            <button type="button" id="btn-limpar" class="btn btn-secundario">Limpar filtros</button>
+          </div>
+        </form>
+        <!-- Mensagem do filtro: resultado, lista vazia ou erro de validação.
+             aria-live faz o leitor de tela anunciar quando ela muda. -->
+        <p id="mensagem-filtro" class="mensagem" role="status" aria-live="polite"></p>
+      </section>
+
+      <!-- Cards com o total geral e a quantidade de cada status.
+           O atributo data-contador diz ao JS qual número vai em cada card.
+           Cada card leva para a listagem de demandas. -->
+      <section class="contadores">
+        <a href="ListagemDemandas.html" class="card-contador total">
+          <span>Total de demandas</span>
+          <strong data-contador="total">-</strong>
+        </a>
+        <a href="ListagemDemandas.html" class="card-contador aberta">
+          <span>Abertas</span>
+          <strong data-contador="Aberta">-</strong>
+        </a>
+        <a href="ListagemDemandas.html" class="card-contador andamento">
+          <span>Em andamento</span>
+          <strong data-contador="Em andamento">-</strong>
+        </a>
+        <a href="ListagemDemandas.html" class="card-contador revisao">
+          <span>Em revisão</span>
+          <strong data-contador="Em revisão">-</strong>
+        </a>
+        <a href="ListagemDemandas.html" class="card-contador concluida">
+          <span>Concluídas</span>
+          <strong data-contador="Concluída">-</strong>
+        </a>
+        <a href="ListagemDemandas.html" class="card-contador cancelada">
+          <span>Canceladas</span>
+          <strong data-contador="Cancelada">-</strong>
+        </a>
+      </section>
+
+      <!-- Gráficos de barras: as linhas e a largura de cada barra
+           são montadas pelo JS dentro destas divs -->
+      <section class="graficos">
+        <div class="painel">
+          <h2>Demandas por prioridade</h2>
+          <div id="grafico-prioridade"></div>
+        </div>
+
+        <div class="painel">
+          <h2>Demandas por tipo</h2>
+          <div id="grafico-tipo"></div>
+        </div>
+      </section>
+
+      <!-- Tabela: demandas de prioridade Crítica que ainda não foram
+           concluídas nem canceladas. As linhas são criadas pelo JS e
+           cada uma leva para a tela de detalhes. -->
+      <section class="painel">
+        <h2>Demandas críticas em aberto <span id="qtd-criticas" class="contagem">0</span></h2>
+        <div class="tabela-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Título</th>
+                <th>Status</th>
+                <th>Responsável</th>
+                <th>Prazo</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-criticas"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Tabela: demandas não encerradas com prazo nos próximos 7 dias
+           ou já atrasadas, com quantos dias faltam -->
+      <section class="painel">
+        <h2>Demandas próximas do prazo de finalização <span id="qtd-prazos" class="contagem">0</span></h2>
+        <div class="tabela-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Título</th>
+                <th>Tipo</th>
+                <th>Prioridade</th>
+                <th>Prazo</th>
+                <th>Situação</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-prazos"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+</body>
+</html>
