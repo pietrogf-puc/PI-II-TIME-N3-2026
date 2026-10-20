@@ -85,7 +85,7 @@ function mostrarTabela(lista) {
       <td>${d.responsavel}</td>
       <td>${formatarData(d.dataCriacao)}</td>
       <td>${formatarData(d.prazo)}</td>
-      <td class="acoes"><a href="#">Ver</a> <a href="#">Editar</a></td>
+      <td class="acoes"><a href="detalhes.html">Ver</a> <a href="cadastro.html">Editar</a></td>
     </tr>
   `;
 });
@@ -150,5 +150,5 @@ ordenar.addEventListener("change", aplicarFiltros);
 const botaoNova = document.getElementById("botaoNova");
 
 botaoNova.addEventListener("click", function () {
-  window.location.href = "cadastro_e_edicao_de_demandas.html";
+  window.location.href = "cadastro.html";
 });
