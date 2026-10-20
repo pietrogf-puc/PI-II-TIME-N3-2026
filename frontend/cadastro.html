@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cadastro e edicao</title>
+    <link rel="stylesheet" href="cadastro2.css">
+</head>
+<body>
+
+<!--Cabecalho em display flex-->
+<header class="cabecalho">
+    <nav class="logoeusuario">
+        <p id="logo">Demandas <span>N3</span></p>
+            <div class="usuario">
+                <p id="avatar">LF</p>
+                <p id="nome">Luiggi Fraga
+                <small>Integrante</small></p>
+            </div>
+    </nav>
+</header>
+
+
+<!--Fazendo a barra lateral da página-->
+<div class="layout">
+    <div class="barralateral">
+        <div class="itens">
+            <a href="dashboard.html" id="dashboard">Dashboard</a>
+            <a href="cadastro.html" id="cadastro" class="aberto">Adicionar Demanda</a>
+            <a href="ListagemDemandas.html" id="listagem">Listagem de Demandas</a>
+            <a href="detalhes.html" id="detalhes">Detalhes das Demandas</a>
+            <a href="#" id="projetos">Projetos</a>
+            <a href="#" id="sair">Sair</a>
+        </div>
+    </div>
+
+
+<!--Conteúdo da página. Formulários, informações e etc.-->
+    <div class="pagina">
+        <h1 id="h1esp">Cadastre sua Demanda</h1>
+        <p id="pesp">Preencha os campos abaixo para registrar uma nova demanda.</p>
+
+        <div class="containerformbtn">
+            <form class="formitens" id="formulario" novalidate>
+                    <div class="titulo">
+                        <label for="titulo">Título da Demanda</label>
+                        <input type="text" id="titulo" placeholder="Digite o título da demanda">
+                        <span class="erro" id="erro_titulo"></span>
+                    </div>
+
+                    <div class="descricao">
+                        <label for="descricao">Descrição</label>
+                        <textarea id="descricao" placeholder="Digite a descrição da demanda"></textarea>
+                        <span class="erro" id="erro_descricao"></span>
+                    </div>
+
+                    <div class="wrap">
+                        <div class="campo">
+                            <label for="projeto">Projeto</label>
+                            <select name="projeto" id="projeto" required>
+                                <option value="" disabled selected hidden>Selecione o Projeto</option>
+                                <option value="projeto1">Projeto 1</option>
+                                <option value="projeto2">Projeto 2</option>
+                            </select>
+                            <span class="erro" id="erro_projeto"></span>
+                        </div>
+
+                        <div class="campo">
+                            <label for="tipo">Tipo</label>
+                            <select name="tipo" id="tipo" required>
+                                <option value="" disabled selected hidden>Selecione o tipo</option>
+                                <option value="tarefa">Tarefa</option>
+                                <option value="defeito">Defeito</option>
+                                <option value="melhoria">Melhoria</option>
+                                <option value="documentacao">Documentação</option>
+                            </select>
+                            <span class="erro" id="erro_tipo"></span>
+                        </div>
+
+                        <div class="campo">
+                            <label for="prioridade">Prioridade</label>
+                            <select name="prioridade" id="prioridade" required>
+                                <option value="" disabled selected hidden>Selecione a prioridade</option>
+                                <option value="baixa">Baixa</option>
+                                <option value="media">Média</option>
+                                <option value="alta">Alta</option>
+                                <option value="critica">Crítica</option>
+                            </select>
+                            <span class="erro" id="erro_prioridade"></span>
+                        </div>
+
+                        <div class="campo">
+                            <label for="responsavel">Responsável</label>
+                            <select name="responsavel" id="responsavel" required>
+                                <option value="" disabled selected hidden>Selecione o responsável</option>
+                                <option value="pietro">Pietro</option>
+                                <option value="luiggi">Luiggi</option>
+                                <option value="rafael">Rafael</option>
+                                <option value="gustavop">Gustavo Pietro</option>
+                                <option value="gustavom">Gustavo Manera</option>
+                            </select>
+                            <span class="erro" id="erro_responsavel"></span>
+                        </div>
+
+                        
+                        <div class="campo">
+                            <label for="prazo">Prazo</label>
+                            <input type="date" name="prazo" id="prazo" required>
+                            <span class="erro" id="erro_prazo"></span>
+                        </div>
+                    </div>
+
+                        
+                        <p id="mensagem_formulario"></p>
+
+                        <div class="botoes">
+                            <button id="cancelar" type="reset">Limpar</button>
+                            <button id="cadastrar" type="submit">Cadastrar Demanda</button>
+                        </div>    
+            </form>    
+        </div>          
+    </div> 
+</div>
+
+
+<script src="cadastro.js"></script>
+
+</body>
+</html>
