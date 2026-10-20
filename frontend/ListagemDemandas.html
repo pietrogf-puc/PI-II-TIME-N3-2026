@@ -4,18 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Listagem de Demandas</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="ListagemDemandas.css">
+  <script src="ListagemDemandas.js" defer></script>
 </head>
 <body>
 
   <aside class="menu">
-    <h1>Sistema de Demandas</h1>
+    <h1>Sistema de Demandas / <b>N3</b></h1>
     <nav>
-      <a href="#">Dashboard</a>
-      <a href="#">Adicionar Demanda</a>
-      <a href="#" class="ativo">Listagem de Demandas</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="cadastro_e_edicao_de_demandas.html">Adicionar Demanda</a>
+      <a href="ListagemDemandas.html" class="ativo">Listagem de Demandas</a>
       <a href="#">Projetos</a>
-      <a href="#" class="sair">Sair</a>
+      <a href="tela_login.html" class="sair">Sair</a>
     </nav>
   </aside>
 
@@ -28,35 +29,42 @@
       <h2>Listagem de Demandas</h2>
 
       <div class="filtros">
-        <input type="text" placeholder="Buscar por título ou descrição">
-        <select class="tipos">
-          <option>Status</option>
+        <input type="text" id="busca" placeholder="Buscar por título ou descrição">
+        <select class="tipos" id="filtroStatus">
+          <option value="">Status</option>
           <option>Aberta</option>
           <option>Em andamento</option>
           <option>Em revisão</option>
           <option>Concluída</option>
           <option>Cancelada</option>
         </select>
-        <select class="tipos">
-          <option>Prioridade</option>
+
+        <select class="tipos" id="filtroPrioridade">
+          <option value="">Prioridade</option>
           <option>Alta</option>
           <option>Média</option>
           <option>Baixa</option>
+          <option>Crítica</option>
         </select>
-        <select class="tipos">
-          <option>Tipo</option>
+
+        <select class="tipos" id="filtroTipo">
+          <option value="">Tipo</option>
           <option>Tarefa</option>
           <option>Defeito</option>
           <option>Melhoria</option>
           <option>Documentação</option>
         </select>
-        <select class="tipos">
-          <option>Ordenar por</option>
-          <option>Data de criação</option>
-          <option>Prazo</option>
-          <option>Prioridade</option>
+
+       
+        <select class="tipos" id="ordenar">
+          <option value="">Ordenar por</option>
+          <option value="dataCriacao">Data de criação</option>
+          <option value="prazo">Prazo</option>
+          <option value="prioridade">Prioridade</option>
+          <option value="status">Status</option>
         </select>
-        <button class="botao-nova">+ Nova demanda</button>
+ 
+        <button class="botaoNova" id="botaoNova">+ Nova demanda</button>
       </div>
 
       <table>
@@ -73,78 +81,13 @@
             <th>Ações</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>Demanda exemplo 1</td>
-            <td>Tarefa</td>
-            <td>Alta</td>
-            <td>Aberta</td>
-            <td>Sistema X</td>
-            <td>Fulano</td>
-            <td>01/09/2026</td>
-            <td>30/10/2026</td>
-            <td class="acoes"><a href="#">Ver</a> <a href="#">Editar</a></td>
-          </tr>
-          <tr>
-            <td>Modificar GitHub</td>
-            <td>Defeito</td>
-            <td>Média</td>
-            <td>Em andamento</td>
-            <td>Sistema X</td>
-            <td>José Picolo</td>
-            <td>02/09/2026</td>
-            <td>12/01/2027</td>
-            <td class="acoes"><a href="#">Ver</a> <a href="#">Editar</a></td>
-          </tr>
-          <tr>
-            <td>Criar MER</td>
-            <td>Melhoria</td>
-            <td>Baixa</td>
-            <td>Em revisão</td>
-            <td>Sistema Y</td>
-            <td>Pietro Favari</td>
-            <td>03/09/2026</td>
-            <td>30/11/2026</td>
-            <td class="acoes"><a href="#">Ver</a> <a href="#">Editar</a></td>
-          </tr>
-          <tr>
-            <td>Add Banco de Dados</td>
-            <td>Tarefa</td>
-            <td>Alta</td>
-            <td>Concluída</td>
-            <td>Sistema Y</td>
-            <td>Vittor Maia</td>
-            <td>04/09/2026</td>
-            <td>12/10/2026</td>
-            <td class="acoes"><a href="#">Ver</a> <a href="#">Editar</a></td>
-          </tr>
-          <tr>
-            <td>Corrigir tela login</td>
-            <td>Documentação</td>
-            <td>Média</td>
-            <td>Cancelada</td>
-            <td>Sistema X</td>
-            <td>Luggi Braga</td>
-            <td>05/09/2026</td>
-            <td>30/12/2026</td>
-            <td class="acoes"><a href="#">Ver</a> <a href="#">Editar</a></td>
-          </tr>
-           <tr>
-            <td>Adicionar javascript</td>
-            <td>Tarefa</td>
-            <td>Alta</td>
-            <td>Aberta</td>
-            <td>Sistema W</td>
-            <td>Gabriel Jesus</td>
-            <td>01/09/2026</td>
-            <td>24/10/2026</td>
-            <td class="acoes"><a href="#">Ver</a> <a href="#">Editar</a></td>
-          </tr>
+        <tbody id="corpoTabela">
+
         </tbody>
       </table>
 
       <div class="paginacao">
-        <span>Mostrando 1 - 5 de 12</span>
+        <span>Mostrando 1 - 5</span>
         <div>
           <button>&lt;</button>
           <button>&gt;</button>
