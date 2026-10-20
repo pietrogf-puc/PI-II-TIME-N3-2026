@@ -46,17 +46,10 @@ body {
 }
 
 .menu a.ativo {
-  background: #e3e3e0;
   color: #000;
-  font-weight: bold;
-  border-left-color: #222;
+  font-weight: bold;  
 }
-
-.menu a.sair {
-  margin-top: 30px;
-}
-
-/*conteud*/
+/*conteudo*/
 .conteudo {
   flex: 1;
 }
@@ -115,7 +108,7 @@ main h2 {
   cursor: pointer;
 }
 
-.botao-nova {
+.botaoNova {
   margin-left: auto;
   padding: 9px 16px;
   background: #0e44cc;
@@ -125,7 +118,7 @@ main h2 {
   cursor: pointer;
 }
 
-.botao-nova:hover {
+.botaoNova:hover {
   background: #bbb;
 }
 
