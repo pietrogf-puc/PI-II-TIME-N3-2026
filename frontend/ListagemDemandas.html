@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Listagem de Demandas</title>
+  <link rel="stylesheet" href="ListagemDemandas.css">
+  <script src="ListagemDemandas.js" defer></script>
+</head>
+<body>
+
+  <aside class="menu">
+    <h1>Sistema de Demandas / <b>N3</b></h1>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="cadastro_e_edicao_de_demandas.html">Adicionar Demanda</a>
+      <a href="ListagemDemandas.html" class="ativo">Listagem de Demandas</a>
+      <a href="#">Projetos</a>
+      <a href="tela_login.html" class="sair">Sair</a>
+    </nav>
+  </aside>
+
+  <div class="conteudo">
+    <header class="topo">
+      <button class="botaoPerfil">Usuário / Perfil</button>
+    </header>
+
+    <main>
+      <h2>Listagem de Demandas</h2>
+
+      <div class="filtros">
+        <input type="text" id="busca" placeholder="Buscar por título ou descrição">
+        <select class="tipos" id="filtroStatus">
+          <option value="">Status</option>
+          <option>Aberta</option>
+          <option>Em andamento</option>
+          <option>Em revisão</option>
+          <option>Concluída</option>
+          <option>Cancelada</option>
+        </select>
+
+        <select class="tipos" id="filtroPrioridade">
+          <option value="">Prioridade</option>
+          <option>Alta</option>
+          <option>Média</option>
+          <option>Baixa</option>
+          <option>Crítica</option>
+        </select>
+
+        <select class="tipos" id="filtroTipo">
+          <option value="">Tipo</option>
+          <option>Tarefa</option>
+          <option>Defeito</option>
+          <option>Melhoria</option>
+          <option>Documentação</option>
+        </select>
+
+       
+        <select class="tipos" id="ordenar">
+          <option value="">Ordenar por</option>
+          <option value="dataCriacao">Data de criação</option>
+          <option value="prazo">Prazo</option>
+          <option value="prioridade">Prioridade</option>
+          <option value="status">Status</option>
+        </select>
+ 
+        <button class="botaoNova" id="botaoNova">+ Nova demanda</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Tipo</th>
+            <th>Prioridade</th>
+            <th>Status</th>
+            <th>Projeto</th>
+            <th>Responsável</th>
+            <th>Data de criação</th>
+            <th>Prazo</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="corpoTabela">
+
+        </tbody>
+      </table>
+
+      <div class="paginacao">
+        <span>Mostrando 1 - 5</span>
+        <div>
+          <button>&lt;</button>
+          <button>&gt;</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>

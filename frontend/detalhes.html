@@ -1,0 +1,141 @@
+<!--
+  Arquivo: detalhes.html
+  Autor: Rafael Carvalho Soares (RA 26029352)
+  Projeto: Sistema de Acompanhamento de Demandas - PI II - Time N3
+  Tela de detalhes de uma demanda.
+-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <!-- ajusta a página no celular -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes da Demanda | Sistema de Demandas</title>
+  <!-- estilo da tela -->
+  <link rel="stylesheet" href="detalhes.css">
+</head>
+<body>
+
+  <!-- cabeçalho -->
+  <header class="cabecalho">
+    <a href="dashboard.html" class="logo">Demandas<span>N3</span></a>
+
+    <div class="usuario">
+      <span class="avatar">RS</span>
+      <div>
+        Rafael Soares
+        <small>Integrante</small>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- menu lateral -->
+    <nav class="menu-lateral">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="cadastro_e_edicao_de_demandas.html">Adicionar demanda</a>
+      <a href="ListagemDemandas.html" class="ativo">Demandas</a>
+      <a href="tela_login.html">Sair</a>
+    </nav>
+
+    <!-- conteúdo -->
+    <main class="conteudo">
+
+      <!-- título e botões -->
+      <div class="cabecalho-pagina">
+        <h1>Detalhes da Demanda</h1>
+        <div class="acoes">
+          <a href="ListagemDemandas.html" class="btn btn-secundario">Voltar</a>
+          <a href="cadastro_e_edicao_de_demandas.html" class="btn btn-secundario">Editar</a>
+          <!-- não apaga a demanda, só muda o status -->
+          <button type="button" class="btn btn-perigo" id="btn-cancelar">Cancelar demanda</button>
+        </div>
+      </div>
+
+      <!-- informações gerais -->
+      <section class="painel">
+        <h2>Informações gerais</h2>
+        <dl class="grade-info">
+          <div class="titulo-demanda"><dt>Título</dt><dd>Erro ao salvar demanda sem prazo</dd></div>
+          <div><dt>Tipo</dt><dd><span class="etiqueta tipo">Defeito</span></dd></div>
+          <div><dt>Prioridade</dt><dd><span class="etiqueta prio-critica">Crítica</span></dd></div>
+          <!-- data-status: aberta, andamento, revisao, concluida ou cancelada -->
+          <div><dt>Status</dt><dd><span class="etiqueta status-andamento" id="status-demanda" data-status="andamento">Em andamento</span></dd></div>
+          <div><dt>Responsável</dt><dd>Rafael Soares</dd></div>
+          <div><dt>Data de criação</dt><dd>25/09/2026</dd></div>
+          <!-- datetime (ano-mês-dia) usado no JS para calcular os dias -->
+          <div><dt>Prazo</dt><dd><time id="prazo-demanda" datetime="2026-10-02">02/10/2026</time> <span id="indicador-prazo" class="indicador-prazo"></span></dd></div>
+        </dl>
+      </section>
+
+      <!-- etapa atual -->
+      <section class="painel">
+        <h2>Etapa atual</h2>
+        <ol class="etapas" id="etapas" aria-label="Ciclo de vida da demanda">
+          <li data-etapa="aberta">Aberta</li>
+          <li data-etapa="andamento">Em andamento</li>
+          <li data-etapa="revisao">Em revisão</li>
+          <li data-etapa="concluida">Concluída</li>
+        </ol>
+        <p id="aviso-etapas" class="aviso-etapas"></p>
+      </section>
+
+      <!-- descrição -->
+      <section class="painel">
+        <h2>Descrição</h2>
+        <p class="descricao">Ao cadastrar uma demanda deixando o campo de prazo vazio, o sistema apresenta erro e não salva a demanda. O prazo deve ser tratado conforme a regra definida pelo grupo.</p>
+      </section>
+
+      <!-- anexos -->
+      <section class="painel">
+        <h2>Anexos</h2>
+        <div class="tabela-container">
+          <table>
+            <thead>
+              <tr><th>Arquivo</th><th>Enviado por</th><th>Data</th><th>Ações</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>captura-de-tela-erro.png</td>
+                <td>Pietro Giati</td>
+                <td>26/09/2026</td>
+                <td><a href="#">Baixar</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- histórico e comentários -->
+      <section class="painel">
+        <h2>Histórico / Comentários</h2>
+        <ul class="historico" id="historico">
+          <!-- evento = bolinha cinza, comentario = bolinha azul -->
+          <li class="evento"><small>Rafael Soares · 28/09/2026</small>Alterou o status para "Em andamento"</li>
+          <li class="comentario"><small>Pietro Giati · 29/09/2026</small>Consegui reproduzir o erro deixando o campo de prazo vazio.</li>
+        </ul>
+
+        <!-- novalidate porque a validação é feita no JS -->
+        <form class="comentar" id="form-comentario" novalidate>
+          <div class="campo-comentario">
+            <label for="comentario" class="so-leitor">Novo comentário</label>
+            <textarea id="comentario" name="comentario" placeholder="Escreva um comentário" aria-describedby="erro-comentario"></textarea>
+            <div class="linha-aviso">
+              <!-- mensagem de erro -->
+              <p id="erro-comentario" class="mensagem-erro" role="alert"></p>
+              <!-- contador de caracteres -->
+              <span id="contador" class="contador">0/300</span>
+            </div>
+          </div>
+          <button type="submit" class="btn">Comentar</button>
+        </form>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- JS da tela -->
+  <script src="detalhes.js"></script>
+</body>
+</html>
