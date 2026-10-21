@@ -1,3 +1,4 @@
+/* Autor: Gustavo Pietro de Assis Silva | Tela: Listagem de Demandas | PI II - Time N3 */
 /* geral*/
 * {
   box-sizing: border-box;
@@ -60,6 +61,7 @@ body {
   border-radius: 50%;
   font-weight: 700;
   font-size: 18px;
+  color: #fff;
 }
 
 /* Barra lateral */
@@ -110,16 +112,10 @@ body {
   margin-bottom: 16px;
 }
 
-.rotulo {
-  color: #888;
-  font-size: 13px;
-}
-
-
-
 /* Busca e filtros */
 .filtros {
   display: flex;
+   flex-wrap: wrap;   /* <- se não couber, passa para a linha de baixo */
   align-items: center;
   margin-bottom: 25px;
   gap: 10px;
@@ -190,15 +186,4 @@ tbody tr:hover {
   justify-content: space-between;
   align-items: center;
   margin-top: 14px;
-}
-
-.paginacao button {
-  padding: 7px 14px;
-  background: #fff;
-  border: 1px solid #cfd0d2;
-  cursor: pointer;
-}
-
-.paginacao button:hover {
-  background: #f4f6fb;
 }

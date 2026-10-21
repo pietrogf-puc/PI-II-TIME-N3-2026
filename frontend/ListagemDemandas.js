@@ -1,4 +1,4 @@
-/* Autor: Gustavo Pietro */
+/* Autor: Gustavo Pietro de Assis Silva */
 /* Tela: Listagem de Demandas | PI II - Time N3 */
 /* Descrição: mostra todas as demandas em uma tabela, com busca, filtros e ordenação. */
 
@@ -63,6 +63,7 @@ const demanda5 = {
 }; /*Demandas de exemplo */
 
 const demandas = [demanda1, demanda2, demanda3, demanda4, demanda5]; /*Lista com as demandas criadas anteriormente */
+const contador = document.getElementById("contador"); /*Pega o texto do contador no html */
 
 const corpoTabela = document.getElementById("corpoTabela"); /*Busca o conteudo do html */
 
@@ -89,6 +90,7 @@ function mostrarTabela(lista) {
     </tr>
   `;
 });
+contador.textContent = "Mostrando " + lista.length + " de " + demandas.length; /*Atualiza o contador com a quantidade de linhas da tabela */
 }
 mostrarTabela(demandas);  /*Mostra todas as demandas quando a página abre */
 
