@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Autor: Gustavo Pietro de Assis Silva | Tela: Listagem de Demandas | PI II - Time N3 -->
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
@@ -8,25 +9,33 @@
   <script src="ListagemDemandas.js" defer></script>
 </head>
 <body>
-
-  <aside class="menu">
-    <h1>Sistema de Demandas / <b>N3</b></h1>
-    <nav>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="cadastro_e_edicao_de_demandas.html">Adicionar Demanda</a>
-      <a href="ListagemDemandas.html" class="ativo">Listagem de Demandas</a>
-      <a href="#">Projetos</a>
-      <a href="tela_login.html" class="sair">Sair</a>
+  <!-- Cabeçalho -->
+  <header class="cabecalho">
+    <nav class="logoeusuario">
+      <p id="logo">Demandas <span>N3</span></p>
+      <div class="usuario">
+        <p id="avatar">GP</p>
+        <p id="nome">Gustavo Pietro <small>Integrante</small></p>
+      </div>
     </nav>
-  </aside>
+  </header>
 
-  <div class="conteudo">
-    <header class="topo">
-      <button class="botaoPerfil">Usuário / Perfil</button>
-    </header>
+  <div class="layout">
+  <!-- Barra lateral -->
 
-    <main>
-      <h2>Listagem de Demandas</h2>
+    <div class="barralateral">
+      <div class="itens">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="cadastro.html">Adicionar Demanda</a>
+        <a href="ListagemDemandas.html" class="aberto">Listagem de Demandas</a>
+        <a href="#">Projetos</a>
+        <a href="tela_login.html">Sair</a>
+      </div>
+    </div>
+
+    <div class="pagina">
+      <h1>Listagem de Demandas</h1>
+      <!-- Busca, filtros e botão de nova demanda -->
 
       <div class="filtros">
         <input type="text" id="busca" placeholder="Buscar por título ou descrição">
@@ -67,6 +76,7 @@
         <button class="botaoNova" id="botaoNova">+ Nova demanda</button>
       </div>
 
+      <!-- Tabela de demandas (as linhas são criadas pelo JavaScript) -->
       <table>
         <thead>
           <tr>
@@ -85,15 +95,12 @@
 
         </tbody>
       </table>
-
+      <!--Paginação-->
       <div class="paginacao">
-        <span>Mostrando 1 - 5</span>
-        <div>
-          <button>&lt;</button>
-          <button>&gt;</button>
-        </div>
+        <!-- Contador de demandas-->
+        <span id="contador">Mostrando 0 - 0</span>
       </div>
-    </main>
+    </div>
   </div>
 
 </body>
