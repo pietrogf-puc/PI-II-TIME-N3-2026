@@ -110,6 +110,7 @@ senha.addEventListener("input", verificarSenha);
 
 //Enviar ou Não o formulário
 formularioLogin.addEventListener("submit", function (cancelarEnvio) {
+    cancelarEnvio.preventDefault(); // impede o envio, por padrao o navegador envia
     const emailVazio = email.value.trim() === ""; // o trim remove os espaços
     const senhaVazia = senha.value.trim() === "";
     const senhaComEspaco = /\s/.test(senha.value);
@@ -140,10 +141,12 @@ formularioLogin.addEventListener("submit", function (cancelarEnvio) {
 
 
     if (emailVazio || senhaVazia || !emailValido || !senhaValida || senhaComEspaco) {
-        cancelarEnvio.preventDefault(); // impede o envio, por padrao o navegador envia
         forms_invalido.innerHTML = "Email ou senha invalidos <br> Não foi possível enviar seu formulário";
         forms_invalido.style.color = "red";
         forms_invalido.style.display = "block"
+    } 
+    else{
+        window.location.href = "dashboard.html";
     }
 
 })
