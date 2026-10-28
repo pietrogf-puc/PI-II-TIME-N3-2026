@@ -242,3 +242,14 @@ if (botaoCancelar) {
 }
 
 atualizarBotaoCancelar();
+
+
+// ----- botão editar -----
+
+// leva o id da demanda (detalhes.html?id=3) para a tela de edição (cadastro.html?id=3)
+const idDemanda = new URLSearchParams(window.location.search).get("id");
+const botaoEditar = document.getElementById("btn-editar");
+
+if (botaoEditar && idDemanda) {
+  botaoEditar.href = "cadastro.html?id=" + encodeURIComponent(idDemanda);
+}
