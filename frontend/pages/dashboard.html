@@ -17,11 +17,13 @@
   <!-- Faz a tela se ajustar à largura do celular -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | Sistema de Demandas</title>
+  <!-- Os caminhos são relativos a esta página (frontend/pages/) para a tela
+       funcionar em qualquer computador, seja qual for a pasta aberta. -->
   <!-- Estilos da tela (estrutura geral + componentes do dashboard) -->
-  <link rel="stylesheet" href="/PI-II-TIME-N3-2026/frontend/styles/dashboard.css">
+  <link rel="stylesheet" href="../styles/dashboard.css">
   <!-- Comportamento da tela. "defer" faz o script rodar só depois
        que todo o HTML foi carregado. -->
-  <script src="/PI-II-TIME-N3-2026/frontend/scripts/dashboard.js" defer></script>
+  <script src="../scripts/dashboard.js" defer></script>
 </head>
 <body>
 
@@ -43,9 +45,9 @@
     <!-- ===== Menu lateral de navegação entre as telas =====
          Os links usam os nomes finais dos arquivos das telas do grupo. -->
     <nav class="menu-lateral">
-      <a href="/PI-II-TIME-N3-2026/frontend/pages/dashboard.html" class="ativo">Dashboard</a>
-      <a href="/PI-II-TIME-N3-2026/frontend/pages/cadastro.html">Adicionar demanda</a>
-      <a href="/PI-II-TIME-N3-2026/frontend/pages/ListagemDemandas.html">Demandas</a>
+      <a href="dashboard.html" class="ativo">Dashboard</a>
+      <a href="cadastro.html">Adicionar demanda</a>
+      <a href="ListagemDemandas.html">Demandas</a>
       <!-- "Sair" volta para a tela de login -->
       <a href="tela_login.html">Sair</a>
     </nav>
