@@ -492,17 +492,6 @@ input:focus, select:focus, textarea:focus {
   font-weight: 600;
 }
 
-/* Aviso de demandas ignoradas por dados fora do escopo */
-.aviso {
-  margin-bottom: var(--espaco);
-  padding: 10px 14px;
-  border-radius: var(--raio);
-  background: #fff9db;
-  border: 1px solid #ffe066;
-  color: #8a6d00;
-  font-size: 14px;
-}
-
 /* ----- Contagem ao lado do título das tabelas ----- */
 .contagem {
   display: inline-block;

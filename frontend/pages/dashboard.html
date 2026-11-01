@@ -8,8 +8,8 @@
   críticas em aberto e demandas próximas do prazo de finalização.
 
   Os números, gráficos e tabelas NÃO ficam fixos aqui: o arquivo
-  dashboard.js calcula tudo a partir das demandas e preenche os
-  elementos marcados com "id" ou "data-contador".
+  dashboard.js busca os indicadores na API (GET /dashboard) e preenche
+  os elementos marcados com "id" ou "data-contador".
 -->
 <html lang="pt-BR">
 <head>
@@ -58,11 +58,7 @@
       <!-- A data de hoje é escrita pelo JS -->
       <p class="subtitulo">Resumo das demandas em <span id="data-hoje">-</span></p>
 
-      <!-- Aviso de demandas ignoradas por terem dados fora do escopo.
-           Fica escondido (hidden) até o JS encontrar algum problema. -->
-      <p id="aviso-dados" class="aviso" role="alert" hidden></p>
-
-      <!-- Filtros: ao mudar qualquer campo, o JS recalcula o dashboard -->
+      <!-- Filtros: ao mudar qualquer campo, o JS pede os dados de novo à API -->
       <section class="painel filtros" aria-label="Filtros do dashboard">
         <form id="form-filtros" novalidate>
           <div class="campo">
