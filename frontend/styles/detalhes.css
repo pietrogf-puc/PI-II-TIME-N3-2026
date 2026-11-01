@@ -1,0 +1,520 @@
+/*
+  Arquivo: detalhes.css
+  Autor: Rafael Carvalho Soares (RA 26029352)
+  Projeto: Sistema de Acompanhamento de Demandas - PI II - Time N3
+  Parte 1: estilo padrão do grupo, copiado do style.css do Gustavo Manera Marialva (RA 26029581).
+  Parte 2: estilos da tela de detalhes.
+*/
+
+/* ----- Parte 1: estilo padrão do grupo (Gustavo Manera) ----- */
+
+/* ===== 1. Variáveis de cor e tamanho (padrão visual do grupo) ===== */
+:root {
+  --cor-primaria: #3b5bdb;        /* azul principal: botões e destaques */
+  --cor-primaria-escura: #2f4ac0; /* azul ao passar o mouse */
+  --cor-fundo: #f4f6fb;           /* fundo geral da página */
+  --cor-superficie: #ffffff;      /* fundo de cards e tabelas */
+  --cor-borda: #dde2ec;           /* bordas suaves */
+  --cor-texto: #1f2433;           /* texto principal */
+  --cor-texto-suave: #6b7285;     /* texto secundário */
+
+  /* cores usadas nos status das demandas */
+  --status-aberta: #3b5bdb;
+  --status-andamento: #f08c00;
+  --status-revisao: #7048e8;
+  --status-concluida: #2f9e44;
+  --status-cancelada: #868e96;
+
+  /* cores usadas nas prioridades */
+  --prio-critica: #e03131;
+  --prio-alta: #f76707;
+  --prio-media: #f5b700;
+  --prio-baixa: #74b816;
+
+  --raio: 8px;                    /* arredondamento padrão */
+  --espaco: 16px;                 /* espaçamento base */
+  --largura-menu: 220px;          /* largura do menu lateral */
+}
+
+/* ===== 2. Base e tipografia ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 15px;
+  color: var(--cor-texto);
+  background: var(--cor-fundo);
+  line-height: 1.5;
+}
+
+a {
+  color: var(--cor-primaria);
+  text-decoration: none;
+}
+
+h1 { font-size: 26px; margin-bottom: var(--espaco); }
+h2 { font-size: 17px; margin-bottom: 12px; }
+
+/* ===== 3. Cabeçalho (topo de todas as telas internas) ===== */
+.cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  padding: 0 24px;
+  background: var(--cor-superficie);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cor-texto);
+}
+
+.logo span { color: var(--cor-primaria); }
+
+/* caixa de usuário/perfil no canto direito */
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  font-size: 14px;
+}
+
+.usuario .avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--cor-primaria);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.usuario small {
+  display: block;
+  color: var(--cor-texto-suave);
+  font-size: 12px;
+}
+
+/* ===== 4. Layout: menu lateral + conteúdo ===== */
+.layout {
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+
+.menu-lateral {
+  width: var(--largura-menu);
+  flex-shrink: 0;
+  background: var(--cor-superficie);
+  border-right: 1px solid var(--cor-borda);
+  padding: var(--espaco) 0;
+}
+
+.menu-lateral a {
+  display: block;
+  padding: 12px 24px;
+  color: var(--cor-texto);
+  border-left: 3px solid transparent;
+}
+
+.menu-lateral a:hover { background: var(--cor-fundo); }
+
+/* item do menu da página atual */
+.menu-lateral a.ativo {
+  background: #edf1ff;
+  border-left-color: var(--cor-primaria);
+  color: var(--cor-primaria);
+  font-weight: 600;
+}
+
+.conteudo {
+  flex: 1;
+  padding: 24px;
+  min-width: 0; /* evita que tabelas estourem a largura */
+}
+
+/* ===== 5. Cards e painéis ===== */
+.painel {
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* ===== 6. Botões ===== */
+.btn {
+  display: inline-block;
+  padding: 10px 18px;
+  border: none;
+  border-radius: var(--raio);
+  background: var(--cor-primaria);
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.btn:hover { background: var(--cor-primaria-escura); }
+
+.btn-secundario {
+  background: transparent;
+  color: var(--cor-primaria);
+  border: 1px solid var(--cor-primaria);
+}
+
+.btn-secundario:hover { background: #edf1ff; }
+
+/* ===== 7. Tabelas ===== */
+.tabela-container { overflow-x: auto; } /* rolagem no celular */
+
+table {
+  width: 100%;
+  min-width: 560px; /* no celular a tabela rola para o lado em vez de espremer */
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+th {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+  font-weight: 600;
+}
+
+tbody tr:hover { background: var(--cor-fundo); }
+
+/* ===== 8. Formulários ===== */
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  font: inherit;
+  margin-bottom: var(--espaco);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid #c5d0fa;
+  border-color: var(--cor-primaria);
+}
+
+/* ===== 9. Etiquetas de status, prioridade e tipo ===== */
+.etiqueta {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap; /* etiqueta nunca quebra em duas linhas */
+}
+
+.status-aberta { background: var(--status-aberta); }
+.status-andamento { background: var(--status-andamento); }
+.status-revisao { background: var(--status-revisao); }
+.status-concluida { background: var(--status-concluida); }
+.status-cancelada { background: var(--status-cancelada); }
+
+.prio-critica { background: var(--prio-critica); }
+.prio-alta { background: var(--prio-alta); }
+.prio-media { background: var(--prio-media); color: var(--cor-texto); }
+.prio-baixa { background: var(--prio-baixa); }
+
+.tipo {
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  border: 1px solid var(--cor-borda);
+}
+
+/* ===== 10. Responsividade ===== */
+@media (max-width: 800px) {
+  /* no celular o menu lateral vira uma barra horizontal no topo */
+  .layout { flex-direction: column; }
+
+  .menu-lateral {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    padding: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--cor-borda);
+  }
+
+  .menu-lateral a {
+    white-space: nowrap;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+  }
+
+  .menu-lateral a.ativo { border-bottom-color: var(--cor-primaria); }
+
+  .conteudo { padding: 16px; }
+
+  .usuario div { display: none; } /* mostra só o avatar */
+}
+
+
+/* ----- Parte 2: tela de detalhes ----- */
+
+/* título e botões */
+.cabecalho-pagina {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--espaco);
+  margin-bottom: 20px;
+}
+
+.cabecalho-pagina h1 { margin-bottom: 0; }
+
+.acoes { display: flex; gap: 8px; }
+
+/* botão vermelho (cancelar) */
+.btn-perigo { background: var(--prio-critica); }
+.btn-perigo:hover { background: #c52a2a; }
+
+/* botão desativado */
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-perigo:disabled:hover { background: var(--prio-critica); }
+
+/* informações gerais em 3 colunas */
+.grade-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px 24px;
+}
+
+.grade-info .titulo-demanda { grid-column: 1 / -1; } /* título ocupa a linha toda */
+
+.grade-info dt {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+.grade-info dd { margin: 0; }
+
+/* descrição */
+.descricao {
+  padding: 14px;
+  color: var(--cor-texto-suave);
+  border: 1px dashed var(--cor-borda);
+  border-radius: var(--raio);
+}
+
+/* histórico em linha do tempo */
+.historico { list-style: none; margin-bottom: var(--espaco); }
+
+.historico li {
+  position: relative;
+  margin-left: 6px;
+  padding: 0 0 14px 18px;
+  border-left: 2px solid var(--cor-borda);
+}
+
+.historico li:last-child { padding-bottom: 0; }
+
+/* bolinha de cada item */
+.historico li::before {
+  content: "";
+  position: absolute;
+  left: -7px;                  /* centraliza na linha */
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--cor-texto-suave);           /* evento: cinza */
+  border: 2px solid var(--cor-superficie);
+}
+
+.historico li.comentario::before { background: var(--cor-primaria); } /* comentário: azul */
+
+.historico small {
+  display: block;
+  color: var(--cor-texto-suave);
+  font-size: 13px;
+}
+
+/* campo de comentário */
+.comentar {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.comentar textarea {
+  flex: 1;
+  min-height: 80px;
+  margin-bottom: 0;
+}
+
+/* esconde o label da tela */
+.so-leitor {
+  position: absolute;
+  left: -9999px;
+}
+
+/* celular */
+@media (max-width: 800px) {
+  .grade-info { grid-template-columns: 1fr; }
+  .comentar { flex-direction: column; }
+  .comentar textarea { width: 100%; }
+}
+
+/* validação do comentário */
+.campo-comentario { flex: 1; min-width: 0; }
+
+.linha-aviso {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.mensagem-erro { color: var(--prio-critica); }
+
+.contador { color: var(--cor-texto-suave); white-space: nowrap; }
+.contador.acima { color: var(--prio-critica); font-weight: 600; }
+
+/* borda vermelha quando tem erro */
+textarea.invalido { border-color: var(--prio-critica); }
+
+/* celular: campo na largura toda */
+@media (max-width: 800px) {
+  .campo-comentario { width: 100%; }
+}
+
+/* aviso de dias até o prazo */
+.indicador-prazo {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.indicador-prazo:empty { display: none; }
+
+.indicador-prazo.atrasado { background: var(--prio-critica); color: #fff; }
+.indicador-prazo.proximo { background: var(--prio-media); color: var(--cor-texto); }
+.indicador-prazo.no-prazo {
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  border: 1px solid var(--cor-borda);
+}
+
+/* barra de etapas */
+.etapas {
+  list-style: none;
+  display: flex;
+  counter-reset: etapa;        /* numera as etapas */
+}
+
+.etapas li {
+  --cor-etapa: var(--cor-texto-suave);
+  counter-increment: etapa;
+  position: relative;
+  flex: 1;
+  padding-top: 38px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--cor-texto-suave);
+}
+
+/* cor de cada etapa */
+.etapas li[data-etapa="aberta"] { --cor-etapa: var(--status-aberta); }
+.etapas li[data-etapa="andamento"] { --cor-etapa: var(--status-andamento); }
+.etapas li[data-etapa="revisao"] { --cor-etapa: var(--status-revisao); }
+.etapas li[data-etapa="concluida"] { --cor-etapa: var(--status-concluida); }
+
+/* linha entre as etapas */
+.etapas li + li::before {
+  content: "";
+  position: absolute;
+  top: 13px;
+  left: -50%;
+  width: 100%;
+  height: 2px;
+  background: var(--cor-borda);
+  z-index: 0;
+}
+
+/* bolinha com o número */
+.etapas li::after {
+  content: counter(etapa);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--cor-superficie);
+  color: var(--cor-texto-suave);
+  border: 2px solid var(--cor-borda);
+  z-index: 1;
+}
+
+/* etapas que já passaram */
+.etapas li.feita::before,
+.etapas li.atual::before { background: var(--cor-etapa); }
+
+.etapas li.feita::after {
+  content: "✓";
+  background: var(--cor-etapa);
+  border-color: var(--cor-etapa);
+  color: #fff;
+}
+
+/* etapa atual */
+.etapas li.atual::after {
+  background: var(--cor-etapa);
+  border-color: var(--cor-etapa);
+  color: #fff;
+  box-shadow: 0 0 0 3px var(--cor-superficie), 0 0 0 5px var(--cor-etapa);
+}
+
+.etapas li.atual { color: var(--cor-texto); font-weight: 700; }
+
+/* demanda cancelada */
+.etapas.cancelada li { opacity: 0.5; }
+
+.aviso-etapas {
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--cor-texto-suave);
+}
+
+.aviso-etapas:empty { display: none; }
+
+@media (max-width: 800px) {
+  .etapas li { font-size: 12px; }
+}
