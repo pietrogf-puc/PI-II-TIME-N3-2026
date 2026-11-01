@@ -110,9 +110,15 @@ async function buscarDashboard(filtros) {
     const resposta = await fetch(`${URL_API}/dashboard?${parametros}`);
     const dados = await resposta.json();
 
-    // Status 400 ou 500: o servidor explica o problema no campo "erro"
+    // Status 400 ou 500: o servidor explica o problema no campo "erro".
+    // O texto padrão cobre uma resposta de erro que não venha da nossa API.
     if (!resposta.ok) {
-      return { erro: { mensagem: dados.erro, campos: dados.campos || [] } };
+      return {
+        erro: {
+          mensagem: dados.erro || 'O servidor respondeu com um erro inesperado. Tente novamente.',
+          campos: dados.campos || []
+        }
+      };
     }
     return { resumo: dados };
   } catch (falha) {
