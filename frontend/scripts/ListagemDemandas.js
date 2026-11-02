@@ -91,7 +91,7 @@ function mostrarTabela(lista) {
       <td>${d.responsavel}</td>
       <td>${formatarData(d.dataCriacao)}</td>
       <td>${formatarData(d.prazo)}</td>
-      <td class="acoes"><a href="detalhes.html">Ver</a> <button class="botaoEditar" data-id="${d.id}">Editar</button></td>
+      <td class="acoes"><a href="detalhes.html">Ver</a> <button type="button" class="botaoEditar" data-id="${d.id}">Editar</button></td>
     </tr>
   `;
 });
@@ -158,4 +158,151 @@ const botaoNova = document.getElementById("botaoNova");
 
 botaoNova.addEventListener("click", function () {
   window.location.href = "cadastro.html";
+});
+
+
+
+/* ===================== MODAL DE EDIÇÃO ===================== */
+
+/* Pega os elementos do modal no HTML */
+const modalEditar = document.getElementById("modalEditar");
+const formEditar = document.getElementById("formEditar");
+const botaoCancelar = document.getElementById("botaoCancelar");
+
+const editTitulo = document.getElementById("editTitulo");
+const editDescricao = document.getElementById("editDescricao");
+const editProjeto = document.getElementById("editProjeto");
+const editTipo = document.getElementById("editTipo");
+const editPrioridade = document.getElementById("editPrioridade");
+const editStatus = document.getElementById("editStatus");
+const editResponsavel = document.getElementById("editResponsavel");
+const editPrazo = document.getElementById("editPrazo");
+
+const erroTitulo = document.getElementById("erroTitulo");
+const erroDescricao = document.getElementById("erroDescricao");
+const erroPrazo = document.getElementById("erroPrazo");
+
+/* Guarda qual demanda está sendo editada no momento.
+   Começa vazia (null) porque nenhuma foi escolhida ainda. */
+let demandaEmEdicao = null;
+
+
+/* ----- Funções de erro (mesma ideia do cadastro.js) ----- */
+
+function mostrarErro(campo, erro, texto) {
+  campo.classList.add("campo_invalido"); /* deixa a borda vermelha */
+  erro.textContent = texto;              /* escreve a mensagem */
+  erro.style.display = "block";          /* mostra a mensagem */
+}
+
+function limparErro(campo, erro) {
+  campo.classList.remove("campo_invalido");
+  erro.textContent = "";
+  erro.style.display = "none";
+}
+
+
+/* ----- Abrir o modal ----- */
+
+function abrirModal(demanda) {
+  demandaEmEdicao = demanda; /* lembra qual demanda foi clicada */
+
+  /* Coloca os dados da demanda dentro dos campos */
+  editTitulo.value = demanda.titulo;
+  editDescricao.value = demanda.descricao;
+  editProjeto.value = demanda.projeto;
+  editTipo.value = demanda.tipo;
+  editPrioridade.value = demanda.prioridade;
+  editStatus.value = demanda.status;
+  editResponsavel.value = demanda.responsavel;
+  editPrazo.value = demanda.prazo;
+
+  /* Apaga erros que tenham ficado da última vez */
+  limparErro(editTitulo, erroTitulo);
+  limparErro(editDescricao, erroDescricao);
+  limparErro(editPrazo, erroPrazo);
+
+  modalEditar.showModal(); /* mostra o modal na tela */
+}
+
+
+/* ----- Clique no botão "Editar" ----- */
+/* O clique é escutado na tabela inteira, e não em cada botão.
+   Motivo: a tabela é apagada e recriada toda vez que alguém filtra,
+   e os botões novos não teriam o evento. A tabela (tbody) nunca é apagada. */
+
+corpoTabela.addEventListener("click", function (evento) {
+  const clicado = evento.target; /* o elemento exato que foi clicado */
+
+  /* Se não foi um botão "Editar", não faz nada */
+  if (!clicado.classList.contains("botaoEditar")) {
+    return;
+  }
+
+  /* Lê o id que estava no data-id do botão.
+     Vem como texto ("3"), então o Number() transforma em número (3). */
+  const id = Number(clicado.dataset.id);
+
+  /* Procura no array a demanda que tem esse id */
+  const demanda = demandas.find(function (d) {
+    return d.id === id;
+  });
+
+  abrirModal(demanda);
+});
+
+
+/* ----- Botão "Cancelar" ----- */
+
+botaoCancelar.addEventListener("click", function () {
+  modalEditar.close(); /* fecha sem salvar nada */
+});
+
+
+/* ----- Botão "Salvar alterações" ----- */
+
+formEditar.addEventListener("submit", function (evento) {
+  evento.preventDefault(); /* impede o formulário de recarregar a página */
+
+  /* Validação simples: título, descrição e prazo não podem ficar vazios */
+  let tudoCerto = true;
+
+  if (editTitulo.value.trim().length < 5) {
+    mostrarErro(editTitulo, erroTitulo, "O título precisa ter pelo menos 5 caracteres");
+    tudoCerto = false;
+  } else {
+    limparErro(editTitulo, erroTitulo);
+  }
+
+  if (editDescricao.value.trim() === "") {
+    mostrarErro(editDescricao, erroDescricao, "A descrição não pode estar vazia");
+    tudoCerto = false;
+  } else {
+    limparErro(editDescricao, erroDescricao);
+  }
+
+  if (editPrazo.value === "") {
+    mostrarErro(editPrazo, erroPrazo, "Escolha um prazo");
+    tudoCerto = false;
+  } else {
+    limparErro(editPrazo, erroPrazo);
+  }
+
+  /* Se algum campo deu erro, para aqui e deixa o modal aberto */
+  if (!tudoCerto) {
+    return;
+  }
+
+  /* Tudo certo: copia o que está nos campos para a demanda */
+  demandaEmEdicao.titulo = editTitulo.value.trim();
+  demandaEmEdicao.descricao = editDescricao.value.trim();
+  demandaEmEdicao.projeto = editProjeto.value;
+  demandaEmEdicao.tipo = editTipo.value;
+  demandaEmEdicao.prioridade = editPrioridade.value;
+  demandaEmEdicao.status = editStatus.value;
+  demandaEmEdicao.responsavel = editResponsavel.value;
+  demandaEmEdicao.prazo = editPrazo.value;
+
+  modalEditar.close(); /* fecha o modal */
+  aplicarFiltros();    /* redesenha a tabela com os dados novos, mantendo os filtros */
 });
