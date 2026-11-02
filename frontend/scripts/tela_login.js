@@ -108,6 +108,10 @@ function verificarSenha() {
 senha.addEventListener("input", verificarSenha);
 
 
+formularioLogin.addEventListener("submit", async function (cancelarEnvio) {
+    cancelarEnvio.preventDefault();
+
+    const emailVazio = email.value.trim() === "";
 //Enviar ou Não o formulário
 formularioLogin.addEventListener("submit", function (cancelarEnvio) {
     cancelarEnvio.preventDefault(); // impede o envio, por padrao o navegador envia
@@ -124,12 +128,14 @@ formularioLogin.addEventListener("submit", function (cancelarEnvio) {
         /[A-Z]/.test(senha.value) &&
         /[a-z]/.test(senha.value) &&
         /[0-9]/.test(senha.value) &&
+        /[!@#_* -]/.test(senha.value) &&
         /[!@#_*-]/.test(senha.value) &&
         !senhaComEspaco;
 
     if (emailVazio) {
         erro_email.style.display = "block";
         erro_email.innerHTML = "Seu email não pode estar vazio";
+        erro_email.style.color = "red";
         erro_email.style.color = "red"
     }
 
@@ -138,6 +144,62 @@ formularioLogin.addEventListener("submit", function (cancelarEnvio) {
         verificarSenha();
     }
 
+    if (emailVazio || senhaVazia || !emailValido || !senhaValida || senhaComEspaco) {
+        forms_invalido.innerHTML = "Email ou senha inválidos.";
+        forms_invalido.style.color = "red";
+        forms_invalido.style.display = "block";
+        return;
+    }
+
+    // Envia os dados para o backend
+    try {
+        const resposta = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email.value.trim(),
+                senha: senha.value
+            })
+        });
+
+        const resultado = await resposta.json();
+
+        if (!resposta.ok) {
+            forms_invalido.innerHTML = resultado.mensagem;
+            forms_invalido.style.color = "red";
+            forms_invalido.style.display = "block";
+            return;
+        }
+
+        forms_invalido.style.display = "none";
+
+        if (resultado.token && resultado.usuario) {
+            sessionStorage.setItem("token", resultado.token);
+            sessionStorage.setItem("usuario", JSON.stringify(resultado.usuario));
+
+            alert("Bem-vindo, " + resultado.usuario.nome + "!");
+            window.location.href = "dashboard.html";
+        }
+    } catch (erro) {
+        console.error("Erro ao comunicar com o backend:", erro);
+
+        forms_invalido.innerHTML = "Não foi possível conectar ao servidor.";
+        forms_invalido.style.color = "red";
+        forms_invalido.style.display = "block";
+    }
+});
+
+
+if (emailVazio || senhaVazia || !emailValido || !senhaValida || senhaComEspaco) {
+    forms_invalido.innerHTML = "Email ou senha invalidos <br> Não foi possível enviar seu formulário";
+    forms_invalido.style.color = "red";
+    forms_invalido.style.display = "block"
+}
+else {
+    window.location.href = "dashboard.html";
+}
 
 
     if (emailVazio || senhaVazia || !emailValido || !senhaValida || senhaComEspaco) {
