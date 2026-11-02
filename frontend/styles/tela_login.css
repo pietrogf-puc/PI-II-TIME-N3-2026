@@ -13,6 +13,11 @@ body {
     min-height: 100dvh;
     margin: 0px;
     padding: 16px;
+}
+
+body {
+    min-height: 90vh;
+    margin: 0px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -35,6 +40,11 @@ form {
     border-radius: 20px;
     width: 100%;
     max-width: 400px;
+    
+
+    border: 3px solid black;
+    border-radius: 20px;
+    width: 400px;
     min-height: 400px;
 
     background-color: whitesmoke;
@@ -47,6 +57,8 @@ form {
     width: 85%;
     max-width: 260px;
     padding: 20px 0;
+.input-tela-login {
+    padding: 20px;
 }
 
 .input-tela-login label {
@@ -68,6 +80,16 @@ form {
     padding: 10px;
     width: 100px;
     height: 40px;
+    padding: 5px;
+    width: 240px;
+    height: 20px;
+}
+
+.input-tela-login button {
+    padding: 10px;
+    width: 100px;
+    height: 40px;
+
 }
 
 #mensagem_erro_email {
@@ -99,6 +121,7 @@ form {
     margin-top: 1px;
     list-style-type: none;
     margin-left: 0;
+    margin-left: 20px;
     color: #49525f;
 }
 
@@ -109,6 +132,9 @@ form {
     align-items: center;
     text-align: center;
     padding: 0 16px;
+
+    justify-content: flex-start;
+    align-items: center;
 }
 
 #loginBtn {

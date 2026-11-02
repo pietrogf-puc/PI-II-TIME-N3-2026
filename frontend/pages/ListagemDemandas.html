@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!-- Autor: Gustavo Pietro de Assis Silva | Tela: Listagem de Demandas | PI II - Time N3 -->
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Listagem de Demandas</title>
+  <link rel="stylesheet" href="/PI-II-TIME-N3-2026/frontend/styles/ListagemDemandas.css">
+  <script src="/PI-II-TIME-N3-2026/frontend/scripts/ListagemDemandas.js" defer></script>
+</head>
+<body>
+  <!-- Cabeçalho -->
+  <header class="cabecalho">
+    <nav class="logoeusuario">
+      <p id="logo">Demandas <span>N3</span></p>
+      <div class="usuario">
+        <p id="avatar">GP</p>
+        <p id="nome">Gustavo Pietro <small>Integrante</small></p>
+      </div>
+    </nav>
+  </header>
+
+  <div class="layout">
+  <!-- Barra lateral -->
+
+    <div class="barralateral">
+      <div class="itens">
+        <a href="/PI-II-TIME-N3-2026/frontend/pages/dashboard.html">Dashboard</a>
+        <a href="/PI-II-TIME-N3-2026/frontend/pages/cadastro.html">Adicionar Demanda</a>
+        <a href="/PI-II-TIME-N3-2026/frontend/pages/ListagemDemandas.html" class="aberto">Listagem de Demandas</a>
+        <a href="#">Projetos</a>
+        <a href="/PI-II-TIME-N3-2026/frontend/pages/tela_login.html">Sair</a>
+      </div>
+    </div>
+
+    <div class="pagina">
+      <h1>Listagem de Demandas</h1>
+      <!-- Busca, filtros e botão de nova demanda -->
+
+      <div class="filtros">
+        <input type="text" id="busca" placeholder="Buscar por título ou descrição">
+        <select class="tipos" id="filtroStatus">
+          <option value="">Status</option>
+          <option>Aberta</option>
+          <option>Em andamento</option>
+          <option>Em revisão</option>
+          <option>Concluída</option>
+          <option>Cancelada</option>
+        </select>
+
+        <select class="tipos" id="filtroPrioridade">
+          <option value="">Prioridade</option>
+          <option>Alta</option>
+          <option>Média</option>
+          <option>Baixa</option>
+          <option>Crítica</option>
+        </select>
+
+        <select class="tipos" id="filtroTipo">
+          <option value="">Tipo</option>
+          <option>Tarefa</option>
+          <option>Defeito</option>
+          <option>Melhoria</option>
+          <option>Documentação</option>
+        </select>
+
+       
+        <select class="tipos" id="ordenar">
+          <option value="">Ordenar por</option>
+          <option value="dataCriacao">Data de criação</option>
+          <option value="prazo">Prazo</option>
+          <option value="prioridade">Prioridade</option>
+          <option value="status">Status</option>
+        </select>
+ 
+        <button class="botaoNova" id="botaoNova">+ Nova demanda</button>
+      </div>
+
+      <!-- Tabela de demandas (as linhas são criadas pelo JavaScript) -->
+      <table>
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Tipo</th>
+            <th>Prioridade</th>
+            <th>Status</th>
+            <th>Projeto</th>
+            <th>Responsável</th>
+            <th>Data de criação</th>
+            <th>Prazo</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="corpoTabela">
+
+        </tbody>
+      </table>
+      <!--Paginação-->
+      <div class="paginacao">
+        <!-- Contador de demandas-->
+        <span id="contador">Mostrando 0 - 0</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
