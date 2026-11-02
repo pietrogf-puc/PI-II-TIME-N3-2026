@@ -1,26 +1,33 @@
 -- =========================================
--- ESTRUTURA DO BANCO DE DADOS
+-- ESTRUTURA DO BANCO DE DADOS (login e perfis)
 -- Projeto PI-II-TIME-N3-2026
--- Pietro Giati de Favari
--- Ra:26028869
+-- Feito por Pietro Giati de Favari
+-- Ra: 26028869
+-- Executar ANTES do seed.sql
 -- =========================================
+
+CREATE DATABASE IF NOT EXISTS pi_ii_database
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
 
 USE pi_ii_database;
 
 -- =========================================
 -- TABELA: PERFIL
+-- (Administrador, Líder de Projeto, Membro da Equipe)
 -- =========================================
 
-CREATE TABLE perfil (
+CREATE TABLE IF NOT EXISTS perfil (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL UNIQUE
 );
 
 -- =========================================
 -- TABELA: USUARIO
+-- Cada usuário possui um único perfil (id_perfil)
 -- =========================================
 
-CREATE TABLE usuario (
+CREATE TABLE IF NOT EXISTS usuario (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
