@@ -1,3 +1,5 @@
+// Feito por Pietro Giati de Favari Ra: 26028869
+// Configuração do pool de conexões com o MySQL (dados vêm do .env).
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
 

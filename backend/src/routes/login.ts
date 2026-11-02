@@ -1,3 +1,5 @@
+// Feito por Pietro Giati de Favari Ra: 26028869
+// Rota POST /login: valida os dados, confere a senha (bcrypt) e devolve o token JWT.
 import { Router, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { RowDataPacket } from "mysql2";
@@ -9,7 +11,8 @@ const router = Router();
 
 const limiteLogin = rateLimit({
     windowMs: 15 * 60 * 1000,
-    limit: 5,
+    limit: 10,
+    skipSuccessfulRequests: true, // logins bem-sucedidos não contam como tentativa
     message: {
         mensagem: "Muitas tentativas de login. Tente novamente em 15 minutos."
     },

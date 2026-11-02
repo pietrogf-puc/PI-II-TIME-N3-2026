@@ -1,4 +1,5 @@
-
+// Feito por Pietro Giati de Favari Ra: 26028869
+// Bloqueia páginas internas: sem token válido, volta para a tela de login.
 const token = sessionStorage.getItem("token");
 
 if (!token) {

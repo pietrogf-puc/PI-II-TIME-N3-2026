@@ -1,4 +1,5 @@
-
+// Feito por Pietro Giati de Favari Ra: 26028869
+// Middleware que confere o token JWT enviado no cabeçalho Authorization.
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 

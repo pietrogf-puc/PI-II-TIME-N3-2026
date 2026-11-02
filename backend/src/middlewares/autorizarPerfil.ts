@@ -1,4 +1,5 @@
-
+// Feito por Pietro Giati de Favari Ra: 26028869
+// Middleware que libera a rota somente para os perfis informados.
 import { Request, Response, NextFunction } from "express";
 
 type PerfilSistema =
