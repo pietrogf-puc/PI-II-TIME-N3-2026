@@ -3,6 +3,7 @@
 /* Descrição: mostra todas as demandas em uma tabela, com busca, filtros e ordenação. */
 
 const demanda1 = {
+  id: 1,
   titulo: "Demanda exemplo 1",
   descricao:"demanda de teste",
   tipo: "Tarefa",
@@ -15,6 +16,7 @@ const demanda1 = {
 };
 
 const demanda2 = {
+  id: 2,
   titulo: "Modificar GitHub",
   descricao:"git",
   tipo: "Defeito",
@@ -27,6 +29,7 @@ const demanda2 = {
 };
 
 const demanda3 = {
+  id: 3,
   titulo: "Criar MER",
   descricao:"mer banco de dados",
   tipo: "Melhoria",
@@ -39,6 +42,7 @@ const demanda3 = {
 };
 
 const demanda4 = {
+  id: 4,
   titulo: "Add Banco de Dados",
   descricao:"integração",
   tipo: "Tarefa",
@@ -51,6 +55,7 @@ const demanda4 = {
 };
 
 const demanda5 = {
+  id: 5,
   titulo: "Corrigir tela login",
   descricao:"corrigi as tela",
   tipo: "Documentação",
@@ -86,7 +91,7 @@ function mostrarTabela(lista) {
       <td>${d.responsavel}</td>
       <td>${formatarData(d.dataCriacao)}</td>
       <td>${formatarData(d.prazo)}</td>
-      <td class="acoes"><a href="detalhes.html">Ver</a> <a href="cadastro.html">Editar</a></td>
+      <td class="acoes"><a href="detalhes.html">Ver</a> <button class="botaoEditar" data-id="${d.id}">Editar</button></td>
     </tr>
   `;
 });
