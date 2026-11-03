@@ -299,6 +299,19 @@ tbody tr:hover {
   margin-top: 20px;
 }
 
+/* Status no modal: só mostra, não deixa editar */
+#modalEditar .status-somente-leitura {
+  display: flex;
+  align-items: center;      /* centraliza o texto na altura */
+  width: 220px;             /* mesmo tamanho dos selects */
+  height: 50px;
+  padding: 0 10px;
+  border: 1px solid #dde2ec;
+  border-radius: 8px;
+  background-color: #f4f6fb; /* fundo cinza = "não editável" */
+  color: #6b7285;
+}
+
 #botaoCancelar,
 #botaoSalvar {
   height: 50px;

@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/PI-II-TIME-N3-2026/frontend/styles/ListagemDemandas.css">
   <script src="/PI-II-TIME-N3-2026/frontend/scripts/ListagemDemandas.js" defer></script>
 </head>
+<body>
   <dialog id="modalEditar">
     <h2>Editar Demanda</h2>
      <form id="formEditar" novalidate>
@@ -54,14 +55,8 @@
       </div>
 
       <div class="campo">
-        <label for="editStatus">Status</label>
-        <select id="editStatus">
-          <option>Aberta</option>
-          <option>Em andamento</option>
-          <option>Em revisão</option>
-          <option>Concluída</option>
-          <option>Cancelada</option>
-        </select>
+        <label>Status</label>
+        <p id="editStatusTexto" class="status-somente-leitura"></p>
       </div>
 
       <div class="campo">
@@ -87,9 +82,8 @@
       <button type="submit" id="botaoSalvar">Salvar alterações</button>
     </div>
   </form>
-
   </dialog>
-<body>
+
   <!-- Cabeçalho -->
   <header class="cabecalho">
     <nav class="logoeusuario">

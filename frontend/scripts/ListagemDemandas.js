@@ -174,7 +174,7 @@ const editDescricao = document.getElementById("editDescricao");
 const editProjeto = document.getElementById("editProjeto");
 const editTipo = document.getElementById("editTipo");
 const editPrioridade = document.getElementById("editPrioridade");
-const editStatus = document.getElementById("editStatus");
+const editStatusTexto = document.getElementById("editStatusTexto");
 const editResponsavel = document.getElementById("editResponsavel");
 const editPrazo = document.getElementById("editPrazo");
 
@@ -213,7 +213,7 @@ function abrirModal(demanda) {
   editProjeto.value = demanda.projeto;
   editTipo.value = demanda.tipo;
   editPrioridade.value = demanda.prioridade;
-  editStatus.value = demanda.status;
+   editStatusTexto.textContent = demanda.status; /* só mostra o status atual */
   editResponsavel.value = demanda.responsavel;
   editPrazo.value = demanda.prazo;
 
@@ -299,7 +299,6 @@ formEditar.addEventListener("submit", function (evento) {
   demandaEmEdicao.projeto = editProjeto.value;
   demandaEmEdicao.tipo = editTipo.value;
   demandaEmEdicao.prioridade = editPrioridade.value;
-  demandaEmEdicao.status = editStatus.value;
   demandaEmEdicao.responsavel = editResponsavel.value;
   demandaEmEdicao.prazo = editPrazo.value;
 
