@@ -2,6 +2,7 @@
 
 import express, { Request, Response } from "express";
 import loginRouter from "./routes/login";
+import demandasRouter from "./routes/demandas";
 import conexao from "./config/database";
 import { autenticar } from "./middlewares/autenticacao";
 import cors from "cors";
@@ -10,8 +11,9 @@ const servidor = express();
 servidor.use(express.json());
 servidor.use(cors());
 
-// Rota de login
+// Rotas (Login,Demandas)
 servidor.use("/login", loginRouter);
+servidor.use("/demandas", demandasRouter);
 
 const PORT: number = 3000;
 

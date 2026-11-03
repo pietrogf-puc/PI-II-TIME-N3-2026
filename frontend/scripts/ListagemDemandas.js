@@ -1,75 +1,12 @@
 /* Autor: Gustavo Pietro de Assis Silva */
 /* Tela: Listagem de Demandas | PI II - Time N3 */
-/* Descrição: mostra todas as demandas em uma tabela, com busca, filtros e ordenação. */
+/* Descrição: mostra as demandas vindas da API em uma tabela, com busca, filtros e ordenação. */
 
-const demanda1 = {
-  id: 1,
-  titulo: "Demanda exemplo 1",
-  descricao:"demanda de teste",
-  tipo: "Tarefa",
-  prioridade: "Alta",
-  status: "Aberta",
-  projeto: "Sistema X",
-  responsavel: "Fulano",
-  dataCriacao: "2026-09-01",
-  prazo: "2026-10-30"
-};
+/* Lista de demandas. Começa vazia e é preenchida com o que a API devolver.
+   Usa "let" (e não "const") porque ela recebe um valor novo depois. */
+let demandas = [];
 
-const demanda2 = {
-  id: 2,
-  titulo: "Modificar GitHub",
-  descricao:"git",
-  tipo: "Defeito",
-  prioridade: "Média",
-  status: "Em andamento",
-  projeto: "Sistema X",
-  responsavel: "José Picolo",
-  dataCriacao: "2026-09-02",
-  prazo: "2027-01-12"
-};
-
-const demanda3 = {
-  id: 3,
-  titulo: "Criar MER",
-  descricao:"mer banco de dados",
-  tipo: "Melhoria",
-  prioridade: "Baixa",
-  status: "Em revisão",
-  projeto: "Sistema Y",
-  responsavel: "Pietro Favari",
-  dataCriacao: "2026-09-03",
-  prazo: "2026-11-30"
-};
-
-const demanda4 = {
-  id: 4,
-  titulo: "Add Banco de Dados",
-  descricao:"integração",
-  tipo: "Tarefa",
-  prioridade: "Alta",
-  status: "Concluída",
-  projeto: "Sistema Y",
-  responsavel: "Vittor Maia",
-  dataCriacao: "2026-09-04",
-  prazo: "2026-10-12"
-};
-
-const demanda5 = {
-  id: 5,
-  titulo: "Corrigir tela login",
-  descricao:"corrigi as tela",
-  tipo: "Documentação",
-  prioridade: "Crítica",
-  status: "Cancelada",
-  projeto: "Sistema X",
-  responsavel: "Luggi Braga",
-  dataCriacao: "2026-09-05",
-  prazo: "2026-12-30"
-}; /*Demandas de exemplo */
-
-const demandas = [demanda1, demanda2, demanda3, demanda4, demanda5]; /*Lista com as demandas criadas anteriormente */
 const contador = document.getElementById("contador"); /*Pega o texto do contador no html */
-
 const corpoTabela = document.getElementById("corpoTabela"); /*Busca o conteudo do html */
 
 function formatarData(data) { /*altera a forma que a data é mostrada */
@@ -80,7 +17,7 @@ function formatarData(data) { /*altera a forma que a data é mostrada */
 function mostrarTabela(lista) {
     corpoTabela.innerHTML = ""; /*apaga as linhas antigas, para não repetir linhas a cada busca ou filtro */
 
-    lista.forEach(function (d) { /*Cada nova demanda criada, seguirá essa estrutura */
+    lista.forEach(function (d) { /*Cada demanda da lista segue essa estrutura */
         corpoTabela.innerHTML += ` 
     <tr>
       <td>${d.titulo}</td>
@@ -88,7 +25,7 @@ function mostrarTabela(lista) {
       <td>${d.prioridade}</td>
       <td>${d.status}</td>
       <td>${d.projeto}</td>
-      <td>${d.responsavel}</td>
+      <td>${d.responsavel || "—"}</td>
       <td>${formatarData(d.dataCriacao)}</td>
       <td>${formatarData(d.prazo)}</td>
       <td class="acoes"><a href="detalhes.html">Ver</a> <button type="button" class="botaoEditar" data-id="${d.id}">Editar</button></td>
@@ -97,7 +34,26 @@ function mostrarTabela(lista) {
 });
 contador.textContent = "Mostrando " + lista.length + " de " + demandas.length; /*Atualiza o contador com a quantidade de linhas da tabela */
 }
-mostrarTabela(demandas);  /*Mostra todas as demandas quando a página abre */
+
+/* Busca as demandas na API e mostra na tabela quando a página abre */
+async function carregarDemandas() {
+  const token = sessionStorage.getItem("token"); /* o token que o login guardou */
+
+  const resposta = await fetch("http://localhost:3000/demandas", {
+    headers: { "Authorization": "Bearer " + token }
+  });
+
+  /* Sem token ou token vencido: volta para a tela de login */
+  if (!resposta.ok) {
+    window.location.href = "tela_login.html";
+    return;
+  }
+
+  demandas = await resposta.json(); /* guarda a lista que veio do banco */
+  aplicarFiltros(); /* mostra a tabela respeitando a busca, os filtros e a ordenação escolhidos */
+}
+
+carregarDemandas();
 
 const campoBusca = document.getElementById("busca");
 const filtroStatus = document.getElementById("filtroStatus");
@@ -181,6 +137,7 @@ const editPrazo = document.getElementById("editPrazo");
 const erroTitulo = document.getElementById("erroTitulo");
 const erroDescricao = document.getElementById("erroDescricao");
 const erroPrazo = document.getElementById("erroPrazo");
+const erroGeral = document.getElementById("erroGeral"); /* mensagem de erro que vem do servidor */
 
 /* Guarda qual demanda está sendo editada no momento.
    Começa vazia (null) porque nenhuma foi escolhida ainda. */
@@ -202,7 +159,7 @@ function limparErro(campo, erro) {
 }
 
 
-/* ----- Abrir o modal ----- */
+/*  Abrir o modal  */
 
 function abrirModal(demanda) {
   demandaEmEdicao = demanda; /* lembra qual demanda foi clicada */
@@ -214,19 +171,21 @@ function abrirModal(demanda) {
   editTipo.value = demanda.tipo;
   editPrioridade.value = demanda.prioridade;
   editStatus.value = demanda.status;
-  editResponsavel.value = demanda.responsavel;
+  editResponsavel.value = demanda.responsavel || ""; /* sem responsável, deixa o campo vazio */
   editPrazo.value = demanda.prazo;
 
   /* Apaga erros que tenham ficado da última vez */
   limparErro(editTitulo, erroTitulo);
   limparErro(editDescricao, erroDescricao);
   limparErro(editPrazo, erroPrazo);
+  erroGeral.textContent = "";
+  erroGeral.style.display = "none"; /* esconde o erro do servidor da última vez */
 
   modalEditar.showModal(); /* mostra o modal na tela */
 }
 
 
-/* ----- Clique no botão "Editar" ----- */
+/* Clique no botão "Editar" */
 /* O clique é escutado na tabela inteira, e não em cada botão.
    Motivo: a tabela é apagada e recriada toda vez que alguém filtra,
    e os botões novos não teriam o evento. A tabela (tbody) nunca é apagada. */
@@ -243,7 +202,7 @@ corpoTabela.addEventListener("click", function (evento) {
      Vem como texto ("3"), então o Number() transforma em número (3). */
   const id = Number(clicado.dataset.id);
 
-  /* Procura no array a demanda que tem esse id */
+  /* Procura na lista a demanda que tem esse id */
   const demanda = demandas.find(function (d) {
     return d.id === id;
   });
@@ -252,16 +211,15 @@ corpoTabela.addEventListener("click", function (evento) {
 });
 
 
-/* ----- Botão "Cancelar" ----- */
-
+/* Botão "Cancelar" */
 botaoCancelar.addEventListener("click", function () {
   modalEditar.close(); /* fecha sem salvar nada */
 });
 
 
-/* ----- Botão "Salvar alterações" ----- */
-
-formEditar.addEventListener("submit", function (evento) {
+/* Botão "Salvar alterações" */
+/* "async" porque agora esperamos a resposta do servidor (await) */
+formEditar.addEventListener("submit", async function (evento) {
   evento.preventDefault(); /* impede o formulário de recarregar a página */
 
   /* Validação simples: título, descrição e prazo não podem ficar vazios */
@@ -293,16 +251,45 @@ formEditar.addEventListener("submit", function (evento) {
     return;
   }
 
-  /* Tudo certo: copia o que está nos campos para a demanda */
-  demandaEmEdicao.titulo = editTitulo.value.trim();
-  demandaEmEdicao.descricao = editDescricao.value.trim();
-  demandaEmEdicao.projeto = editProjeto.value;
-  demandaEmEdicao.tipo = editTipo.value;
-  demandaEmEdicao.prioridade = editPrioridade.value;
-  demandaEmEdicao.status = editStatus.value;
-  demandaEmEdicao.responsavel = editResponsavel.value;
-  demandaEmEdicao.prazo = editPrazo.value;
+  /* Tudo certo no navegador: monta o que vai ser enviado ao servidor.
+     Projeto e responsável ainda não vão, porque esses selects ainda não vêm do banco. */
+  const dadosEditados = {
+    titulo: editTitulo.value.trim(),
+    descricao: editDescricao.value.trim(),
+    tipo: editTipo.value,
+    prioridade: editPrioridade.value,
+    status: editStatus.value,
+    prazo: editPrazo.value
+  };
 
-  modalEditar.close(); /* fecha o modal */
-  aplicarFiltros();    /* redesenha a tabela com os dados novos, mantendo os filtros */
+  const token = sessionStorage.getItem("token");
+
+  /* Envia para a API com o método PUT (editar). O servidor valida tudo de novo. */
+  const resposta = await fetch("http://localhost:3000/demandas/" + demandaEmEdicao.id, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token
+    },
+    body: JSON.stringify(dadosEditados)
+  });
+
+  /* Token vencido: volta para o login */
+  if (resposta.status === 401) {
+    window.location.href = "tela_login.html";
+    return;
+  }
+
+  /* O servidor recusou (400, 403, 404...): mostra a mensagem dele dentro do modal e deixa aberto */
+  if (!resposta.ok) {
+    const erro = await resposta.json();
+    erroGeral.textContent = erro.mensagem;
+    erroGeral.style.display = "block";
+    return;
+  }
+
+  /* Deu certo: fecha o modal e busca a lista de novo no banco, já com a edição */
+  modalEditar.close();
+  await carregarDemandas();
+  alert("Demanda atualizada com sucesso!");
 });
