@@ -18,7 +18,7 @@
 
   <!-- cabeçalho -->
   <header class="cabecalho">
-    <a href="dashboard.html" class="logo">Demandas<span>N3</span></a>
+    <a href="dashboard.html" class="logo">Demandas<span> N3</span></a>
 
     <div class="usuario">
       <span class="avatar">RS</span>
@@ -53,19 +53,23 @@
         </div>
       </div>
 
+      <!-- erro quando não acha a demanda -->
+      <p id="aviso-pagina" class="aviso-pagina" role="alert"></p>
+
       <!-- informações gerais -->
       <section class="painel">
         <h2>Informações gerais</h2>
         <dl class="grade-info">
-          <div class="titulo-demanda"><dt>Título</dt><dd>Erro ao salvar demanda sem prazo</dd></div>
-          <div><dt>Tipo</dt><dd><span class="etiqueta tipo">Defeito</span></dd></div>
-          <div><dt>Prioridade</dt><dd><span class="etiqueta prio-critica">Crítica</span></dd></div>
-          <!-- data-status: aberta, andamento, revisao, concluida ou cancelada -->
-          <div><dt>Status</dt><dd><span class="etiqueta status-andamento" id="status-demanda" data-status="andamento">Em andamento</span></dd></div>
-          <div><dt>Responsável</dt><dd>Rafael Soares</dd></div>
-          <div><dt>Data de criação</dt><dd>25/09/2026</dd></div>
+          <div class="titulo-demanda"><dt>Título</dt><dd id="titulo-demanda">—</dd></div>
+          <div><dt>Tipo</dt><dd><span class="etiqueta tipo" id="tipo-demanda">—</span></dd></div>
+          <div><dt>Prioridade</dt><dd><span class="etiqueta" id="prioridade-demanda">—</span></dd></div>
+          <div><dt>Status</dt><dd><span class="etiqueta" id="status-demanda">—</span></dd></div>
+          <div><dt>Responsável</dt><dd id="responsavel-demanda">—</dd></div>
+          <div><dt>Projeto</dt><dd id="projeto-demanda">—</dd></div>
           <!-- datetime (ano-mês-dia) usado no JS para calcular os dias -->
-          <div><dt>Prazo</dt><dd><time id="prazo-demanda" datetime="2026-10-02">02/10/2026</time> <span id="indicador-prazo" class="indicador-prazo"></span></dd></div>
+          <div><dt>Prazo</dt><dd><time id="prazo-demanda">—</time> <span id="indicador-prazo" class="indicador-prazo"></span></dd></div>
+          <div><dt>Data de criação</dt><dd id="criacao-demanda">—</dd></div>
+          <div><dt>Última atualização</dt><dd id="atualizacao-demanda">—</dd></div>
         </dl>
       </section>
 
@@ -79,12 +83,16 @@
           <li data-etapa="concluida">Concluída</li>
         </ol>
         <p id="aviso-etapas" class="aviso-etapas"></p>
+
+        <!-- botões de status (o JS cria) -->
+        <div class="mudar-status" id="mudar-status"></div>
+        <p id="mensagem-status" class="mensagem-erro" role="alert"></p>
       </section>
 
       <!-- descrição -->
       <section class="painel">
         <h2>Descrição</h2>
-        <p class="descricao">Ao cadastrar uma demanda deixando o campo de prazo vazio, o sistema apresenta erro e não salva a demanda. O prazo deve ser tratado conforme a regra definida pelo grupo.</p>
+        <p class="descricao" id="descricao-demanda">—</p>
       </section>
 
       <!-- anexos -->
@@ -110,11 +118,8 @@
       <!-- histórico e comentários -->
       <section class="painel">
         <h2>Histórico / Comentários</h2>
-        <ul class="historico" id="historico">
-          <!-- evento = bolinha cinza, comentario = bolinha azul -->
-          <li class="evento"><small>Rafael Soares · 28/09/2026</small>Alterou o status para "Em andamento"</li>
-          <li class="comentario"><small>Pietro Giati · 29/09/2026</small>Consegui reproduzir o erro deixando o campo de prazo vazio.</li>
-        </ul>
+        <!-- evento = bolinha cinza, comentario = bolinha azul -->
+        <ul class="historico" id="historico"></ul>
 
         <!-- novalidate porque a validação é feita no JS -->
         <form class="comentar" id="form-comentario" novalidate>

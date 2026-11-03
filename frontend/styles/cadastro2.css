@@ -1,3 +1,5 @@
+/*AUTOR DO ARQUIVO: LUIGGI FRAGA ; RA: 26026323*/
+
 /*-------------------------Configurando os elementos padrões da página------------------------------*/
 * {
     box-sizing: border-box;
@@ -72,9 +74,9 @@ a {
 
 
 #avatar {
-    display:grid; /*aparentemente eh o jeito mais facil de fazer com que o item fique centralizado*/
-    place-items: center; /*centraliza o texto na grade*/
-    margin: 0; /*zera a margem do elemento <p>*/
+    display:grid; 
+    place-items: center; 
+    margin: 0; 
     width: 30px;
     height: 30px;
     background-color:#3afe04;
@@ -130,6 +132,7 @@ a {
 .pagina {
     flex: 1;
     padding: 30px;
+    background-color: #f4f6fb;
 }
 
 
@@ -144,6 +147,7 @@ a {
     border: 1px solid #dde2ec;
     border-radius: 12px;
     margin-top: 18px;
+    background-color: #fff;
 }
 
 

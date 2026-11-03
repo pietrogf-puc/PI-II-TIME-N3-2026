@@ -1,32 +1,41 @@
 /*
-Arquivo TelaDeLogin.css feito por Pietro Giati de Favari
+Arquivo tela_login.css feito por Pietro Giati de Favari
 Ra: 26028869
+Estilos da tela de login
 */
 * {
     margin: 0px;
     padding: 0px;
+    box-sizing: border-box;
 }
 
 body {
-    min-height: 90vh;
+    min-height: 100vh;
+    min-height: 100dvh;
     margin: 0px;
+    padding: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #e3f1ff;
 }
 
+form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 
 .container-principal {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
 
     border: 3px solid black;
     border-radius: 20px;
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
     min-height: 400px;
 
     background-color: whitesmoke;
@@ -34,8 +43,11 @@ body {
     padding: 20px 0;
 }
 
+/* largura limitada + centralizado pelo align-items do container */
 .input-tela-login {
-    padding: 20px;
+    width: 85%;
+    max-width: 260px;
+    padding: 20px 0;
 }
 
 .input-tela-login label {
@@ -44,21 +56,25 @@ body {
 }
 
 .input-tela-login input {
-    padding: 5px;
-    width: 240px;
-    height: 20px;
+    padding: 5px 8px;
+    width: 100%;
+    height: 36px;
+    font-size: 16px;
 }
 
+/* botão centralizado */
 .input-tela-login button {
+    display: block;
+    margin: 0 auto;
     padding: 10px;
     width: 100px;
     height: 40px;
-
 }
 
 #mensagem_erro_email {
     margin-top: 2px;
     display: none;
+    overflow-wrap: anywhere;
 }
 
 #forms_invalido {
@@ -66,6 +82,7 @@ body {
     text-align: center;
     width: 80%;
     margin-top: -20px;
+    overflow-wrap: anywhere;
 }
 
 #id-senha {
@@ -75,6 +92,8 @@ body {
 
 .requerimento-senha {
     display: none;
+    width: 85%;
+    max-width: 260px;
 }
 
 .requerimento-senha li {
@@ -87,13 +106,74 @@ body {
 #titulo {
     display: flex;
     flex-direction: column;
-
     justify-content: flex-start;
     align-items: center;
+    text-align: center;
+    padding: 0 16px;
 }
 
 #loginBtn {
     background-color: #72afff;
     border-radius: 10px;
     width: 100px;
+}
+
+
+/* ===== Responsividade ===== */
+
+/* Celulares */
+@media (max-width: 480px) {
+    body {
+        padding: 12px;
+    }
+
+    .container-principal {
+        border-width: 2px;
+        border-radius: 16px;
+        min-height: auto;
+        gap: 16px;
+    }
+
+    #titulo h1 {
+        font-size: 1.5rem;
+    }
+
+    #titulo p {
+        font-size: 0.95rem;
+    }
+
+    .input-tela-login {
+        width: 88%;
+        padding: 16px 0;
+    }
+
+    .requerimento-senha {
+        width: 88%;
+        font-size: 0.9rem;
+    }
+
+    .input-tela-login button,
+    #loginBtn {
+        width: 100%;
+        height: 44px;
+        font-size: 16px;
+    }
+}
+
+/* Telas muito pequenas */
+@media (max-width: 320px) {
+    #titulo h1 {
+        font-size: 1.25rem;
+    }
+
+    .requerimento-senha {
+        font-size: 0.85rem;
+    }
+}
+
+/* Celular deitado (pouca altura) */
+@media (max-height: 500px) {
+    body {
+        align-items: flex-start;
+    }
 }

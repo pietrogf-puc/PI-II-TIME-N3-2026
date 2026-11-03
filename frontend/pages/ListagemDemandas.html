@@ -9,6 +9,82 @@
   <script src="/PI-II-TIME-N3-2026/frontend/scripts/ListagemDemandas.js" defer></script>
 </head>
 <body>
+  <dialog id="modalEditar">
+    <h2>Editar Demanda</h2>
+     <form id="formEditar" novalidate>
+
+    <div class="titulo">
+      <label for="editTitulo">Título da Demanda</label>
+      <input type="text" id="editTitulo">
+      <span class="erro" id="erroTitulo"></span>
+    </div>
+
+    <div class="descricao">
+      <label for="editDescricao">Descrição</label>
+      <textarea id="editDescricao"></textarea>
+      <span class="erro" id="erroDescricao"></span>
+    </div>
+
+    <div class="wrap">
+      <div class="campo">
+        <label for="editProjeto">Projeto</label>
+        <select id="editProjeto">
+          <option>Sistema X</option>
+          <option>Sistema Y</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="editTipo">Tipo</label>
+        <select id="editTipo">
+          <option>Tarefa</option>
+          <option>Defeito</option>
+          <option>Melhoria</option>
+          <option>Documentação</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="editPrioridade">Prioridade</label>
+        <select id="editPrioridade">
+          <option>Baixa</option>
+          <option>Média</option>
+          <option>Alta</option>
+          <option>Crítica</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>Status</label>
+        <p id="editStatusTexto" class="status-somente-leitura"></p>
+      </div>
+
+      <div class="campo">
+        <label for="editResponsavel">Responsável</label>
+        <select id="editResponsavel">
+          <option>Fulano</option>
+          <option>José Picolo</option>
+          <option>Pietro Favari</option>
+          <option>Vittor Maia</option>
+          <option>Luggi Braga</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="editPrazo">Prazo</label>
+        <input type="date" id="editPrazo">
+        <span class="erro" id="erroPrazo"></span>
+      </div>
+    </div>
+    
+    <span class="erro" id="erroGeral"></span>
+    <div class="botoes">
+      <button type="button" id="botaoCancelar">Cancelar</button>
+      <button type="submit" id="botaoSalvar">Salvar alterações</button>
+    </div>
+  </form>
+  </dialog>
+
   <!-- Cabeçalho -->
   <header class="cabecalho">
     <nav class="logoeusuario">
@@ -27,8 +103,7 @@
       <div class="itens">
         <a href="/PI-II-TIME-N3-2026/frontend/pages/dashboard.html">Dashboard</a>
         <a href="/PI-II-TIME-N3-2026/frontend/pages/cadastro.html">Adicionar Demanda</a>
-        <a href="/PI-II-TIME-N3-2026/frontend/pages/ListagemDemandas.html" class="aberto">Listagem de Demandas</a>
-        <a href="#">Projetos</a>
+        <a href="/PI-II-TIME-N3-2026/frontend/pages/ListagemDemandas.html" class="aberto">Demandas</a>
         <a href="/PI-II-TIME-N3-2026/frontend/pages/tela_login.html">Sair</a>
       </div>
     </div>
@@ -77,6 +152,7 @@
       </div>
 
       <!-- Tabela de demandas (as linhas são criadas pelo JavaScript) -->
+    <div class="tabela-container">
       <table>
         <thead>
           <tr>
@@ -95,6 +171,7 @@
 
         </tbody>
       </table>
+    </div>
       <!--Paginação-->
       <div class="paginacao">
         <!-- Contador de demandas-->

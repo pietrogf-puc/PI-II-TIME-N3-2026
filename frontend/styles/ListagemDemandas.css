@@ -105,6 +105,7 @@ body {
 .pagina {
   flex: 1;
   padding: 30px;
+  min-width: 0;
 }
 
 .pagina h1 {
@@ -153,6 +154,16 @@ body {
   background: #243b94;
 }
 
+.acoes button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  color: #3b5bdb;
+  cursor: pointer;
+}
+
 /*Tabela*/
 table {
   width: 100%;
@@ -180,10 +191,159 @@ tbody tr:hover {
   margin-right: 6px;
 }
 
+.tabela-container {
+  overflow-x: auto;
+}
+
 /*paginação*/
 .paginacao {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 14px;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .barralateral {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #dde2ec;
+  }
+
+  .pagina {
+    padding: 15px;
+  }
+
+  .filtros input {
+    width: 100%;
+  }
+}
+
+
+/* ----- Modal de edição ----- */
+
+/* A caixa do modal */
+#modalEditar {
+  width: 800px;
+  max-width: 95%;          /* em tela pequena, não passa da largura */
+  max-height: 90vh;        /* no máximo 90% da altura da tela */
+  overflow-y: auto;        /* se não couber, aparece barra de rolagem */
+  margin: auto;            /* centraliza na tela */
+  padding: 30px;
+  border: 1px solid #dde2ec;
+  border-radius: 12px;
+}
+
+/* O fundo escuro atrás do modal */
+#modalEditar::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Título e descrição: label em cima, campo embaixo */
+#modalEditar .titulo,
+#modalEditar .descricao,
+#modalEditar .campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#modalEditar .titulo,
+#modalEditar .descricao {
+  margin-bottom: 18px;
+}
+
+#modalEditar label {
+  font-weight: 600;
+}
+
+/* Todos os campos com a mesma borda */
+#modalEditar input,
+#modalEditar textarea,
+#modalEditar select {
+  border: 1px solid #cfd0d2;
+  border-radius: 8px;
+  padding: 0 10px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+#modalEditar .titulo input { height: 50px; }
+#modalEditar .descricao textarea { height: 120px; padding-top: 10px; }
+
+/* Selects e data lado a lado, quebrando linha quando não cabem */
+#modalEditar .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+#modalEditar .campo select,
+#modalEditar .campo input {
+  width: 220px;
+  height: 50px;
+}
+
+/* Botões no canto direito */
+#modalEditar .botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid #dde2ec;
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
+/* Status no modal: só mostra, não deixa editar */
+#modalEditar .status-somente-leitura {
+  display: flex;
+  align-items: center;      /* centraliza o texto na altura */
+  width: 220px;             /* mesmo tamanho dos selects */
+  height: 50px;
+  padding: 0 10px;
+  border: 1px solid #dde2ec;
+  border-radius: 8px;
+  background-color: #f4f6fb; /* fundo cinza = "não editável" */
+  color: #6b7285;
+}
+
+#botaoCancelar,
+#botaoSalvar {
+  height: 50px;
+  padding: 0 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#botaoCancelar {
+  background-color: #fff;
+  border: 1px solid #939598;
+}
+
+#botaoSalvar {
+  background-color: #3b5bdb;
+  color: #fff;
+  border: none;
+}
+
+#botaoSalvar:hover {
+  background-color: #243b94;
+}
+
+/* Mensagens de erro (escondidas até ter erro) */
+#modalEditar .erro {
+  display: none;
+  color: #e03131;
+  font-size: 13px;
+}
+
+#modalEditar .campo_invalido {
+  border: 1px solid #e03131;
 }

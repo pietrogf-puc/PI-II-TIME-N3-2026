@@ -518,3 +518,27 @@ textarea.invalido { border-color: var(--prio-critica); }
 @media (max-width: 800px) {
   .etapas li { font-size: 12px; }
 }
+
+/* botões de mudar status */
+.mudar-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: var(--espaco);
+}
+
+.mudar-status:empty { display: none; }
+
+#mensagem-status { margin-top: 8px; font-size: 14px; }
+
+/* aviso de erro no topo */
+.aviso-pagina {
+  padding: 14px;
+  margin-bottom: 20px;
+  border: 1px solid var(--prio-critica);
+  border-radius: var(--raio);
+  background: #fff5f5;
+  color: var(--prio-critica);
+}
+
+.aviso-pagina:empty { display: none; }
