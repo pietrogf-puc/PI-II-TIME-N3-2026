@@ -12,7 +12,7 @@
   Organização do arquivo:
     1. Configurações
     2. Validação dos filtros e formatação dos dados
-    3. Comunicação com a API
+    3. Login e comunicação com a API
     4. Funções de TELA (manipulação do DOM)
     5. Eventos e inicialização
 */
@@ -24,6 +24,9 @@
 
 // Endereço da API (o servidor de backend roda na porta 3000)
 const URL_API = 'http://localhost:3000';
+
+// Página para onde o usuário vai quando não está logado ou o login expirou
+const PAGINA_LOGIN = 'tela_login.html';
 
 // Classe CSS (cor da etiqueta) de cada status e de cada prioridade
 const CLASSE_STATUS = {
@@ -94,10 +97,30 @@ function descreverPrazo(dias) {
 
 
 /* ===================================================================
-   3. COMUNICAÇÃO COM A API
+   3. LOGIN E COMUNICAÇÃO COM A API
    =================================================================== */
 
-// Chama GET /dashboard com os filtros preenchidos.
+// A tela de login guarda o token e os dados do usuário no sessionStorage
+function lerToken() {
+  return sessionStorage.getItem('token');
+}
+
+function lerUsuario() {
+  try {
+    return JSON.parse(sessionStorage.getItem('usuario'));
+  } catch {
+    return null; // valor guardado corrompido: tratado como "sem usuário"
+  }
+}
+
+// Apaga o login guardado e manda o usuário para a tela de login
+function voltarParaLogin() {
+  sessionStorage.removeItem('token');
+  sessionStorage.removeItem('usuario');
+  window.location.href = PAGINA_LOGIN;
+}
+
+// Chama GET /dashboard com os filtros preenchidos e o token no cabeçalho.
 // Devolve { resumo } quando dá certo ou { erro: { mensagem, campos } } quando falha.
 async function buscarDashboard(filtros) {
   // URLSearchParams monta a parte da URL depois do "?" e trata os caracteres especiais
@@ -107,7 +130,15 @@ async function buscarDashboard(filtros) {
   });
 
   try {
-    const resposta = await fetch(`${URL_API}/dashboard?${parametros}`);
+    const resposta = await fetch(`${URL_API}/dashboard?${parametros}`, {
+      headers: { 'Authorization': 'Bearer ' + lerToken() }
+    });
+
+    // 401: sem login ou login expirado (o token vale 2 horas)
+    if (resposta.status === 401) {
+      return { semLogin: true };
+    }
+
     const dados = await resposta.json();
 
     // Status 400 ou 500: o servidor explica o problema no campo "erro".
@@ -381,6 +412,11 @@ async function atualizarDashboard() {
   const resultado = await buscarDashboard(filtros);
   if (numeroDaConsulta !== ultimaConsulta) return;
 
+  if (resultado.semLogin) {
+    alert('Sua sessão expirou. Faça login novamente.');
+    voltarParaLogin();
+    return;
+  }
   if (resultado.erro) {
     mostrarErro(resultado.erro);
     return;
@@ -410,8 +446,33 @@ function limparFiltros() {
   atualizarDashboard();
 }
 
-// Prepara a tela: liga os eventos e busca os dados pela primeira vez
+// Escreve no cabeçalho o nome, o perfil e as iniciais de quem fez login
+function mostrarUsuarioLogado(usuario) {
+  const nome = (usuario && usuario.nome) || 'Usuário';
+  const iniciais = nome.split(' ').filter(Boolean).slice(0, 2).map(function (parte) {
+    return parte[0].toUpperCase();
+  }).join('');
+
+  document.getElementById('usuario-nome').textContent = nome;
+  document.getElementById('usuario-perfil').textContent = (usuario && usuario.perfil) || '';
+  document.getElementById('usuario-iniciais').textContent = iniciais;
+}
+
+// Prepara a tela: confere o login, liga os eventos e busca os dados
 function iniciarDashboard() {
+  // Sem login, nem mostra o dashboard: vai direto para a tela de login
+  if (!lerToken()) {
+    voltarParaLogin();
+    return;
+  }
+  mostrarUsuarioLogado(lerUsuario());
+
+  // "Sair" apaga o login antes de voltar para a tela de login
+  document.getElementById('link-sair').addEventListener('click', function (evento) {
+    evento.preventDefault();
+    voltarParaLogin();
+  });
+
   // Data de hoje no subtítulo
   document.getElementById('data-hoje').textContent = new Date().toLocaleDateString('pt-BR');
 

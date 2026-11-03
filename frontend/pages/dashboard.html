@@ -27,15 +27,16 @@
 </head>
 <body>
 
-  <!-- ===== Cabeçalho: logo e usuário logado ===== -->
+  <!-- ===== Cabeçalho: logo e usuário logado =====
+       Nome, perfil e iniciais vêm do login e são escritos pelo JS -->
   <header class="cabecalho">
     <a href="dashboard.html" class="logo">Demandas<span> N3</span></a>
 
     <div class="usuario">
-      <span class="avatar">GM</span>
+      <span class="avatar" id="usuario-iniciais">-</span>
       <div>
-        Gustavo Manera
-        <small>Líder de Projeto</small>
+        <span id="usuario-nome">-</span>
+        <small id="usuario-perfil"></small>
       </div>
     </div>
   </header>
@@ -48,8 +49,8 @@
       <a href="dashboard.html" class="ativo">Dashboard</a>
       <a href="cadastro.html">Adicionar demanda</a>
       <a href="ListagemDemandas.html">Demandas</a>
-      <!-- "Sair" volta para a tela de login -->
-      <a href="tela_login.html">Sair</a>
+      <!-- "Sair" apaga o login guardado (pelo JS) e volta para a tela de login -->
+      <a href="tela_login.html" id="link-sair">Sair</a>
     </nav>
 
     <!-- ===== Conteúdo principal do dashboard ===== -->
