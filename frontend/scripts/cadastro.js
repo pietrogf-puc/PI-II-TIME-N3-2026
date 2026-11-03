@@ -22,6 +22,50 @@ const erro_tipo = document.getElementById("erro_tipo");
 const erro_prioridade = document.getElementById("erro_prioridade");
 const erro_responsavel = document.getElementById("erro_responsavel");
 const erro_prazo = document.getElementById("erro_prazo");
+const URL_API = "http://localhost:3000";
+
+
+function mostrarMensagem(texto, classe) {
+    mensagem_formulario.innerHTML = texto;
+    mensagem_formulario.className = classe;
+    mensagem_formulario.style.display = "block";
+}
+
+
+// Coloca cada item da lista como uma <option> do select (value = id do banco)
+function preencherSelect(select, lista) {
+    for (const item of lista) {
+        const opcao = document.createElement("option");
+        opcao.value = item.id;
+        opcao.textContent = item.nome;
+        select.appendChild(opcao);
+    }
+}
+
+
+// Busca no backend os projetos, tipos, prioridades e usuários
+async function carregarOpcoes() {
+    const token = sessionStorage.getItem("token");
+
+    const resposta = await fetch(URL_API + "/demandas/opcoes", {
+        headers: { "Authorization": "Bearer " + token }
+    });
+
+    // Sem token ou token vencido: volta para a tela de login
+    if (!resposta.ok) {
+        window.location.href = "tela_login.html";
+        return;
+    }
+
+    const opcoes = await resposta.json();
+    preencherSelect(projeto, opcoes.projetos);
+    preencherSelect(tipo, opcoes.tipos);
+    preencherSelect(prioridade, opcoes.prioridades);
+    preencherSelect(responsavel, opcoes.usuarios);
+}
+
+carregarOpcoes();
+
 
 
 function mostrarErro(campo, erro, texto) {
@@ -142,10 +186,10 @@ responsavel.addEventListener("change", function () {
 
 
 
-formulario.addEventListener("submit", function (cancelarEnvio) {
-    cancelarEnvio.preventDefault(); 
+formulario.addEventListener("submit", async function (cancelarEnvio) {
+    cancelarEnvio.preventDefault();
 
-    
+
     const tituloValido = verificarTitulo();
     const descricaoValida = verificarDescricao();
     const projetoValido = verificarSelect(projeto, erro_projeto, "Selecione um projeto");
@@ -157,20 +201,45 @@ formulario.addEventListener("submit", function (cancelarEnvio) {
     if (tituloValido && descricaoValida && projetoValido && tipoValido &&
         prioridadeValida && responsavelValido && prazoValido) {
 
-        
-        formulario.reset();
+        // Junta os dados do formulário (os nomes são os que o backend espera)
+        const dados = {
+            titulo: titulo.value.trim(),
+            descricao: descricao.value.trim(),
+            id_projeto: Number(projeto.value),
+            id_tipo: Number(tipo.value),
+            id_prioridade: Number(prioridade.value),
+            id_responsavel: Number(responsavel.value),
+            prazo: prazo.value
+        };
 
-       
-        mensagem_formulario.innerHTML = "Demanda cadastrada com sucesso!";
-        mensagem_formulario.className = "mensagem_sucesso";
-        mensagem_formulario.style.display = "block";
+        const token = sessionStorage.getItem("token");
+
+        // Manda para o backend gravar no banco
+        const resposta = await fetch(URL_API + "/demandas", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify(dados)
+        });
+
+        const resultado = await resposta.json();
+
+        if (resposta.ok) {
+            formulario.reset();
+            mostrarMensagem("Demanda cadastrada com sucesso!", "mensagem_sucesso");
+        }
+        else {
+            // Mostra o erro que veio do backend (ex.: sem permissão)
+            mostrarMensagem(resultado.mensagem, "mensagem_erro");
+        }
     }
     else {
-        mensagem_formulario.innerHTML = "Não foi possível cadastrar a demanda. <br> Corrija os campos marcados em vermelho.";
-        mensagem_formulario.className = "mensagem_erro";
-        mensagem_formulario.style.display = "block";
+        mostrarMensagem("Não foi possível cadastrar a demanda. <br> Corrija os campos marcados em vermelho.", "mensagem_erro");
     }
 });
+
 
 
 
