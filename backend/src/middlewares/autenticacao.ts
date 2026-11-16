@@ -2,17 +2,19 @@
 // Middleware que confere o token JWT enviado no cabeçalho Authorization.
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { RowDataPacket } from "mysql2";
+import conexao from "../config/database";
 
 interface DadosToken extends JwtPayload {
     id: number;
     perfil: string;
 }
 
-export function autenticar(
+export async function autenticar(
     req: Request,
     res: Response,
     next: NextFunction
-): void {
+): Promise<void> {
     const cabecalho = req.headers.authorization;
 
     if (!cabecalho) {
@@ -40,20 +42,46 @@ export function autenticar(
         return;
     }
 
+    let dados: DadosToken;
+
     try {
-        const dados = jwt.verify(token, segredoJWT) as DadosToken;
-
-        res.locals.usuario = {
-            id: dados.id,
-            perfil: dados.perfil
-        };
-
-        next();
-
+        dados = jwt.verify(token, segredoJWT) as DadosToken;
     } catch {
         res.status(401).json({
             mensagem: "Token inválido ou expirado."
         });
         return;
+    }
+
+    try {
+        // Confere no banco se o usuário ainda existe, está ativo e qual é o perfil ATUAL
+        // (assim, uma conta desativada ou um perfil alterado valem na hora, sem esperar o token expirar)
+        const [usuarios] = await conexao.execute<RowDataPacket[]>(
+            `SELECT u.ativo, p.nome AS perfil
+               FROM usuario u
+               INNER JOIN perfil p ON p.id = u.id_perfil
+              WHERE u.id_usuario = ?`,
+            [dados.id]
+        );
+
+        if (usuarios.length === 0 || !usuarios[0].ativo) {
+            res.status(401).json({
+                mensagem: "Usuário inexistente ou desativado."
+            });
+            return;
+        }
+
+        res.locals.usuario = {
+            id: dados.id,
+            perfil: usuarios[0].perfil
+        };
+
+        next();
+
+    } catch (erro) {
+        console.error("Erro ao validar o usuário do token:", erro);
+        res.status(500).json({
+            mensagem: "Erro ao validar o usuário."
+        });
     }
 }

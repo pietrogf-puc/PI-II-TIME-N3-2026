@@ -7,6 +7,7 @@ import demandasRouter from "./routes/demandas";
 import conexao from "./config/database";
 import { autenticar } from "./middlewares/autenticacao";
 import cors from "cors";
+import perfilRouter from "./routes/perfil";
 
 const servidor = express();
 servidor.use(express.json());
@@ -44,12 +45,8 @@ servidor.get("/teste-banco", async (_req: Request, res: Response) => {
     }
 });
 
-servidor.get("/perfil", autenticar, (req, res) => {
-    res.json({
-        mensagem: "Acesso autorizado!",
-        usuario: res.locals.usuario
-    });
-});
+// Confirma o token e devolve o usuário e as permissões do perfil dele
+servidor.use("/perfil", perfilRouter);
 
 // Inicia o servidor
 servidor.listen(PORT, () => {

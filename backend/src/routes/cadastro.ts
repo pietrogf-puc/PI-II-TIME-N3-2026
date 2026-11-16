@@ -8,8 +8,7 @@
 import { Router, Request, Response } from "express";
 import { RowDataPacket, ResultSetHeader } from "mysql2";
 import conexao from "../config/database";
-import { autorizarPerfil } from "../middlewares/autorizarPerfil";
-
+import { exigirPermissao, exigirVinculoComProjeto } from "../middlewares/permissoes";
 const router = Router();
 
 
@@ -90,7 +89,7 @@ router.get("/opcoes", async (_req: Request, res: Response) => {
 /* ---------- POST /demandas ---------- */
 // Cadastra uma demanda nova. Só Administrador e Líder de Projeto podem.
 
-router.post("/", autorizarPerfil("Administrador", "Líder de Projeto"), async (req: Request, res: Response) => {
+router.post("/", exigirPermissao("criar_demanda"), exigirVinculoComProjeto, async (req: Request, res: Response) => {
     try {
         const dados = req.body;
 
