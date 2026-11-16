@@ -4,6 +4,7 @@ import express, { Request, Response } from "express";
 import loginRouter from "./routes/login";
 import cadastroRouter from "./routes/cadastro";  
 import demandasRouter from "./routes/demandas";
+import detalhesRouter from "./routes/detalhes";
 import conexao from "./config/database";
 import { autenticar } from "./middlewares/autenticacao";
 import cors from "cors";
@@ -17,6 +18,7 @@ servidor.use(cors());
 servidor.use("/login", loginRouter);
 servidor.use("/demandas", autenticar, cadastroRouter); 
 servidor.use("/demandas", demandasRouter);
+servidor.use("/demandas", detalhesRouter); // detalhes, status, comentários e histórico
 
 const PORT: number = 3000;
 
