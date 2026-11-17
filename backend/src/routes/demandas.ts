@@ -8,6 +8,7 @@ import { autenticar } from "../middlewares/autenticacao";
 // As regras de status (quem pode mudar para qual status)
 import { ehStatusValido, verificarMudancaDeStatus, Perfil, Status } from "../regras/status";
 import { verificarPrazoEmFeriado } from "../regras/feriados";
+import { permissoesDoPerfil, participaDoProjeto } from "../middlewares/permissoes";
 
 
 
@@ -231,6 +232,37 @@ router.put("/:id", autenticar, async (req: Request, res: Response) => {
                 res.status(403).json({ mensagem: "O Membro da Equipe só pode alterar o status da demanda." });
                 return;
             }
+        }
+
+                // Responsável: o modal pode enviar "id_responsavel". Se não enviar, o responsável não muda.
+        let trocarResponsavel = false;
+        let idNovoResponsavel = 0;
+        let nomeNovoResponsavel = "";
+
+        if (dados.id_responsavel !== undefined && Number(dados.id_responsavel) !== atual.id_responsavel) {
+            // Só quem tem a permissão (Administrador e Líder) pode atribuir ou alterar o responsável
+            const permissoes = await permissoesDoPerfil(perfil);
+            if (!permissoes.includes("atribuir_alterar_responsavel")) {
+                res.status(403).json({ mensagem: "Seu perfil não pode atribuir ou alterar o responsável." });
+                return;
+            }
+
+            idNovoResponsavel = Number(dados.id_responsavel);
+
+            // O novo responsável precisa existir, estar ativo e participar do projeto da demanda
+            const [usuarios] = await conexao.execute<RowDataPacket[]>(
+                "SELECT nome FROM usuario WHERE id_usuario = ? AND ativo = TRUE",
+                [idNovoResponsavel]
+            );
+            const participa = await participaDoProjeto(idNovoResponsavel, atual.id_projeto);
+
+            if (!Number.isInteger(idNovoResponsavel) || usuarios.length === 0 || !participa) {
+                res.status(400).json({ mensagem: "Responsável inválido ou fora do projeto desta demanda." });
+                return;
+            }
+
+            nomeNovoResponsavel = usuarios[0].nome;
+            trocarResponsavel = true;
         }
 
         // Regras do fluxo de status. Só confere se o status mudou.
