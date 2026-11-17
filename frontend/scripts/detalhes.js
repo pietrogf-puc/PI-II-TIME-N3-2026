@@ -2,26 +2,21 @@
   Arquivo: detalhes.js
   Autor: Rafael Carvalho Soares (RA 26029352)
   Projeto: Sistema de Acompanhamento de Demandas - PI II - Time N3
-  JS da tela de detalhes: carrega a demanda, etapa atual, prazo,
-  histórico/comentários, mudança de status e cancelamento.
+  JS da tela de detalhes: carrega a demanda pela API, etapa atual, prazo,
+  histórico/comentários, mudança de status, cancelamento e usuário logado.
 */
 
 
 // ----- configuração -----
 
-// enquanto o backend não fica pronto uso os dados de exemplo (true = busca na API)
-const USAR_API = false;
 const URL_API = "http://localhost:3000";
 
 // pega o id da url (detalhes.html?id=3)
-const idDemanda = new URLSearchParams(window.location.search).get("id") || (USAR_API ? null : "1");
+const idDemanda = new URLSearchParams(window.location.search).get("id");
 
 // limites do comentário
 const MIN_CARACTERES = 5;
 const MAX_CARACTERES = 300;
-
-// nome usado nos comentários novos
-const AUTOR_EXEMPLO = "Rafael Soares";
 
 // até quantos dias o aviso fica amarelo
 const DIAS_ALERTA = 3;
@@ -46,62 +41,37 @@ const CLASSE_DA_PRIORIDADE = {
 };
 
 
-// ----- dados de exemplo (igual ao que a API vai mandar) -----
-
-// GET /demandas/:id
-const DEMANDA_EXEMPLO = {
-  id: 1,
-  titulo: "Erro ao salvar demanda sem prazo",
-  descricao: "Ao cadastrar uma demanda deixando o campo de prazo vazio, o sistema apresenta erro e não salva a demanda. O prazo deve ser tratado conforme a regra definida pelo grupo.",
-  tipo: "Defeito",
-  prioridade: "Crítica",
-  status: "Em andamento",
-  responsavel: "Rafael Soares", // pode vir null
-  projeto: "Sistema de Demandas",
-  dataCriacao: "2026-09-25T09:00:00",
-  dataAtualizacao: "2026-09-28T10:15:00",
-  prazo: "2026-10-02",
-  // vem do servidor (status.ts), depende do perfil
-  proximosStatus: ["Em revisão", "Cancelada"],
-  historico: [
-    { autor: "Rafael Soares", dataHora: "2026-09-28T10:15:00", descricao: 'Alterou o status de "Aberta" para "Em andamento"' }
-  ]
-};
-
-// GET /demandas/:id/comentarios
-const COMENTARIOS_EXEMPLO = [
-  { autor: "Pietro Giati", dataHora: "2026-09-29T14:30:00", texto: "Consegui reproduzir o erro deixando o campo de prazo vazio." }
-];
-
-// só pra testar sem o backend (como se fosse Líder)
-const PROXIMOS_EXEMPLO = {
-  "Aberta": ["Em andamento", "Cancelada"],
-  "Em andamento": ["Em revisão", "Cancelada"],
-  "Em revisão": ["Em andamento", "Concluída", "Cancelada"],
-  "Concluída": [],
-  "Cancelada": []
-};
-
-
 // ----- comunicação com a API -----
 
-// faz o fetch e se der erro joga a mensagem que veio do servidor
+// faz o fetch com o token do login e, se der erro, joga a mensagem do servidor
 async function chamarApi(caminho, metodo, corpo) {
-  const opcoes = { method: metodo || "GET", headers: {} };
+  const opcoes = {
+    method: metodo || "GET",
+    headers: { "Authorization": "Bearer " + sessionStorage.getItem("token") }
+  };
 
   if (corpo) {
     opcoes.headers["Content-Type"] = "application/json";
     opcoes.body = JSON.stringify(corpo);
   }
-  // TODO: ver com o Pietro como mandar o usuário logado
 
-  const resposta = await fetch(URL_API + caminho, opcoes);
+  let resposta;
+  try {
+    resposta = await fetch(URL_API + caminho, opcoes);
+  } catch (erroRede) {
+    throw new Error("Não foi possível falar com o servidor. Confira se o backend está rodando.");
+  }
   // caso venha sem json
   const dados = await resposta.json().catch(function () { return {}; });
 
-  // 400, 403, 404 vem com { erro: "..." }
+  // token vencido: volta para o login
+  if (resposta.status === 401) {
+    sairDoSistema();
+    throw new Error(dados.mensagem || "Sua sessão expirou.");
+  }
+  // 400, 403, 404 vem com { mensagem: "..." }
   if (!resposta.ok) {
-    throw new Error(dados.erro || "Erro " + resposta.status + " ao falar com o servidor.");
+    throw new Error(dados.mensagem || "Erro " + resposta.status + " ao falar com o servidor.");
   }
   return dados;
 }
@@ -110,39 +80,78 @@ function caminhoDaDemanda(id) {
   return "/demandas/" + encodeURIComponent(id);
 }
 
+// GET /demandas/:id
 async function buscarDemanda(id) {
-  if (!USAR_API) return DEMANDA_EXEMPLO;
   return chamarApi(caminhoDaDemanda(id));
 }
 
+// GET /demandas/:id/comentarios
 async function buscarComentarios(id) {
-  if (!USAR_API) return COMENTARIOS_EXEMPLO;
   return chamarApi(caminhoDaDemanda(id) + "/comentarios");
 }
 
+// POST /demandas/:id/comentarios
 async function enviarComentario(id, texto) {
-  if (!USAR_API) {
-    COMENTARIOS_EXEMPLO.push({ autor: AUTOR_EXEMPLO, dataHora: new Date().toISOString(), texto: texto });
-    return;
-  }
   await chamarApi(caminhoDaDemanda(id) + "/comentarios", "POST", { texto: texto });
 }
 
+// PATCH /demandas/:id/status (também cancela)
 async function enviarNovoStatus(id, novoStatus) {
-  if (!USAR_API) {
-    // faz o mesmo que o servidor vai fazer
-    const agora = new Date().toISOString();
-    DEMANDA_EXEMPLO.historico.push({
-      autor: AUTOR_EXEMPLO,
-      dataHora: agora,
-      descricao: 'Alterou o status de "' + DEMANDA_EXEMPLO.status + '" para "' + novoStatus + '"'
-    });
-    DEMANDA_EXEMPLO.status = novoStatus;
-    DEMANDA_EXEMPLO.dataAtualizacao = agora;
-    DEMANDA_EXEMPLO.proximosStatus = PROXIMOS_EXEMPLO[novoStatus];
-    return;
+  return chamarApi(caminhoDaDemanda(id) + "/status", "PATCH", { status: novoStatus });
+}
+
+// GET /perfil: lista do que o perfil pode fazer
+async function buscarPermissoes() {
+  const resposta = await chamarApi("/perfil");
+  return resposta.permissoes || [];
+}
+
+
+// ----- usuário logado e sair -----
+
+function usuarioLogado() {
+  try {
+    return JSON.parse(sessionStorage.getItem("usuario")) || null;
+  } catch (erro) {
+    return null;
   }
-  await chamarApi(caminhoDaDemanda(id) + "/status", "PATCH", { status: novoStatus });
+}
+
+// "Rafael Carvalho Soares" -> "RS"
+function iniciais(nome) {
+  const partes = String(nome || "").trim().split(/\s+/);
+  if (partes[0] === "") return "?";
+  const primeira = partes[0][0];
+  const ultima = partes.length > 1 ? partes[partes.length - 1][0] : "";
+  return (primeira + ultima).toUpperCase();
+}
+
+function mostrarUsuario() {
+  const usuario = usuarioLogado();
+  if (!usuario) return;
+  escreverTexto("nome-usuario", usuario.nome);
+  escreverTexto("perfil-usuario", usuario.perfil);
+  escreverTexto("avatar-usuario", iniciais(usuario.nome));
+}
+
+// apaga a sessão e volta para o login
+function sairDoSistema() {
+  sessionStorage.removeItem("token");
+  sessionStorage.removeItem("usuario");
+  window.location.href = "tela_login.html";
+}
+
+document.getElementById("sair").addEventListener("click", function (evento) {
+  evento.preventDefault();
+  sairDoSistema();
+});
+
+// esconde o que o perfil não pode fazer (o servidor também bloqueia)
+function aplicarPermissoes(permissoes) {
+  // hidden não funciona no menu nem no .btn (o css usa display), por isso o display
+  document.getElementById("menu-cadastrar").style.display = permissoes.includes("criar_demanda") ? "" : "none";
+  botaoEditar.style.display = permissoes.includes("editar_demanda") ? "" : "none";
+  formulario.hidden = !permissoes.includes("registrar_comentarios");
 }
 
 
@@ -346,20 +355,22 @@ function desenharBotoesDeStatus(proximos) {
   });
 }
 
-// desativa se não puder cancelar
+// só aparece para quem pode cancelar esta demanda
 function atualizarBotaoCancelar(proximos) {
   const podeCancelar = (proximos || []).includes("Cancelada");
-  botaoCancelar.disabled = !podeCancelar;
-  botaoCancelar.title = podeCancelar ? "" : "Você não pode cancelar esta demanda.";
+  botaoCancelar.style.display = podeCancelar ? "" : "none";
 }
 
 async function mudarStatus(novoStatus) {
   mensagemStatus.textContent = "";
+  mensagemStatus.classList.remove("sucesso");
   try {
-    await enviarNovoStatus(idDemanda, novoStatus);
+    const resposta = await enviarNovoStatus(idDemanda, novoStatus);
     await carregarTela();
+    mensagemStatus.textContent = resposta.mensagem;
+    mensagemStatus.classList.add("sucesso");
   } catch (erro) {
-    // mostra o erro do servidor (400, 403)
+    // mostra o erro do servidor (400, 403, 409)
     mensagemStatus.textContent = erro.message;
   }
 }
@@ -454,11 +465,11 @@ formulario.addEventListener("submit", async function (evento) {
 
 // ----- botão editar -----
 
-// leva o id da demanda (detalhes.html?id=3) para a tela de edição (cadastro.html?id=3)
+// a edição é o modal da listagem: manda o id (ListagemDemandas.html?editar=3)
 const botaoEditar = document.getElementById("btn-editar");
 
 if (idDemanda) {
-  botaoEditar.href = "cadastro.html?id=" + encodeURIComponent(idDemanda);
+  botaoEditar.href = "ListagemDemandas.html?editar=" + encodeURIComponent(idDemanda);
 }
 
 
@@ -483,8 +494,11 @@ async function carregarTela() {
   }
 
   try {
+    const permissoes = await buscarPermissoes();
+    aplicarPermissoes(permissoes);
+
     const demanda = await buscarDemanda(idDemanda);
-    const comentarios = await buscarComentarios(idDemanda);
+    const comentarios = permissoes.includes("visualizar_comentarios") ? await buscarComentarios(idDemanda) : [];
 
     preencherDemanda(demanda);
     desenharEtapas(demanda.status);
@@ -499,4 +513,8 @@ async function carregarTela() {
 }
 
 atualizarContador();
-carregarTela();
+mostrarUsuario();
+// sem token o proteger_pagina.js já manda para o login
+if (sessionStorage.getItem("token")) {
+  carregarTela();
+}

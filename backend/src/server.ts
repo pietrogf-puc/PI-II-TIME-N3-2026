@@ -4,6 +4,7 @@ import express, { Request, Response } from "express";
 import loginRouter from "./routes/login";
 import cadastroRouter from "./routes/cadastro";  
 import demandasRouter from "./routes/demandas";
+import detalhesRouter from "./routes/detalhes";
 // Rota do dashboard (Gustavo Manera Marialva - RA 26029581)
 import { rotasDashboard } from "./routes/dashboardRotas";
 import conexao from "./config/database";
@@ -19,6 +20,7 @@ servidor.use(cors());
 servidor.use("/login", loginRouter);
 servidor.use("/demandas", autenticar, cadastroRouter); 
 servidor.use("/demandas", demandasRouter);
+servidor.use("/demandas", detalhesRouter); // detalhes, status, comentários e histórico
 servidor.use("/dashboard", rotasDashboard);
 
 const PORT: number = 3000;

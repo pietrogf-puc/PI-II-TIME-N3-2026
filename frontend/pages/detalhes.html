@@ -11,8 +11,9 @@
   <!-- ajusta a página no celular -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detalhes da Demanda | Sistema de Demandas</title>
-  <!-- estilo da tela -->
-  <link rel="stylesheet" href="/PI-II-TIME-N3-2026/frontend/styles/detalhes.css">
+  <!-- estilo padrão do grupo (do dashboard) e depois o desta tela -->
+  <link rel="stylesheet" href="../styles/dashboard.css">
+  <link rel="stylesheet" href="../styles/detalhes.css">
 </head>
 <body>
 
@@ -20,11 +21,12 @@
   <header class="cabecalho">
     <a href="dashboard.html" class="logo">Demandas<span> N3</span></a>
 
+    <!-- usuário logado (o JS preenche) -->
     <div class="usuario">
-      <span class="avatar">RS</span>
+      <span class="avatar" id="avatar-usuario">?</span>
       <div>
-        Rafael Soares
-        <small>Integrante</small>
+        <span id="nome-usuario">—</span>
+        <small id="perfil-usuario"></small>
       </div>
     </div>
   </header>
@@ -33,10 +35,11 @@
 
     <!-- menu lateral -->
     <nav class="menu-lateral">
-      <a href="/PI-II-TIME-N3-2026/frontend/pages/dashboard.html">Dashboard</a>
-      <a href="/PI-II-TIME-N3-2026/frontend/pages/cadastro.html">Adicionar demanda</a>
-      <a href="/PI-II-TIME-N3-2026/frontend/pages/ListagemDemandas.html" class="ativo">Demandas</a>
-      <a href="/PI-II-TIME-N3-2026/frontend/pages/tela_login.html">Sair</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="cadastro.html" id="menu-cadastrar">Adicionar demanda</a>
+      <a href="ListagemDemandas.html" class="ativo">Demandas</a>
+      <!-- o JS apaga a sessão antes de sair -->
+      <a href="tela_login.html" id="sair">Sair</a>
     </nav>
 
     <!-- conteúdo -->
@@ -47,7 +50,8 @@
         <h1>Detalhes da Demanda</h1>
         <div class="acoes">
           <a href="ListagemDemandas.html" class="btn btn-secundario">Voltar</a>
-          <a href="cadastro.html" class="btn btn-secundario" id="btn-editar">Editar</a>
+          <!-- a edição fica no modal da listagem -->
+          <a href="ListagemDemandas.html" class="btn btn-secundario" id="btn-editar">Editar</a>
           <!-- não apaga a demanda, só muda o status -->
           <button type="button" class="btn btn-perigo" id="btn-cancelar">Cancelar demanda</button>
         </div>
@@ -95,26 +99,6 @@
         <p class="descricao" id="descricao-demanda">—</p>
       </section>
 
-      <!-- anexos -->
-      <section class="painel">
-        <h2>Anexos</h2>
-        <div class="tabela-container">
-          <table>
-            <thead>
-              <tr><th>Arquivo</th><th>Enviado por</th><th>Data</th><th>Ações</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>captura-de-tela-erro.png</td>
-                <td>Pietro Giati</td>
-                <td>26/09/2026</td>
-                <td><a href="#">Baixar</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
       <!-- histórico e comentários -->
       <section class="painel">
         <h2>Histórico / Comentários</h2>
@@ -140,7 +124,9 @@
     </main>
   </div>
 
+  <!-- sem login volta para a tela de login -->
+  <script src="../scripts/proteger_pagina.js"></script>
   <!-- JS da tela -->
-  <script src="/PI-II-TIME-N3-2026/frontend/scripts/detalhes.js"></script>
+  <script src="../scripts/detalhes.js"></script>
 </body>
 </html>
