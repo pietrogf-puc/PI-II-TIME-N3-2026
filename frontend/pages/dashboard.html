@@ -88,29 +88,31 @@
 
       <!-- Cards com o total geral e a quantidade de cada status.
            O atributo data-contador diz ao JS qual número vai em cada card.
-           Cada card leva para a listagem de demandas. -->
+           Cada card de status leva para a listagem com o status na URL
+           (ex.: ?status=Aberta); o card "Total" vai sem filtro. Em uma URL,
+           %20 é o espaço, %C3%A3 é o "ã" e %C3%AD é o "í". -->
       <section class="contadores">
         <a href="ListagemDemandas.html" class="card-contador total">
           <span>Total de demandas</span>
           <strong data-contador="total">-</strong>
         </a>
-        <a href="ListagemDemandas.html" class="card-contador aberta">
+        <a href="ListagemDemandas.html?status=Aberta" class="card-contador aberta">
           <span>Abertas</span>
           <strong data-contador="Aberta">-</strong>
         </a>
-        <a href="ListagemDemandas.html" class="card-contador andamento">
+        <a href="ListagemDemandas.html?status=Em%20andamento" class="card-contador andamento">
           <span>Em andamento</span>
           <strong data-contador="Em andamento">-</strong>
         </a>
-        <a href="ListagemDemandas.html" class="card-contador revisao">
+        <a href="ListagemDemandas.html?status=Em%20revis%C3%A3o" class="card-contador revisao">
           <span>Em revisão</span>
           <strong data-contador="Em revisão">-</strong>
         </a>
-        <a href="ListagemDemandas.html" class="card-contador concluida">
+        <a href="ListagemDemandas.html?status=Conclu%C3%ADda" class="card-contador concluida">
           <span>Concluídas</span>
           <strong data-contador="Concluída">-</strong>
         </a>
-        <a href="ListagemDemandas.html" class="card-contador cancelada">
+        <a href="ListagemDemandas.html?status=Cancelada" class="card-contador cancelada">
           <span>Canceladas</span>
           <strong data-contador="Cancelada">-</strong>
         </a>
