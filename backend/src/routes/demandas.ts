@@ -296,6 +296,9 @@ router.put("/:id", autenticar, async (req: Request, res: Response) => {
         if (prazo !== atual.prazo) {
             mudancas.push(["Prazo", atual.prazo, prazo]);
         }
+        if (trocarResponsavel) {
+            mudancas.push(["Responsável", atual.responsavel, nomeNovoResponsavel]);
+        }
 
         // Transação: o UPDATE e o histórico são gravados juntos.
         // Se um deles falhar, o rollback desfaz tudo e o banco não fica pela metade.
@@ -316,6 +319,17 @@ router.put("/:id", autenticar, async (req: Request, res: Response) => {
                   WHERE id_demanda = ?`,
                 [titulo, descricao, prazo, tipo, prioridade, novoStatus, id]
             );
+
+                        // Troca o responsável: apaga a ligação antiga e cria a nova
+            if (trocarResponsavel) {
+                await con.execute("DELETE FROM demanda_responsavel WHERE id_demanda = ?", [id]);
+                await con.execute(
+                    "INSERT INTO demanda_responsavel (id_demanda, id_usuario) VALUES (?, ?)",
+                    [id, idNovoResponsavel]
+                );
+                // Só trocar o responsável não muda nenhuma coluna da demanda, então marca a data de atualização
+                await con.execute("UPDATE demanda SET data_atualizacao = NOW() WHERE id_demanda = ?", [id]);
+            }
 
             // Um registro de histórico para cada coisa que mudou
             for (const mudanca of mudancas) {
