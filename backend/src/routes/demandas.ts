@@ -175,10 +175,13 @@ router.put("/:id", autenticar, async (req: Request, res: Response) => {
         const perfil = usuario.perfil as Perfil;
 
         // Busca como a demanda está hoje no banco
+                // Busca como a demanda está hoje no banco
         const [atuais] = await conexao.execute<RowDataPacket[]>(
             `SELECT d.id_projeto, d.titulo, d.descricao,
                     DATE_FORMAT(d.prazo_finalizacao, '%Y-%m-%d') AS prazo,
-                    t.nome AS tipo, p.nome AS prioridade, s.nome_status AS status
+                    t.nome AS tipo, p.nome AS prioridade, s.nome_status AS status,
+                    (SELECT dr.id_usuario FROM demanda_responsavel dr WHERE dr.id_demanda = d.id_demanda ORDER BY dr.id_usuario LIMIT 1) AS id_responsavel,
+                    (SELECT u.nome FROM demanda_responsavel dr JOIN usuario u ON u.id_usuario = dr.id_usuario WHERE dr.id_demanda = d.id_demanda ORDER BY dr.id_usuario LIMIT 1) AS responsavel
                FROM demanda d
                JOIN tipo_demanda t   ON t.id_tipo = d.id_tipo
                JOIN prioridade p     ON p.id_prioridade = d.id_prioridade
