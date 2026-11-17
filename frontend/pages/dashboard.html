@@ -47,7 +47,8 @@
          Os links usam os nomes finais dos arquivos das telas do grupo. -->
     <nav class="menu-lateral">
       <a href="dashboard.html" class="ativo">Dashboard</a>
-      <a href="cadastro.html">Adicionar demanda</a>
+      <!-- O JS esconde este link quando o perfil não tem a permissão "criar_demanda" -->
+      <a href="cadastro.html" id="link-adicionar">Adicionar demanda</a>
       <a href="ListagemDemandas.html">Demandas</a>
       <!-- "Sair" apaga o login guardado (pelo JS) e volta para a tela de login -->
       <a href="tela_login.html" id="link-sair">Sair</a>

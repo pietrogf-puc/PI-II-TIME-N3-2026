@@ -120,6 +120,23 @@ function voltarParaLogin() {
   window.location.href = PAGINA_LOGIN;
 }
 
+// Chama GET /perfil, que devolve a lista do que o perfil logado pode fazer
+// (ex.: "criar_demanda"). Se a chamada falhar, devolve uma lista vazia.
+async function buscarPermissoes() {
+  try {
+    const resposta = await fetch(`${URL_API}/perfil`, {
+      headers: { 'Authorization': 'Bearer ' + lerToken() }
+    });
+    if (!resposta.ok) return [];
+
+    const dados = await resposta.json();
+    return dados.permissoes || [];
+  } catch (falha) {
+    console.error('Falha ao buscar as permissões do perfil:', falha);
+    return [];
+  }
+}
+
 // Chama GET /dashboard com os filtros preenchidos e o token no cabeçalho.
 // Devolve { resumo } quando dá certo ou { erro: { mensagem, campos } } quando falha.
 async function buscarDashboard(filtros) {
@@ -458,6 +475,20 @@ function mostrarUsuarioLogado(usuario) {
   document.getElementById('usuario-iniciais').textContent = iniciais;
 }
 
+// Mostra o link "Adicionar demanda" só para quem tem a permissão de criar.
+// O link começa escondido e aparece depois que o servidor confirma a permissão.
+// É só uma ajuda visual: o servidor também bloqueia o cadastro de quem não pode.
+async function aplicarPermissoesNoMenu() {
+  const linkAdicionar = document.getElementById('link-adicionar');
+  // O CSS do menu usa "display: block", por isso o controle é feito pelo display
+  linkAdicionar.style.display = 'none';
+
+  const permissoes = await buscarPermissoes();
+  if (permissoes.includes('criar_demanda')) {
+    linkAdicionar.style.display = '';
+  }
+}
+
 // Prepara a tela: confere o login, liga os eventos e busca os dados
 function iniciarDashboard() {
   // Sem login, nem mostra o dashboard: vai direto para a tela de login
@@ -466,6 +497,7 @@ function iniciarDashboard() {
     return;
   }
   mostrarUsuarioLogado(lerUsuario());
+  aplicarPermissoesNoMenu();
 
   // "Sair" apaga o login antes de voltar para a tela de login
   document.getElementById('link-sair').addEventListener('click', function (evento) {
