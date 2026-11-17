@@ -28,7 +28,7 @@ function mostrarTabela(lista) {
       <td>${d.responsavel || "—"}</td>
       <td>${formatarData(d.dataCriacao)}</td>
       <td>${formatarData(d.prazo)}</td>
-      <td class="acoes"><a href="detalhes.html">Ver</a> <button type="button" class="botaoEditar" data-id="${d.id}">Editar</button></td>
+      <td class="acoes"><a href="detalhes.html?id=${d.id}">Ver</a> <button type="button" class="botaoEditar" data-id="${d.id}">Editar</button></td>
     </tr>
   `;
 });
