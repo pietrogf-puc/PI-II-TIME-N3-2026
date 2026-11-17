@@ -1,4 +1,4 @@
-# ENG.S-PI2-TIME-N3
+# ENG.S-PI-II-TIME-N3
 
 **Professor Orientador**: FERNANDO LUIZ DE ALMEIDA SILVEIRA
 
@@ -160,3 +160,12 @@ Espere uns 30 segundos para o MySQL terminar a importação e reinicie o backend
 - `POST /login` valida e-mail e senha no servidor, confere o hash com bcrypt e devolve um token JWT (válido por 2 horas) com o id e o perfil do usuário.
 - As rotas protegidas usam o middleware `autenticar` (confere o token) e `autorizarPerfil` (libera só os perfis informados).
 - Após 10 tentativas de login falhas em 15 minutos, o acesso é bloqueado temporariamente.
+## 📋 Sobre o projeto
+
+O sistema tem como finalidade simular uma plataforma de gerenciamento utilizada por equipes de tecnologia para organizar e monitorar solicitações de desenvolvimento, como tarefas, correções de erros (bugs), aprimoramentos e atividades relacionadas à documentação, durante o ciclo de vida de um ou mais projetos de software.
+Cada solicitação registrada no sistema contém informações como título, descrição, categoria, nível de prioridade, situação atual, projeto relacionado, responsável, datas de cadastro e última atualização, além do prazo previsto para conclusão. Essas solicitações podem ser registradas, consultadas, filtradas, modificadas e canceladas, seguindo um fluxo de trabalho (workflow) que abrange desde a criação até a finalização ou o cancelamento.
+
+---
+
+Requisitos para rodar o sistema:
+Rodar npm install na pasta backend 
