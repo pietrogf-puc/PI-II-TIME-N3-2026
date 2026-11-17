@@ -51,6 +51,22 @@ async function carregarDemandas() {
 
   demandas = await resposta.json(); /* guarda a lista que veio do banco */
   aplicarFiltros(); /* mostra a tabela respeitando a busca, os filtros e a ordenação escolhidos */
+
+    /* Se a URL tem ?editar=ID (vindo da tela de detalhes), abre o modal dessa demanda */
+  const idParaEditar = new URLSearchParams(window.location.search).get("editar");
+
+  if (idParaEditar) {
+    const demanda = demandas.find(function (d) {
+      return d.id === Number(idParaEditar);
+    });
+
+    if (demanda) {
+      abrirModal(demanda);
+    }
+
+    /* Tira o ?editar= da URL, senão o modal reabriria toda vez que a lista for recarregada */
+    window.history.replaceState(null, "", window.location.pathname);
+  }
 }
 
 carregarDemandas();
@@ -292,4 +308,10 @@ formEditar.addEventListener("submit", async function (evento) {
   modalEditar.close();
   await carregarDemandas();
   alert("Demanda atualizada com sucesso!");
+});
+
+/* Botão "Sair": apaga o login guardado antes de voltar para a tela de login */
+document.getElementById("sair").addEventListener("click", function () {
+  sessionStorage.removeItem("token"); /* apaga o token */
+  sessionStorage.removeItem("usuario"); /* apaga os dados do usuário */
 });
