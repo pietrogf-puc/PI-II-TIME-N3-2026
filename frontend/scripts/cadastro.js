@@ -25,6 +25,35 @@ const erro_prazo = document.getElementById("erro_prazo");
 const URL_API = "http://localhost:3000";
 
 
+// Pega as iniciais do nome: "Administrador Teste" -> "AT"
+function pegarIniciais(nome) {
+    const partes = nome.trim().split(" ");
+    const primeira = partes[0][0];
+    let ultima = "";
+    if (partes.length > 1) {
+        ultima = partes[partes.length - 1][0];
+    }
+    return (primeira + ultima).toUpperCase();
+}
+
+// Escreve no cabeçalho o nome, o perfil e as iniciais de quem fez login
+function mostrarUsuario() {
+    // O sessionStorage só guarda texto, então o JSON.parse transforma de volta em objeto
+    const usuario = JSON.parse(sessionStorage.getItem("usuario"));
+
+    // Sem usuário guardado = ninguém fez login
+    if (!usuario) {
+        window.location.href = "tela_login.html";
+        return;
+    }
+
+    document.getElementById("nome_usuario").textContent = usuario.nome;
+    document.getElementById("perfil_usuario").textContent = usuario.perfil;
+    document.getElementById("avatar").textContent = pegarIniciais(usuario.nome);
+}
+
+mostrarUsuario();
+
 function mostrarMensagem(texto, classe) {
     mensagem_formulario.innerHTML = texto;
     mensagem_formulario.className = classe;
