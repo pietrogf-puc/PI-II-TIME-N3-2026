@@ -175,7 +175,7 @@ const botaoCancelar = document.getElementById("botaoCancelar");
 
 const editTitulo = document.getElementById("editTitulo");
 const editDescricao = document.getElementById("editDescricao");
-const editProjeto = document.getElementById("editProjeto");
+const editProjetoTexto = document.getElementById("editProjetoTexto");
 const editTipo = document.getElementById("editTipo");
 const editPrioridade = document.getElementById("editPrioridade");
 const editStatusTexto = document.getElementById("editStatusTexto");
@@ -190,6 +190,28 @@ const erroGeral = document.getElementById("erroGeral"); /* mensagem de erro que 
 /* Guarda qual demanda está sendo editada no momento.
    Começa vazia (null) porque nenhuma foi escolhida ainda. */
 let demandaEmEdicao = null;
+
+/* Preenche o select de responsável com os usuários do banco (GET /demandas/opcoes) */
+async function carregarUsuarios() {
+  const resposta = await fetch("http://localhost:3000/demandas/opcoes", {
+    headers: { "Authorization": "Bearer " + sessionStorage.getItem("token") }
+  });
+
+  if (!resposta.ok) {
+    return;
+  }
+
+  const opcoes = await resposta.json();
+
+  opcoes.usuarios.forEach(function (u) {
+    const opcao = document.createElement("option");
+    opcao.value = u.id;         /* o que vai para o servidor */
+    opcao.textContent = u.nome; /* o que aparece na tela */
+    editResponsavel.appendChild(opcao);
+  });
+}
+
+carregarUsuarios();
 
 
 /* ----- Funções de erro (mesma ideia do cadastro.js) ----- */
@@ -215,11 +237,16 @@ function abrirModal(demanda) {
   /* Coloca os dados da demanda dentro dos campos */
   editTitulo.value = demanda.titulo;
   editDescricao.value = demanda.descricao;
-  editProjeto.value = demanda.projeto;
+  editProjetoTexto.textContent = demanda.projeto;
   editTipo.value = demanda.tipo;
   editPrioridade.value = demanda.prioridade;
   editStatusTexto.textContent = demanda.status; /* só mostra o status atual */
-  editResponsavel.value = demanda.responsavel || ""; /* sem responsável, deixa o campo vazio */
+  editResponsavel.value = "";
+  for (const opcao of editResponsavel.options) {
+    if (opcao.textContent === demanda.responsavel) {
+      editResponsavel.value = opcao.value; /* Marca o responsável atual. A lista só traz o nome, então procura a opção pelo nome. */
+    }
+  }
   editPrazo.value = demanda.prazo;
 
   /* Apaga erros que tenham ficado da última vez */
@@ -299,8 +326,8 @@ formEditar.addEventListener("submit", async function (evento) {
     return;
   }
 
-  /* Tudo certo no navegador: monta o que vai ser enviado ao servidor.
-     Projeto e responsável ainda não vão, porque esses selects ainda não vêm do banco. */
+  /* monta o que vai ser enviado ao servidor.
+     O projeto não muda na edição, e o responsável só vai se foi trocado */
   const dadosEditados = {
     titulo: editTitulo.value.trim(),
     descricao: editDescricao.value.trim(),
@@ -309,6 +336,11 @@ formEditar.addEventListener("submit", async function (evento) {
     status: demandaEmEdicao.status,
     prazo: editPrazo.value
   };
+
+  /* Só manda o responsável se foi trocado por outra pessoa. Se não mexeu, o servidor mantém o atual. */
+  if (editResponsavel.value !== "" && editResponsavel.selectedOptions[0].textContent !== demandaEmEdicao.responsavel) {
+    dadosEditados.id_responsavel = Number(editResponsavel.value);
+  }
 
   const token = sessionStorage.getItem("token");
 
