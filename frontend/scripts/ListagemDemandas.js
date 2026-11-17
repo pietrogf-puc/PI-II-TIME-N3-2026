@@ -191,6 +191,28 @@ const erroGeral = document.getElementById("erroGeral"); /* mensagem de erro que 
    Começa vazia (null) porque nenhuma foi escolhida ainda. */
 let demandaEmEdicao = null;
 
+/* Preenche o select de responsável com os usuários do banco (GET /demandas/opcoes) */
+async function carregarUsuarios() {
+  const resposta = await fetch("http://localhost:3000/demandas/opcoes", {
+    headers: { "Authorization": "Bearer " + sessionStorage.getItem("token") }
+  });
+
+  if (!resposta.ok) {
+    return;
+  }
+
+  const opcoes = await resposta.json();
+
+  opcoes.usuarios.forEach(function (u) {
+    const opcao = document.createElement("option");
+    opcao.value = u.id;         /* o que vai para o servidor */
+    opcao.textContent = u.nome; /* o que aparece na tela */
+    editResponsavel.appendChild(opcao);
+  });
+}
+
+carregarUsuarios();
+
 
 /* ----- Funções de erro (mesma ideia do cadastro.js) ----- */
 
@@ -219,7 +241,12 @@ function abrirModal(demanda) {
   editTipo.value = demanda.tipo;
   editPrioridade.value = demanda.prioridade;
   editStatusTexto.textContent = demanda.status; /* só mostra o status atual */
-  editResponsavel.value = demanda.responsavel || ""; /* sem responsável, deixa o campo vazio */
+  editResponsavel.value = "";
+  for (const opcao of editResponsavel.options) {
+    if (opcao.textContent === demanda.responsavel) {
+      editResponsavel.value = opcao.value; /* Marca o responsável atual. A lista só traz o nome, então procura a opção pelo nome. */
+    }
+  }
   editPrazo.value = demanda.prazo;
 
   /* Apaga erros que tenham ficado da última vez */
