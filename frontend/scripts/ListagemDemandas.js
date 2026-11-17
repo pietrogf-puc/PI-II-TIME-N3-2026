@@ -326,8 +326,8 @@ formEditar.addEventListener("submit", async function (evento) {
     return;
   }
 
-  /* Tudo certo no navegador: monta o que vai ser enviado ao servidor.
-     Projeto e responsável ainda não vão, porque esses selects ainda não vêm do banco. */
+  /* monta o que vai ser enviado ao servidor.
+     O projeto não muda na edição, e o responsável só vai se foi trocado */
   const dadosEditados = {
     titulo: editTitulo.value.trim(),
     descricao: editDescricao.value.trim(),
@@ -336,6 +336,11 @@ formEditar.addEventListener("submit", async function (evento) {
     status: demandaEmEdicao.status,
     prazo: editPrazo.value
   };
+
+  /* Só manda o responsável se foi trocado por outra pessoa. Se não mexeu, o servidor mantém o atual. */
+  if (editResponsavel.value !== "" && editResponsavel.selectedOptions[0].textContent !== demandaEmEdicao.responsavel) {
+    dadosEditados.id_responsavel = Number(editResponsavel.value);
+  }
 
   const token = sessionStorage.getItem("token");
 
