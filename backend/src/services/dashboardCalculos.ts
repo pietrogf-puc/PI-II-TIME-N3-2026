@@ -114,13 +114,21 @@ export function validarFiltros(filtros: FiltrosDashboard): ErroFiltro | null {
 
 // Conta quantas demandas existem para cada valor de um campo. Todos os valores
 // começam em 0, para aparecerem no dashboard mesmo sem nenhuma demanda.
+// Um valor fora da lista (ex.: status com o acento quebrado no banco) é
+// ignorado e avisado no terminal do servidor. Sem isso, a conta daria NaN,
+// que vira null no JSON, e apareceria uma chave estranha na resposta.
 function contarPor<T extends string>(valores: readonly T[], valorDaDemanda: (demanda: Demanda) => T, demandas: Demanda[]): Record<T, number> {
   const contagem = {} as Record<T, number>;
   valores.forEach((valor) => {
     contagem[valor] = 0;
   });
   demandas.forEach((demanda) => {
-    contagem[valorDaDemanda(demanda)]++;
+    const valor = valorDaDemanda(demanda);
+    if (!valores.includes(valor)) {
+      console.warn(`Dashboard: demanda ${demanda.id} ignorada na contagem, valor desconhecido "${valor}".`);
+      return;
+    }
+    contagem[valor]++;
   });
   return contagem;
 }
