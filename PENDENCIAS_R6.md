@@ -20,12 +20,12 @@ Nenhum arquivo dos colegas foi alterado. Cada item diz o que acontece, como repr
 | B5 | Nome fixo no cabeçalho da listagem e do cadastro | Gustavo Pietro e Luiggi | Média |
 | B6 | Cadastro sem versão para celular | Luiggi | Média |
 | B7 | Acentos quebram ao rodar os scripts SQL pelo terminal | Pietro | Média |
-| B8 | Caminhos absolutos quebram CSS e JS se a pasta mudar de nome | Pietro, Luiggi e Gustavo Pietro | Média |
+| B8 | Caminhos absolutos quebram CSS e JS se a pasta mudar de nome | Pietro e Luiggi (a listagem já foi corrigida) | Média |
 | B9 | Listagem não lê `?status=` da URL | Gustavo Pietro | Baixa |
 | B10 | README desatualizado e sem seção de testes | Quem pegar o card #56 | Média |
 | B11 | `main` atrás da `feature` e sem a tag `1.0.0-final` | Pietro | **Alta** na entrega |
 | B12 | Membro vê botões que não pode usar | Gustavo Pietro e Luiggi | Baixa |
-| B13 | Link "Ver" da listagem não leva o id da demanda | Gustavo Pietro | Média |
+| B13 | Link "Ver" da listagem não leva o id da demanda | Gustavo Pietro | ✅ Resolvido (PR #70) |
 
 ---
 
@@ -203,6 +203,8 @@ SET NAMES utf8mb4;
 
 ## B8. Caminhos absolutos quebram CSS e JS se a pasta tiver outro nome
 
+> **Atualização (16/11, PR #70):** a listagem já passou a usar caminhos relativos. Faltam `tela_login.html` e `cadastro.html`.
+
 **O que acontece:** três telas usam caminhos que começam com `/PI-II-TIME-N3-2026/`. Eles só funcionam se o Live Server for aberto na pasta acima do projeto **e** se a pasta tiver exatamente esse nome. Se a banca clonar com outro nome, ou abrir o Live Server na pasta do projeto, essas telas abrem sem CSS e sem JS. O login, por exemplo, deixa de funcionar.
 
 **Como reproduzir:** servi a mesma pasta com outro nome na URL (`/meu-projeto/`):
@@ -349,6 +351,8 @@ A segurança está certa, porque o servidor recusa. O problema é de uso: o Memb
 ---
 
 ## B13. Link "Ver" da listagem não leva o id da demanda (achado extra)
+
+> **✅ Resolvido (16/11, PR #70):** o link agora é `detalhes.html?id=${d.id}`. O texto abaixo fica como registro.
 
 **O que acontece:** o link "Ver" de cada linha da listagem aponta para `detalhes.html`, sem `?id=`. A tela de detalhes não sabe qual demanda mostrar.
 
