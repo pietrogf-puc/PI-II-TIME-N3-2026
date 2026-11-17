@@ -9,6 +9,7 @@ import { Router, Request, Response } from "express";
 import { RowDataPacket, ResultSetHeader } from "mysql2";
 import conexao from "../config/database";
 import { exigirPermissao, exigirVinculoComProjeto } from "../middlewares/permissoes";
+import { verificarPrazoEmFeriado } from "../regras/feriados";
 const router = Router();
 
 
@@ -101,6 +102,12 @@ router.post("/", exigirPermissao("criar_demanda"), exigirVinculoComProjeto, asyn
 
         if (dados.prazo < dataDeHoje()) {
             return res.status(400).json({ mensagem: "O prazo não pode ser uma data que já passou." });
+        }
+
+        // Confere na API externa se o prazo cai em feriado nacional
+        const erroFeriado = await verificarPrazoEmFeriado(dados.prazo);
+        if (erroFeriado) {
+            return res.status(erroFeriado.codigo).json({ mensagem: erroFeriado.mensagem });
         }
 
         // 2. Grava a demanda. Toda demanda nova começa com status 1 ("Aberta")

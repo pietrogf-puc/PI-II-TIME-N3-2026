@@ -7,6 +7,9 @@ import conexao from "../config/database";
 import { autenticar } from "../middlewares/autenticacao";
 // As regras de status (quem pode mudar para qual status)
 import { ehStatusValido, verificarMudancaDeStatus, Perfil, Status } from "../regras/status";
+import { verificarPrazoEmFeriado } from "../regras/feriados";
+
+
 
 const router = Router();
 
@@ -235,6 +238,17 @@ router.put("/:id", autenticar, async (req: Request, res: Response) => {
                 return;
             }
         }
+
+        
+        // Só confere o feriado se o prazo foi alterado
+        if (prazo !== atual.prazo) {
+            const erroFeriado = await verificarPrazoEmFeriado(prazo);
+            if (erroFeriado) {
+                res.status(erroFeriado.codigo).json({ mensagem: erroFeriado.mensagem });
+                return;
+            }
+        }
+
 
         // Lista do que mudou, para registrar no histórico: [tipo da alteração, valor antigo, valor novo]
         const mudancas: string[][] = [];
