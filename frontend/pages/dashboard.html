@@ -8,8 +8,8 @@
   críticas em aberto e demandas próximas do prazo de finalização.
 
   Os números, gráficos e tabelas NÃO ficam fixos aqui: o arquivo
-  dashboard.js calcula tudo a partir das demandas e preenche os
-  elementos marcados com "id" ou "data-contador".
+  dashboard.js busca os indicadores na API (GET /dashboard) e preenche
+  os elementos marcados com "id" ou "data-contador".
 -->
 <html lang="pt-BR">
 <head>
@@ -17,23 +17,26 @@
   <!-- Faz a tela se ajustar à largura do celular -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | Sistema de Demandas</title>
+  <!-- Os caminhos são relativos a esta página (frontend/pages/) para a tela
+       funcionar em qualquer computador, seja qual for a pasta aberta. -->
   <!-- Estilos da tela (estrutura geral + componentes do dashboard) -->
-  <link rel="stylesheet" href="/PI-II-TIME-N3-2026/frontend/styles/dashboard.css">
+  <link rel="stylesheet" href="../styles/dashboard.css">
   <!-- Comportamento da tela. "defer" faz o script rodar só depois
        que todo o HTML foi carregado. -->
-  <script src="/PI-II-TIME-N3-2026/frontend/scripts/dashboard.js" defer></script>
+  <script src="../scripts/dashboard.js" defer></script>
 </head>
 <body>
 
-  <!-- ===== Cabeçalho: logo e usuário logado ===== -->
+  <!-- ===== Cabeçalho: logo e usuário logado =====
+       Nome, perfil e iniciais vêm do login e são escritos pelo JS -->
   <header class="cabecalho">
-    <a href="dashboard.html" class="logo">Demandas<span>N3</span></a>
+    <a href="dashboard.html" class="logo">Demandas<span> N3</span></a>
 
     <div class="usuario">
-      <span class="avatar">GM</span>
+      <span class="avatar" id="usuario-iniciais">-</span>
       <div>
-        Gustavo Manera
-        <small>Líder de Projeto</small>
+        <span id="usuario-nome">-</span>
+        <small id="usuario-perfil"></small>
       </div>
     </div>
   </header>
@@ -43,11 +46,12 @@
     <!-- ===== Menu lateral de navegação entre as telas =====
          Os links usam os nomes finais dos arquivos das telas do grupo. -->
     <nav class="menu-lateral">
-      <a href="/PI-II-TIME-N3-2026/frontend/pages/dashboard.html" class="ativo">Dashboard</a>
-      <a href="/PI-II-TIME-N3-2026/frontend/pages/cadastro.html">Adicionar demanda</a>
-      <a href="/PI-II-TIME-N3-2026/frontend/pages/ListagemDemandas.html">Demandas</a>
-      <!-- "Sair" volta para a tela de login -->
-      <a href="tela_login.html">Sair</a>
+      <a href="dashboard.html" class="ativo">Dashboard</a>
+      <!-- O JS esconde este link quando o perfil não tem a permissão "criar_demanda" -->
+      <a href="cadastro.html" id="link-adicionar">Adicionar demanda</a>
+      <a href="ListagemDemandas.html">Demandas</a>
+      <!-- "Sair" apaga o login guardado (pelo JS) e volta para a tela de login -->
+      <a href="tela_login.html" id="link-sair">Sair</a>
     </nav>
 
     <!-- ===== Conteúdo principal do dashboard ===== -->
@@ -56,11 +60,7 @@
       <!-- A data de hoje é escrita pelo JS -->
       <p class="subtitulo">Resumo das demandas em <span id="data-hoje">-</span></p>
 
-      <!-- Aviso de demandas ignoradas por terem dados fora do escopo.
-           Fica escondido (hidden) até o JS encontrar algum problema. -->
-      <p id="aviso-dados" class="aviso" role="alert" hidden></p>
-
-      <!-- Filtros: ao mudar qualquer campo, o JS recalcula o dashboard -->
+      <!-- Filtros: ao mudar qualquer campo, o JS pede os dados de novo à API -->
       <section class="painel filtros" aria-label="Filtros do dashboard">
         <form id="form-filtros" novalidate>
           <div class="campo">
@@ -89,29 +89,31 @@
 
       <!-- Cards com o total geral e a quantidade de cada status.
            O atributo data-contador diz ao JS qual número vai em cada card.
-           Cada card leva para a listagem de demandas. -->
+           Cada card de status leva para a listagem com o status na URL
+           (ex.: ?status=Aberta); o card "Total" vai sem filtro. Em uma URL,
+           %20 é o espaço, %C3%A3 é o "ã" e %C3%AD é o "í". -->
       <section class="contadores">
         <a href="ListagemDemandas.html" class="card-contador total">
           <span>Total de demandas</span>
           <strong data-contador="total">-</strong>
         </a>
-        <a href="ListagemDemandas.html" class="card-contador aberta">
+        <a href="ListagemDemandas.html?status=Aberta" class="card-contador aberta">
           <span>Abertas</span>
           <strong data-contador="Aberta">-</strong>
         </a>
-        <a href="ListagemDemandas.html" class="card-contador andamento">
+        <a href="ListagemDemandas.html?status=Em%20andamento" class="card-contador andamento">
           <span>Em andamento</span>
           <strong data-contador="Em andamento">-</strong>
         </a>
-        <a href="ListagemDemandas.html" class="card-contador revisao">
+        <a href="ListagemDemandas.html?status=Em%20revis%C3%A3o" class="card-contador revisao">
           <span>Em revisão</span>
           <strong data-contador="Em revisão">-</strong>
         </a>
-        <a href="ListagemDemandas.html" class="card-contador concluida">
+        <a href="ListagemDemandas.html?status=Conclu%C3%ADda" class="card-contador concluida">
           <span>Concluídas</span>
           <strong data-contador="Concluída">-</strong>
         </a>
-        <a href="ListagemDemandas.html" class="card-contador cancelada">
+        <a href="ListagemDemandas.html?status=Cancelada" class="card-contador cancelada">
           <span>Canceladas</span>
           <strong data-contador="Cancelada">-</strong>
         </a>

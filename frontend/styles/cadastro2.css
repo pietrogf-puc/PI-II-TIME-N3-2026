@@ -1,3 +1,5 @@
+/*AUTOR DO ARQUIVO: LUIGGI FRAGA ; RA: 26026323*/
+
 /*-------------------------Configurando os elementos padrões da página------------------------------*/
 * {
     box-sizing: border-box;
@@ -72,15 +74,16 @@ a {
 
 
 #avatar {
-    display:grid; /*aparentemente eh o jeito mais facil de fazer com que o item fique centralizado*/
-    place-items: center; /*centraliza o texto na grade*/
-    margin: 0; /*zera a margem do elemento <p>*/
+    display:grid; 
+    place-items: center; 
+    margin: 0; 
     width: 30px;
     height: 30px;
-    background-color:#3afe04;
+    background-color:#0d43d7;
     border-radius:50%;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 13px;
+    color: #fff;
 }
 
 
@@ -130,6 +133,7 @@ a {
 .pagina {
     flex: 1;
     padding: 30px;
+    background-color: #f4f6fb;
 }
 
 
@@ -144,6 +148,7 @@ a {
     border: 1px solid #dde2ec;
     border-radius: 12px;
     margin-top: 18px;
+    background-color: #fff;
 }
 
 
@@ -345,4 +350,109 @@ select:invalid {
     background-color: #fff5f5;
     color: #e03131;
     border: 1px solid #e03131;
+}
+
+
+/*-------------------------Responsividade------------------------------*/
+
+/* A área abaixo do cabeçalho ocupa pelo menos o resto da tela
+   (65px = 64px do cabeçalho + 1px da borda dele) */
+.layout {
+    min-height: calc(100vh - 65px);
+}
+
+/* O menu lateral acompanha a altura do conteúdo, em vez de ter sempre 100vh */
+.barralateral {
+    height: auto;
+}
+
+
+/* O texto digitado fica com a mesma fonte e tamanho do placeholder */
+.formitens input,
+.formitens textarea,
+.formitens select {
+    font-family: inherit;
+    font-size: 16px;
+}
+
+/* A descrição só pode ser redimensionada na vertical */
+.descricao textarea {
+    resize: vertical;
+}
+
+/* Os campos ficam em colunas de mesma largura, alinhadas com o título.
+   auto-fit: o navegador coloca quantas colunas couberem
+   minmax(220px, 1fr): cada coluna tem no mínimo 220px e divide a sobra por igual */
+.wrap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+/* Cada campo ocupa a largura inteira da sua coluna */
+.campo input,
+.campo select {
+    width: 100%;
+}
+
+
+/* ----- Telas pequenas (celular e tablet em pé) ----- */
+@media (max-width: 768px) {
+
+    .logoeusuario {
+        padding: 0 15px;
+    }
+
+    /* O menu sai da lateral e vai para cima do conteúdo */
+    .layout {
+        flex-direction: column;
+    }
+
+    .barralateral {
+        width: 100%;
+        padding: 0;
+        border-right: none;
+        border-bottom: 1px solid #dde2ec;
+    }
+
+    /* Os links do menu ficam lado a lado */
+    .itens {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 0;
+    }
+
+    .itens a {
+        padding: 12px 15px;
+    }
+
+    /* A marca do link aberto passa da esquerda para baixo */
+    .aberto {
+        border-left: none;
+        border-bottom: 3px solid #3b5bdb;
+    }
+
+    /* Menos espaço em volta, para sobrar mais tela para o formulário */
+    .pagina {
+        padding: 15px;
+    }
+
+    .containerformbtn {
+        padding: 20px 0;
+    }
+
+    .formitens {
+        padding: 0 15px;
+    }
+
+    .descricao textarea {
+        height: 140px;
+    }
+
+    /* Os dois botões dividem a largura da tela */
+    #cancelar,
+    #cadastrar {
+        flex: 1;
+        width: auto;
+    }
 }
