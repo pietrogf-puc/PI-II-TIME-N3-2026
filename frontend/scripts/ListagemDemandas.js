@@ -175,7 +175,7 @@ const botaoCancelar = document.getElementById("botaoCancelar");
 
 const editTitulo = document.getElementById("editTitulo");
 const editDescricao = document.getElementById("editDescricao");
-const editProjeto = document.getElementById("editProjeto");
+const editProjetoTexto = document.getElementById("editProjetoTexto");
 const editTipo = document.getElementById("editTipo");
 const editPrioridade = document.getElementById("editPrioridade");
 const editStatusTexto = document.getElementById("editStatusTexto");
@@ -215,7 +215,7 @@ function abrirModal(demanda) {
   /* Coloca os dados da demanda dentro dos campos */
   editTitulo.value = demanda.titulo;
   editDescricao.value = demanda.descricao;
-  editProjeto.value = demanda.projeto;
+  editProjetoTexto.textContent = demanda.projeto;
   editTipo.value = demanda.tipo;
   editPrioridade.value = demanda.prioridade;
   editStatusTexto.textContent = demanda.status; /* só mostra o status atual */
