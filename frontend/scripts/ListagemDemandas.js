@@ -109,7 +109,12 @@ const filtroPrioridade = document.getElementById("filtroPrioridade");
 const filtroTipo = document.getElementById("filtroTipo");
 const ordenar = document.getElementById("ordenar");
 /*getElementByID busca os ids no html ligado a este js*/
-
+/* Se a URL tem ?status=... (vindo do dashboard), já marca esse status no filtro.
+   Fica fora da carregarDemandas para valer só quando a página abre, e não a cada recarga da lista */
+const statusDaUrl = new URLSearchParams(window.location.search).get("status");
+if (statusDaUrl) {
+  filtroStatus.value = statusDaUrl;
+}
 const ordemPrioridade = ["Crítica", "Alta", "Média", "Baixa"]; 
 const ordemStatus = ["Aberta", "Em andamento", "Em revisão", "Concluída", "Cancelada"];
 /*ordena as posições de cada prioridade e status, facilitando o seu acesso */
