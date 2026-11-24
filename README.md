@@ -50,6 +50,15 @@ Projeto desenvolvido para a disciplina **Projeto Integrador II– Engenharia de 
 
 > O Docker Desktop precisa estar **aberto** sempre que você for rodar o projeto.
 
+### 1.2 Caso queira usar mysql
+1. Baixe MySql workbench na web
+2. crie sua senha e entre no localinstance usando ela.
+3. copie o schema.sql e cole no mysql e execute
+4. copie o seed.sql e cole no mysql e execute
+5. No arquivo .env em DB_PASSWORD coloque sua senha do mysql
+6. Caso esteja dando erro de porta mude o DB_PORT para 3306
+> O mysql precisa estar aberto sempre que for rodar o projeto
+
 ### 2. Banco de dados (Docker)
 ```bash
 cd pi-db
