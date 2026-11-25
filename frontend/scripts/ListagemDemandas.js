@@ -18,8 +18,15 @@ function formatarData(data) { /*altera a forma que a data é mostrada */
   return partes[2] + "/" + partes[1] + "/" + partes[0];
 }
 
+
 function mostrarTabela(lista) {
     corpoTabela.innerHTML = ""; /*apaga as linhas antigas, para não repetir linhas a cada busca ou filtro */
+      /* Se nenhuma demanda passou pelos filtros, mostra um aviso em vez de deixar a tabela em branco */
+    if (lista.length === 0) {
+    corpoTabela.innerHTML = `<tr><td colspan="9" style="text-align: center;">Nenhuma demanda encontrada.</td></tr>`;
+    contador.textContent = "Mostrando 0 de " + demandas.length; /* atualiza o contador antes de sair */
+    return; /* para aqui, porque não há linhas para desenhar */
+    }
 
     lista.forEach(function (d) { /*Cada demanda da lista segue essa estrutura */
               /* O botão "Editar" só aparece para quem tem a permissão editar_demanda */
