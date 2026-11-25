@@ -6,6 +6,10 @@
    Usa "let" (e não "const") porque ela recebe um valor novo depois. */
 let demandas = [];
 
+/* Lista do que o perfil de quem fez login pode fazer (vem da API em GET /perfil).
+   Começa vazia e é preenchida antes de a tabela aparecer. */
+let permissoes = [];
+
 const contador = document.getElementById("contador"); /*Pega o texto do contador no html */
 const corpoTabela = document.getElementById("corpoTabela"); /*Busca o conteudo do html */
 
@@ -18,6 +22,10 @@ function mostrarTabela(lista) {
     corpoTabela.innerHTML = ""; /*apaga as linhas antigas, para não repetir linhas a cada busca ou filtro */
 
     lista.forEach(function (d) { /*Cada demanda da lista segue essa estrutura */
+              /* O botão "Editar" só aparece para quem tem a permissão editar_demanda */
+        const botaoEditar = permissoes.includes("editar_demanda")
+          ? `<button type="button" class="botaoEditar" data-id="${d.id}">Editar</button>`
+          : "";
         corpoTabela.innerHTML += ` 
     <tr>
       <td>${d.titulo}</td>
@@ -28,7 +36,7 @@ function mostrarTabela(lista) {
       <td>${d.responsavel || "—"}</td>
       <td>${formatarData(d.dataCriacao)}</td>
       <td>${formatarData(d.prazo)}</td>
-      <td class="acoes"><a href="detalhes.html?id=${d.id}">Ver</a> <button type="button" class="botaoEditar" data-id="${d.id}">Editar</button></td>
+      <td class="acoes"><a href="detalhes.html?id=${d.id}">Ver</a> ${botaoEditar}</td>
     </tr>
   `;
 });
@@ -65,6 +73,17 @@ function mostrarUsuario() {
 
 mostrarUsuario();
 
+/* Busca na API as permissões do perfil logado (ex.: "criar_demanda", "editar_demanda") */
+async function carregarPermissoes() {
+  const resposta = await fetch("http://localhost:3000/perfil", {
+    headers: { "Authorization": "Bearer " + sessionStorage.getItem("token") }
+  });
+
+  if (resposta.ok) {
+    const dados = await resposta.json();
+    permissoes = dados.permissoes || []; /* a API devolve { usuario, permissoes } */
+  }
+}
 
 /* Busca as demandas na API e mostra na tabela quando a página abre */
 async function carregarDemandas() {
@@ -81,6 +100,12 @@ async function carregarDemandas() {
   }
 
   demandas = await resposta.json(); /* guarda a lista que veio do banco */
+  /* Pega as permissões do perfil logado e esconde "+ Nova demanda" se ele não puder criar */
+  await carregarPermissoes();
+    if (!permissoes.includes("criar_demanda")) {
+    botaoNova.style.display = "none";
+    document.getElementById("menu-cadastrar").style.display = "none"; /* esconde também o link da barra lateral */
+  }
   aplicarFiltros(); /* mostra a tabela respeitando a busca, os filtros e a ordenação escolhidos */
 
     /* Se a URL tem ?editar=ID (vindo da tela de detalhes), abre o modal dessa demanda */
