@@ -361,7 +361,21 @@ function atualizarBotaoCancelar(proximos) {
   botaoCancelar.style.display = podeCancelar ? "" : "none";
 }
 
+// trava ou destrava os botões de status e o cancelar
+function travarBotoesDeStatus(travar) {
+  document.querySelectorAll("#mudar-status button").forEach(function (botao) {
+    botao.disabled = travar;
+  });
+  botaoCancelar.disabled = travar;
+}
+
+let mudandoStatus = false; // evita mandar duas vezes com clique duplo
+
 async function mudarStatus(novoStatus) {
+  if (mudandoStatus) return;
+  mudandoStatus = true;
+  travarBotoesDeStatus(true);
+
   mensagemStatus.textContent = "";
   mensagemStatus.classList.remove("sucesso");
   try {
@@ -372,6 +386,9 @@ async function mudarStatus(novoStatus) {
   } catch (erro) {
     // mostra o erro do servidor (400, 403, 409)
     mensagemStatus.textContent = erro.message;
+  } finally {
+    mudandoStatus = false;
+    travarBotoesDeStatus(false);
   }
 }
 
@@ -393,6 +410,7 @@ const formulario = document.getElementById("form-comentario");
 const campo = document.getElementById("comentario");
 const mensagemErro = document.getElementById("erro-comentario");
 const contador = document.getElementById("contador");
+const botaoComentar = formulario.querySelector("button[type='submit']");
 
 // valida o comentário: retorna a mensagem de erro ou "" se estiver ok
 function validarComentario(texto) {
@@ -450,6 +468,10 @@ formulario.addEventListener("submit", async function (evento) {
     return;
   }
 
+  // trava o botão enquanto envia (evita comentário repetido)
+  if (botaoComentar.disabled) return;
+  botaoComentar.disabled = true;
+
   try {
     await enviarComentario(idDemanda, campo.value.trim());
     campo.value = "";
@@ -459,6 +481,8 @@ formulario.addEventListener("submit", async function (evento) {
   } catch (erroServidor) {
     // erro que veio do servidor
     mostrarErro(erroServidor.message);
+  } finally {
+    botaoComentar.disabled = false;
   }
 });
 
