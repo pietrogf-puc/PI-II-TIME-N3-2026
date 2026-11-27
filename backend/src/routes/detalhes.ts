@@ -17,15 +17,14 @@ import {
     permissoesDoPerfil,
     DemandaCarregada
 } from "../middlewares/permissoes";
-import { ehStatusValido, verificarMudancaDeStatus, Perfil, Status } from "../regras/status";
+import { ehStatusValido, verificarMudancaDeStatus, proximosStatusPermitidos, Perfil, Status } from "../regras/status";
+import { descreverAlteracao } from "../regras/historico";
 
 const router = Router();
 
 // limites do comentário (iguais aos da tela)
 const MIN_COMENTARIO = 5;
 const MAX_COMENTARIO = 300;
-
-const TODOS_STATUS: Status[] = ["Aberta", "Em andamento", "Em revisão", "Concluída", "Cancelada"];
 
 interface UsuarioLogado {
     id: number;
@@ -42,27 +41,7 @@ async function proximosStatus(usuario: UsuarioLogado, idDemanda: number, statusA
     if (usuario.perfil === "Membro da Equipe" && !(await ehResponsavel(usuario.id, idDemanda))) {
         return [];
     }
-    return TODOS_STATUS.filter((novo) => verificarMudancaDeStatus(statusAtual, novo, usuario.perfil as Perfil).permitido);
-}
-
-// "2026-11-20" -> "20/11/2026" (outros textos ficam iguais)
-function formatarValor(valor: string | null): string {
-    if (valor === null) {
-        return "";
-    }
-    const data = /^(\d{4})-(\d{2})-(\d{2})$/.exec(valor);
-    return data ? `${data[3]}/${data[2]}/${data[1]}` : valor;
-}
-
-// monta a frase que aparece na linha do tempo
-function descreverAlteracao(tipo: string, anterior: string | null, novo: string | null): string {
-    if (tipo === "Criação") {
-        return "Criou a demanda";
-    }
-    if (anterior === null || anterior === "") {
-        return `Definiu ${tipo} como "${formatarValor(novo)}"`;
-    }
-    return `Alterou ${tipo} de "${formatarValor(anterior)}" para "${formatarValor(novo)}"`;
+    return proximosStatusPermitidos(statusAtual, usuario.perfil as Perfil);
 }
 
 // registros do histórico de uma demanda, do mais antigo para o mais novo

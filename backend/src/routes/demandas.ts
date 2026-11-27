@@ -127,6 +127,15 @@ function dataValida(texto: string): boolean {
     return data.getFullYear() === ano && data.getMonth() === mes - 1 && data.getDate() === dia;
 }
 
+// Devolve a data de hoje no formato "AAAA-MM-DD"
+function dataDeHoje(): string {
+    const hoje = new Date();
+    const ano = hoje.getFullYear();
+    const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+    const dia = String(hoje.getDate()).padStart(2, "0");
+    return ano + "-" + mes + "-" + dia;
+}
+
 router.put("/:id", autenticar, async (req: Request, res: Response) => {
     try {
 
@@ -277,6 +286,13 @@ router.put("/:id", autenticar, async (req: Request, res: Response) => {
         
         // Só confere o feriado se o prazo foi alterado
         if (prazo !== atual.prazo) {
+
+             // Prazo no passado: só barra quando o prazo foi alterado
+             if (prazo < dataDeHoje()) {
+                res.status(400).json({ mensagem: "O prazo não pode ser uma data que já passou." });
+                return;
+            }
+
             const erroFeriado = await verificarPrazoEmFeriado(prazo);
             if (erroFeriado) {
                 res.status(erroFeriado.codigo).json({ mensagem: erroFeriado.mensagem });

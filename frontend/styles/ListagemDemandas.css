@@ -88,17 +88,17 @@ body {
   padding: 12px 24px;
   color: #1f2433;
   text-decoration: none;
+  border-left: 3px solid transparent;
 }
 
 .itens a:hover {
   background-color: #f4f6fb;
 }
 
-.aberto {
+.itens a.aberto {
   background-color: #edf1ff;
-  border-left: 3px solid #3b5bdb;
-  font-weight: 600;
   color: #3b5bdb;
+  font-weight: 600;
 }
 
 /* Conteúdo da página */
@@ -211,8 +211,26 @@ tbody tr:hover {
   .barralateral {
     width: 100%;
     height: auto;
+    padding: 0;
     border-right: none;
     border-bottom: 1px solid #dde2ec;
+  }
+
+  .itens {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0;
+  }
+
+  .itens a {
+    padding: 12px 15px;
+    white-space: nowrap;
+    border-left: none;
+  }
+
+  .aberto {
+    border-left: none;
+    border-bottom: 3px solid #3b5bdb;
   }
 
   .pagina {
