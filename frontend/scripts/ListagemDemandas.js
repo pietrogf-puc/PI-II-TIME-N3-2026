@@ -374,10 +374,13 @@ formEditar.addEventListener("submit", async function (evento) {
     prazo: editPrazo.value
   };
 
-  /* Só manda o responsável se foi trocado por outra pessoa. Se não mexeu, o servidor mantém o atual. */
-  if (editResponsavel.value !== "" && editResponsavel.selectedOptions[0].textContent !== demandaEmEdicao.responsavel) {
-    dadosEditados.id_responsavel = Number(editResponsavel.value);
-  }
+  /* Manda o responsável só se mudou. "Sem responsável" vira null (remover). */
+  const nomeEscolhido = editResponsavel.value === "" ? null : editResponsavel.selectedOptions[0].textContent;
+  const nomeAtual = demandaEmEdicao.responsavel || null;
+
+  if (nomeEscolhido !== nomeAtual) {
+    dadosEditados.id_responsavel = editResponsavel.value === "" ? null : Number(editResponsavel.value);
+}
 
   const token = sessionStorage.getItem("token");
 

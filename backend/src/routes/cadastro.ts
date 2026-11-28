@@ -8,8 +8,8 @@
 import { Router, Request, Response } from "express";
 import { RowDataPacket, ResultSetHeader } from "mysql2";
 import conexao from "../config/database";
-import { exigirPermissao, exigirVinculoComProjeto } from "../middlewares/permissoes";
 import { verificarPrazoEmFeriado } from "../regras/feriados";
+import { exigirPermissao, exigirVinculoComProjeto, participaDoProjeto } from "../middlewares/permissoes"
 const router = Router();
 
 
@@ -24,29 +24,29 @@ function dataDeHoje(): string {
     return ano + "-" + mes + "-" + dia;
 }
 
-// Confere os campos que vieram do formulário.
-// Se tiver algum erro, devolve a mensagem. Se estiver tudo certo, devolve "".
+// Confere se "AAAA-MM-DD" é uma data que existe (ex.: 2027-02-31 não existe)
+function dataValida(texto: string): boolean {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(texto)) return false;
+    const [ano, mes, dia] = texto.split("-").map(Number);
+    const data = new Date(ano, mes - 1, dia);
+    return data.getFullYear() === ano && data.getMonth() === mes - 1 && data.getDate() === dia;
+}
+
 function validarCampos(dados: any): string {
-    if (!dados.titulo || dados.titulo.trim().length < 5) {
+    if (typeof dados.titulo !== "string" || dados.titulo.trim().length < 5) {
         return "O título precisa ter pelo menos 5 caracteres.";
     }
     if (dados.titulo.trim().length > 100) {
         return "O título pode ter no máximo 100 caracteres.";
     }
-    if (!dados.descricao || dados.descricao.trim().length < 10) {
+    if (typeof dados.descricao !== "string" || dados.descricao.trim().length < 10) {
         return "A descrição precisa ter pelo menos 10 caracteres.";
     }
-    if (!dados.id_projeto) {
-        return "Selecione um projeto.";
-    }
-    if (!dados.id_tipo) {
-        return "Selecione um tipo.";
-    }
-    if (!dados.id_prioridade) {
-        return "Selecione uma prioridade.";
-    }
-    if (!dados.prazo) {
-        return "Escolha um prazo.";
+    if (!Number.isInteger(Number(dados.id_projeto))) return "Selecione um projeto.";
+    if (!Number.isInteger(Number(dados.id_tipo))) return "Selecione um tipo.";
+    if (!Number.isInteger(Number(dados.id_prioridade))) return "Selecione uma prioridade.";
+    if (typeof dados.prazo !== "string" || !dataValida(dados.prazo)) {
+        return "Prazo inválido. Use uma data no formato AAAA-MM-DD.";
     }
     return "";
 }
@@ -58,8 +58,18 @@ function validarCampos(dados: any): string {
 
 router.get("/opcoes", async (_req: Request, res: Response) => {
     try {
+        const usuario = res.locals.usuario as { id: number; perfil: string };
+        const ehAdmin = usuario.perfil === "Administrador";
+
+        // Admin vê todos os projetos; os outros, só os projetos em que participam
         const [projetos] = await conexao.execute<RowDataPacket[]>(
-            "SELECT id_projeto AS id, nome_projeto AS nome FROM projeto WHERE ativo_projeto = TRUE"
+            ehAdmin
+                ? "SELECT id_projeto AS id, nome_projeto AS nome FROM projeto WHERE ativo_projeto = TRUE"
+                : `SELECT p.id_projeto AS id, p.nome_projeto AS nome
+                     FROM projeto p
+                     JOIN projeto_usuario pu ON pu.id_projeto = p.id_projeto
+                    WHERE p.ativo_projeto = TRUE AND pu.id_usuario = ?`,
+            ehAdmin ? [] : [usuario.id]
         );
 
         const [tipos] = await conexao.execute<RowDataPacket[]>(
@@ -70,16 +80,21 @@ router.get("/opcoes", async (_req: Request, res: Response) => {
             "SELECT id_prioridade AS id, nome FROM prioridade ORDER BY ordem"
         );
 
+        // Lista de todos os usuários ativos (o modal de edição da listagem ainda usa)
         const [usuarios] = await conexao.execute<RowDataPacket[]>(
             "SELECT id_usuario AS id, nome FROM usuario WHERE ativo = TRUE ORDER BY nome"
         );
 
-        return res.json({
-            projetos: projetos,
-            tipos: tipos,
-            prioridades: prioridades,
-            usuarios: usuarios
-        });
+        // Quem participa de cada projeto (o front usa para filtrar o responsável)
+        const [participantes] = await conexao.execute<RowDataPacket[]>(
+            `SELECT pu.id_projeto, u.id_usuario AS id, u.nome
+               FROM projeto_usuario pu
+               JOIN usuario u ON u.id_usuario = pu.id_usuario
+              WHERE u.ativo = TRUE
+              ORDER BY u.nome`
+        );
+
+        return res.json({ projetos, tipos, prioridades, usuarios, participantes });
     } catch (erro) {
         console.error(erro);
         return res.status(500).json({ mensagem: "Erro ao carregar as opções." });
@@ -100,6 +115,19 @@ router.post("/", exigirPermissao("criar_demanda"), exigirVinculoComProjeto, asyn
             return res.status(400).json({ mensagem: erro });
         }
 
+        const [tipos] = await conexao.execute<RowDataPacket[]>(
+            "SELECT 1 FROM tipo_demanda WHERE id_tipo = ?", [Number(dados.id_tipo)]
+        );
+        if (tipos.length === 0) {
+            return res.status(400).json({ mensagem: "Tipo inválido." });
+        }
+        const [prioridades] = await conexao.execute<RowDataPacket[]>(
+            "SELECT 1 FROM prioridade WHERE id_prioridade = ?", [Number(dados.id_prioridade)]
+        );
+        if (prioridades.length === 0) {
+            return res.status(400).json({ mensagem: "Prioridade inválida." });
+        }
+
         if (dados.prazo < dataDeHoje()) {
             return res.status(400).json({ mensagem: "O prazo não pode ser uma data que já passou." });
         }
@@ -109,6 +137,24 @@ router.post("/", exigirPermissao("criar_demanda"), exigirVinculoComProjeto, asyn
         if (erroFeriado) {
             return res.status(erroFeriado.codigo).json({ mensagem: erroFeriado.mensagem });
         }
+
+
+          // Responsável é opcional. Se veio, precisa existir, estar ativo e participar do projeto.
+        let idResponsavel: number | null = null;
+        if (dados.id_responsavel !== undefined && dados.id_responsavel !== null && dados.id_responsavel !== "") {
+            idResponsavel = Number(dados.id_responsavel);
+
+            if (!Number.isInteger(idResponsavel)) {
+                return res.status(400).json({ mensagem: "Responsável inválido." });
+            }
+            const [usuarios] = await conexao.execute<RowDataPacket[]>(
+                "SELECT 1 FROM usuario WHERE id_usuario = ? AND ativo = TRUE",
+                [idResponsavel]
+            );
+            if (usuarios.length === 0 || !(await participaDoProjeto(idResponsavel, Number(dados.id_projeto)))) {
+                return res.status(400).json({ mensagem: "Responsável inválido ou fora do projeto escolhido." });
+            }
+        }   
 
         // 2. Grava a demanda. Toda demanda nova começa com status 1 ("Aberta")
         const [resultado] = await conexao.execute<ResultSetHeader>(
@@ -125,11 +171,12 @@ router.post("/", exigirPermissao("criar_demanda"), exigirVinculoComProjeto, asyn
             ]
         );
 
+
         // insertId = o id que o banco criou para a demanda nova
         const idNovaDemanda = resultado.insertId;
 
         // 3. Grava o responsável (se foi escolhido um)
-        if (dados.id_responsavel) {
+        if (idResponsavel) {
             await conexao.execute(
                 "INSERT INTO demanda_responsavel (id_demanda, id_usuario) VALUES (?, ?)",
                 [idNovaDemanda, dados.id_responsavel]

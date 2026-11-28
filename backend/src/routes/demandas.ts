@@ -245,34 +245,42 @@ router.put("/:id", autenticar, async (req: Request, res: Response) => {
 
                 // Responsável: o modal pode enviar "id_responsavel". Se não enviar, o responsável não muda.
         let trocarResponsavel = false;
-        let idNovoResponsavel = 0;
-        let nomeNovoResponsavel = "";
+        let idNovoResponsavel: number | null = null;
+        let nomeNovoResponsavel: string | null = null;
 
-        if (dados.id_responsavel !== undefined && Number(dados.id_responsavel) !== atual.id_responsavel) {
-            // Só quem tem a permissão (Administrador e Líder) pode atribuir ou alterar o responsável
-            const permissoes = await permissoesDoPerfil(perfil);
-            if (!permissoes.includes("atribuir_alterar_responsavel")) {
-                res.status(403).json({ mensagem: "Seu perfil não pode atribuir ou alterar o responsável." });
-                return;
+            if (dados.id_responsavel !== undefined) {
+                const querRemover = dados.id_responsavel === null || dados.id_responsavel === "";
+                const idPedido = querRemover ? null : Number(dados.id_responsavel);
+
+                if (idPedido !== (atual.id_responsavel ?? null)) {
+                    // Só quem tem a permissão (Administrador e Líder) pode atribuir, alterar ou remover
+                    const permissoes = await permissoesDoPerfil(perfil);
+                    if (!permissoes.includes("atribuir_alterar_responsavel")) {
+                        res.status(403).json({ mensagem: "Seu perfil não pode atribuir ou alterar o responsável." });
+                        return;
+                    }
+
+                    if (idPedido !== null) {
+                        // O novo responsável precisa existir, estar ativo e participar do projeto
+                        if (!Number.isInteger(idPedido)) {
+                            res.status(400).json({ mensagem: "Responsável inválido." });
+                            return;
+                        }
+                        const [usuarios] = await conexao.execute<RowDataPacket[]>(
+                            "SELECT nome FROM usuario WHERE id_usuario = ? AND ativo = TRUE",
+                            [idPedido]
+                        );
+                        if (usuarios.length === 0 || !(await participaDoProjeto(idPedido, atual.id_projeto))) {
+                            res.status(400).json({ mensagem: "Responsável inválido ou fora do projeto desta demanda." });
+                            return;
+                        }
+                        nomeNovoResponsavel = usuarios[0].nome;
+                    }
+
+                    idNovoResponsavel = idPedido;
+                    trocarResponsavel = true;
+                }
             }
-
-            idNovoResponsavel = Number(dados.id_responsavel);
-
-            // O novo responsável precisa existir, estar ativo e participar do projeto da demanda
-            const [usuarios] = await conexao.execute<RowDataPacket[]>(
-                "SELECT nome FROM usuario WHERE id_usuario = ? AND ativo = TRUE",
-                [idNovoResponsavel]
-            );
-            const participa = await participaDoProjeto(idNovoResponsavel, atual.id_projeto);
-
-            if (!Number.isInteger(idNovoResponsavel) || usuarios.length === 0 || !participa) {
-                res.status(400).json({ mensagem: "Responsável inválido ou fora do projeto desta demanda." });
-                return;
-            }
-
-            nomeNovoResponsavel = usuarios[0].nome;
-            trocarResponsavel = true;
-        }
 
         // Regras do fluxo de status. Só confere se o status mudou.
         if (novoStatus !== atual.status) {
@@ -302,7 +310,7 @@ router.put("/:id", autenticar, async (req: Request, res: Response) => {
 
 
         // Lista do que mudou, para registrar no histórico: [tipo da alteração, valor antigo, valor novo]
-        const mudancas: string[][] = [];
+        const mudancas: (string | null)[][] = [];
         if (novoStatus !== atual.status) {
             mudancas.push(["Status", atual.status, novoStatus]);
         }
@@ -339,11 +347,12 @@ router.put("/:id", autenticar, async (req: Request, res: Response) => {
                         // Troca o responsável: apaga a ligação antiga e cria a nova
             if (trocarResponsavel) {
                 await con.execute("DELETE FROM demanda_responsavel WHERE id_demanda = ?", [id]);
-                await con.execute(
-                    "INSERT INTO demanda_responsavel (id_demanda, id_usuario) VALUES (?, ?)",
-                    [id, idNovoResponsavel]
-                );
-                // Só trocar o responsável não muda nenhuma coluna da demanda, então marca a data de atualização
+                if (idNovoResponsavel !== null) {
+                    await con.execute(
+                        "INSERT INTO demanda_responsavel (id_demanda, id_usuario) VALUES (?, ?)",
+                        [id, idNovoResponsavel]
+                    );
+                }
                 await con.execute("UPDATE demanda SET data_atualizacao = NOW() WHERE id_demanda = ?", [id]);
             }
 

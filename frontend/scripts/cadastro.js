@@ -23,6 +23,16 @@ const erro_prioridade = document.getElementById("erro_prioridade");
 const erro_responsavel = document.getElementById("erro_responsavel");
 const erro_prazo = document.getElementById("erro_prazo");
 const URL_API = "http://localhost:3000";
+let participantes = []; // [{ id_projeto, id, nome }]
+
+// Monta o select de responsável só com quem participa do projeto escolhido
+function preencherResponsaveis() {
+    responsavel.length = 1; // mantém só a opção "Sem responsável"
+    const doProjeto = participantes.filter(function (p) {
+        return p.id_projeto === Number(projeto.value);
+    });
+    preencherSelect(responsavel, doProjeto);
+}
 
 
 // Pega as iniciais do nome: "Administrador Teste" -> "AT"
@@ -90,7 +100,7 @@ async function carregarOpcoes() {
     preencherSelect(projeto, opcoes.projetos);
     preencherSelect(tipo, opcoes.tipos);
     preencherSelect(prioridade, opcoes.prioridades);
-    preencherSelect(responsavel, opcoes.usuarios);
+    participantes = opcoes.participantes;
 }
 
 carregarOpcoes();
@@ -202,6 +212,7 @@ prazo.addEventListener("change", verificarPrazo);
 
 projeto.addEventListener("change", function () {
     verificarSelect(projeto, erro_projeto, "Selecione um projeto");
+    preencherResponsaveis(); // troca a lista de responsáveis pelos participantes deste projeto
 });
 tipo.addEventListener("change", function () {
     verificarSelect(tipo, erro_tipo, "Selecione um tipo");
@@ -277,5 +288,6 @@ formulario.addEventListener("reset", function () {
     limparErro(prioridade, erro_prioridade);
     limparErro(responsavel, erro_responsavel);
     limparErro(prazo, erro_prazo);
+    responsavel.length = 1; // sem projeto escolhido, a lista de responsáveis volta a ter só "Sem responsável"
     mensagem_formulario.style.display = "none";
 });

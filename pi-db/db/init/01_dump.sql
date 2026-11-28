@@ -111,7 +111,7 @@ CREATE TABLE `demanda_responsavel` (
 
 LOCK TABLES `demanda_responsavel` WRITE;
 /*!40000 ALTER TABLE `demanda_responsavel` DISABLE KEYS */;
-INSERT INTO `demanda_responsavel` VALUES (2,4),(6,4),(13,4),(17,4),(1,5),(10,5),(15,5),(8,6),(9,6),(14,6),(3,7),(7,7),(11,7),(18,7),(4,8),(5,8),(12,8),(16,8),(19,8);
+INSERT INTO `demanda_responsavel` VALUES (2,4),(6,4),(13,4),(17,4),(1,5),(10,3),(15,5),(8,6),(9,6),(14,6),(3,7),(7,3),(11,7),(18,7),(4,8),(5,3),(12,8),(16,8),(19,8);
 /*!40000 ALTER TABLE `demanda_responsavel` ENABLE KEYS */;
 UNLOCK TABLES;
 
