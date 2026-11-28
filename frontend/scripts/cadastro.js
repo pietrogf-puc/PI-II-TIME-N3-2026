@@ -209,9 +209,7 @@ tipo.addEventListener("change", function () {
 prioridade.addEventListener("change", function () {
     verificarSelect(prioridade, erro_prioridade, "Selecione uma prioridade");
 });
-responsavel.addEventListener("change", function () {
-    verificarSelect(responsavel, erro_responsavel, "Selecione um responsável");
-});
+
 
 
 
@@ -224,11 +222,10 @@ formulario.addEventListener("submit", async function (cancelarEnvio) {
     const projetoValido = verificarSelect(projeto, erro_projeto, "Selecione um projeto");
     const tipoValido = verificarSelect(tipo, erro_tipo, "Selecione um tipo");
     const prioridadeValida = verificarSelect(prioridade, erro_prioridade, "Selecione uma prioridade");
-    const responsavelValido = verificarSelect(responsavel, erro_responsavel, "Selecione um responsável");
     const prazoValido = verificarPrazo();
 
     if (tituloValido && descricaoValida && projetoValido && tipoValido &&
-        prioridadeValida && responsavelValido && prazoValido) {
+        prioridadeValida && prazoValido) {
 
         // Junta os dados do formulário (os nomes são os que o backend espera)
         const dados = {
@@ -237,7 +234,7 @@ formulario.addEventListener("submit", async function (cancelarEnvio) {
             id_projeto: Number(projeto.value),
             id_tipo: Number(tipo.value),
             id_prioridade: Number(prioridade.value),
-            id_responsavel: Number(responsavel.value),
+            id_responsavel: responsavel.value === "" ? null : Number(responsavel.value),
             prazo: prazo.value
         };
 

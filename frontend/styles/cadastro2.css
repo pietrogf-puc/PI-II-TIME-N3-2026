@@ -27,6 +27,10 @@ a {
 }
 
 
+#responsavel:has(option[value=""]:checked) {
+    color:#9aa1b1;
+}
+
 /*-------------------------Header------------------------------*/
 .cabecalho {
     padding: 0;

@@ -1,4 +1,6 @@
 {
+"Autor": "Autor Pietro Giati de Favari",
+"RA": "26026323",
   "name": "backend",
   "version": "1.0.0",
   "description": "",
@@ -8,7 +10,7 @@
     "test": "tsc && node --test test/dashboardCalculos.test.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Pietro Giati de Favari",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^6.0.0",
