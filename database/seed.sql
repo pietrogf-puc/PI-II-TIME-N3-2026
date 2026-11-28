@@ -28,14 +28,13 @@ INSERT INTO permissao (id_permissao, codigo, descricao) VALUES
 (6,  'atribuir_alterar_responsavel', 'Atribuir ou alterar o responsável de uma demanda'),
 (7,  'editar_demanda',            'Editar os dados de uma demanda'),
 (8,  'criar_demanda',             'Criar uma nova demanda'),
-(9,  'visualizar_usuarios',       'Visualizar usuários'),
 (10, 'visualizar_demandas',       'Visualizar demandas'),
 (11, 'registrar_comentarios',     'Registrar comentários nas demandas');
  
 -- =========================================
 -- PERFIL x PERMISSÃO (relacionamento "Concede")
 -- Administrador: todas as permissões
--- Líder de Projeto: todas, menos visualizar_usuarios
+-- Líder de Projeto: todas as permissões
 -- Membro da Equipe: consulta, comentários e alterar status
 --   (as transições permitidas ao membro são validadas em backend/src/regras/status.ts)
 -- =========================================
@@ -43,7 +42,7 @@ INSERT INTO perfil_permissao (id_perfil, id_permissao)
 SELECT 1, id_permissao FROM permissao;
  
 INSERT INTO perfil_permissao (id_perfil, id_permissao)
-SELECT 2, id_permissao FROM permissao WHERE codigo <> 'visualizar_usuarios';
+SELECT 2, id_permissao FROM permissao;
  
 INSERT INTO perfil_permissao (id_perfil, id_permissao)
 SELECT 3, id_permissao FROM permissao

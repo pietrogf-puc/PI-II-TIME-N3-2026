@@ -21,7 +21,6 @@ export type CodigoPermissao =
     | "atribuir_alterar_responsavel"
     | "editar_demanda"
     | "criar_demanda"
-    | "visualizar_usuarios"
     | "visualizar_demandas"
     | "registrar_comentarios";
 

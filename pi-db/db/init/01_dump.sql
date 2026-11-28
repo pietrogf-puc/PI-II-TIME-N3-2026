@@ -196,7 +196,7 @@ CREATE TABLE `perfil_permissao` (
 
 LOCK TABLES `perfil_permissao` WRITE;
 /*!40000 ALTER TABLE `perfil_permissao` DISABLE KEYS */;
-INSERT INTO `perfil_permissao` VALUES (1,1),(2,1),(3,1),(1,2),(2,2),(3,2),(1,3),(2,3),(3,3),(1,4),(2,4),(3,4),(1,5),(2,5),(1,6),(2,6),(1,7),(2,7),(1,8),(2,8),(1,9),(1,10),(2,10),(3,10),(1,11),(2,11),(3,11);
+INSERT INTO `perfil_permissao` VALUES (1,1),(2,1),(3,1),(1,2),(2,2),(3,2),(1,3),(2,3),(3,3),(1,4),(2,4),(3,4),(1,5),(2,5),(1,6),(2,6),(1,7),(2,7),(1,8),(2,8),(1,10),(2,10),(3,10),(1,11),(2,11),(3,11);
 /*!40000 ALTER TABLE `perfil_permissao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,7 +222,7 @@ CREATE TABLE `permissao` (
 
 LOCK TABLES `permissao` WRITE;
 /*!40000 ALTER TABLE `permissao` DISABLE KEYS */;
-INSERT INTO `permissao` VALUES (1,'visualizar_projetos','Visualizar projetos'),(2,'visualizar_comentarios','Visualizar comentários das demandas'),(3,'visualizar_historico','Visualizar histórico de alterações'),(4,'alterar_status','Alterar o status de uma demanda'),(5,'alterar_prioridade','Alterar a prioridade de uma demanda'),(6,'atribuir_alterar_responsavel','Atribuir ou alterar o responsável de uma demanda'),(7,'editar_demanda','Editar os dados de uma demanda'),(8,'criar_demanda','Criar uma nova demanda'),(9,'visualizar_usuarios','Visualizar usuários'),(10,'visualizar_demandas','Visualizar demandas'),(11,'registrar_comentarios','Registrar comentários nas demandas');
+INSERT INTO `permissao` VALUES (1,'visualizar_projetos','Visualizar projetos'),(2,'visualizar_comentarios','Visualizar comentários das demandas'),(3,'visualizar_historico','Visualizar histórico de alterações'),(4,'alterar_status','Alterar o status de uma demanda'),(5,'alterar_prioridade','Alterar a prioridade de uma demanda'),(6,'atribuir_alterar_responsavel','Atribuir ou alterar o responsável de uma demanda'),(7,'editar_demanda','Editar os dados de uma demanda'),(8,'criar_demanda','Criar uma nova demanda'),(10,'visualizar_demandas','Visualizar demandas'),(11,'registrar_comentarios','Registrar comentários nas demandas');
 /*!40000 ALTER TABLE `permissao` ENABLE KEYS */;
 UNLOCK TABLES;
 
